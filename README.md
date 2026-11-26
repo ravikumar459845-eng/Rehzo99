@@ -9,8 +9,9 @@ Mobile-first room, PG, hostel and flat discovery and booking platform.
 - Up to 3 WebP photos per listing, maximum 3 MB each.
 - Owner phone/email and exact room GPS stored in separate private tables.
 - Nearby search using approximate listing coordinates; exact directions are gated by final booking.
+- Room GPS capture is required before a new listing can be published; exact coordinates remain private.
 - Booking request → owner accept/reject → seeker final confirmation.
-- Database uniqueness ensures the first final confirmation wins.
+- A database-level unique partial index ensures only one final-confirmed booking per listing; the first successful confirmation wins.
 - System-generated 12-digit TRL numbers; listings become booked after confirmation.
 - Owner dashboard, discount duration, booking history and support tickets.
 - Protected admin view, available only to explicitly provisioned admin users.
