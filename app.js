@@ -108,8 +108,10 @@ $('#q').addEventListener('keydown',e=>{if(e.key==='Enter')$('#searchBtn').click(
 $('#clearBtn').addEventListener('click',()=>{$('#q').value='';$('#type').value='';$('#country').value='';$('#currency').value='';nearbyMode=false;renderListings()});
 async function showDetails(id){
  const x=listings.find(v=>v.id===id);if(!x)return;
- $('#detailContent').innerHTML='<label class="eyebrow">ROOM DETAILS</label><h2>'+esc(x.house_name)+'</h2><p>'+esc([x.locality,x.city,x.country_code].filter(Boolean).join(', '))+'</p><p><strong>'+esc(rentText(x))+'</strong></p><p>'+esc(x.description||'No description provided.')+'</p><p><b>'+esc(x.room_type)+'</b> · '+esc(x.status)+'</p><p>Suitable for: '+esc((x.suitable_for||[]).join(', ')||'Not specified')+'</p><p>Amenities: '+esc((x.amenities||[]).join(', ')||'Not specified')+'</p><div class="detail-photos">'+(x.photo_urls||[]).map(u=>'<img src="'+esc(u)+'" alt="Room photo">').join('')+'</div><p class="privacy-note">Owner contact and exact room directions are shared only after final booking confirmation.</p><button class="dark full" id="detailBook" '+(x.status!=='available'?'disabled':'')+'>Request booking</button>';
+ $('#detailContent').innerHTML='<label class="eyebrow">ROOM DETAILS</label><h2>'+esc(x.house_name)+'</h2><p>'+esc([x.locality,x.city,x.country_code].filter(Boolean).join(', '))+'</p><p><strong>'+esc(rentText(x))+'</strong></p><p>'+esc(x.description||'No description provided.')+'</p><p><b>'+esc(x.room_type)+'</b> · '+esc(x.status)+'</p><p>Suitable for: '+esc((x.suitable_for||[]).join(', ')||'Not specified')+'</p><p>Amenities: '+esc((x.amenities||[]).join(', ')||'Not specified')+'</p><div class="detail-photos">'+(x.photo_urls||[]).map(u=>'<img src="'+esc(u)+'" alt="Room photo">').join('')+'</div><p class="privacy-note">Owner contact and exact room directions are shared only after final booking confirmation.</p><div class="card-actions"><button class="outline" id="reportListing">Report listing</button><button class="outline" id="showReviews">Ratings & Reviews</button></div><div id="detailReviews"></div><button class="dark full" id="detailBook" '+(x.status!=='available'?'disabled':'')+'>Request booking</button>';
  const b=$('#detailBook');if(b&&!b.disabled)b.onclick=()=>requestBooking(x);
+ $('#reportListing').onclick=()=>reportListing(x.id);
+ $('#showReviews').onclick=()=>loadListingReviews(x.id);
  modal('detailModal');
 }
 async function requestBooking(x){
@@ -146,18 +148,26 @@ async function renderDashboard(tab){
    root.querySelectorAll('[data-renter]').forEach(b=>b.onclick=()=>showRenterContact(b.dataset.renter));
   }else if(tab==='myBookings'){
    const rows=await api('booking_requests?select=id,status,trl_number,requested_at,finalised_at,listing_id,listings(house_name,city,owner_id)&seeker_id=eq.'+session.user.id+'&order=requested_at.desc');
-   root.innerHTML=rows.length?rows.map(x=>'<article class="dash-card"><div><b>'+esc(x.listings?.house_name||'Stay')+'</b><p>'+esc(x.listings?.city||'')+' · '+esc(x.status)+'</p>'+(x.trl_number?'<strong>TRL: '+esc(x.trl_number)+'</strong>':'')+'</div><div class="dash-card-actions">'+(x.status==='accepted'?'<button class="dark" data-confirm="'+x.id+'">Final confirm</button><button class="outline" data-decline="'+x.id+'">Reject</button>':'')+(x.status==='final_confirmed'?'<button class="outline" data-contact="'+x.listing_id+'">Room directions & contact</button>':'')+'</div></article>').join(''):'<p>You have not sent any booking requests.</p>';
+   root.innerHTML=rows.length?rows.map(x=>'<article class="dash-card"><div><b>'+esc(x.listings?.house_name||'Stay')+'</b><p>'+esc(x.listings?.city||'')+' · '+esc(x.status)+'</p>'+(x.trl_number?'<strong>TRL: '+esc(x.trl_number)+'</strong>':'')+'</div><div class="dash-card-actions">'+(x.status==='accepted'?'<button class="dark" data-confirm="'+x.id+'">Final confirm</button><button class="outline" data-decline="'+x.id+'">Reject</button>':'')+(x.status==='final_confirmed'?'<button class="outline" data-contact="'+x.listing_id+'">Room directions & contact</button><button class="outline" data-cancel="'+x.id+'">Request cancellation</button><button class="outline" data-review="'+x.id+'" data-listing="'+x.listing_id+'" data-owner="'+(x.listings?.owner_id||'')+'">Rate owner</button>':'')+'</div></article>').join(''):'<p>You have not sent any booking requests.</p>';
    root.querySelectorAll('[data-confirm]').forEach(b=>b.onclick=()=>finaliseBooking(b.dataset.confirm));
    root.querySelectorAll('[data-decline]').forEach(b=>b.onclick=()=>respondBooking(b.dataset.decline,'seeker_rejected'));
    root.querySelectorAll('[data-contact]').forEach(b=>b.onclick=()=>showConfirmedDetails(b.dataset.contact));
+   root.querySelectorAll('[data-cancel]').forEach(b=>b.onclick=()=>requestCancellation(b.dataset.cancel));
+   root.querySelectorAll('[data-review]').forEach(b=>b.onclick=()=>submitReview(b.dataset.review,b.dataset.listing,b.dataset.owner));
   }else if(tab==='tickets'){
    const rows=await api('support_tickets?select=*&user_id=eq.'+session.user.id+'&order=created_at.desc');
    root.innerHTML=rows.length?rows.map(x=>'<article class="dash-card"><div><b>'+esc(x.ticket_number||'Support ticket')+' · '+esc(x.subject)+'</b><p>'+esc(x.message)+'</p></div><span class="listing-meta">'+esc(x.status)+'</span></article>').join(''):'<p>No support tickets yet.</p>';
+  }else if(tab==='reviews'){
+   const rows=await api('listing_reviews?select=id,listing_id,reviewer_id,reviewed_user_id,rating,review_text,created_at&or=(reviewer_id.eq.'+session.user.id+',reviewed_user_id.eq.'+session.user.id+')&order=created_at.desc');
+   root.innerHTML=rows.length?rows.map(x=>'<article class="dash-card"><div><b>'+esc('★'.repeat(x.rating))+'</b><p>'+esc(x.review_text||'No written comment')+'</p><small>'+new Date(x.created_at).toLocaleString()+'</small></div></article>').join(''):'<p>No ratings or reviews yet. You can review the other party after a confirmed booking.</p>';
+  }else if(tab==='reports'){
+   const rows=await api('listing_reports?select=id,listing_id,reason,details,status,created_at&reporter_id=eq.'+session.user.id+'&order=created_at.desc');
+   root.innerHTML=rows.length?rows.map(x=>'<article class="dash-card"><div><b>'+esc(x.reason)+'</b><p>'+esc(x.details||'')+'</p><small>'+new Date(x.created_at).toLocaleString()+'</small></div><span class="listing-meta">'+esc(x.status)+'</span></article>').join(''):'<p>You have not reported any listings.</p>';
   }else if(tab==='notifications'){
    const rows=await api('admin_notifications?select=id,title,message,created_at&active=eq.true&order=created_at.desc');
    root.innerHTML=rows.length?rows.map(x=>'<article class="dash-card"><div><b>'+esc(x.title)+'</b><p>'+esc(x.message)+'</p><small>'+new Date(x.created_at).toLocaleString()+'</small></div></article>').join(''):'<p>No new notifications.</p>';
   }else if(tab==='admin'&&isAdmin){
-   root.innerHTML='<div class="admin-menu"><button data-admin-section="dashboard">Dashboard</button><button data-admin-section="owners">Owners & Listings</button><button data-admin-section="users">Users & Bookings</button><button data-admin-section="reports">Reports & Analytics</button><button data-admin-section="complaints">User Complaints</button><button data-admin-section="countries">Country Management</button><button data-admin-section="content">Content & Policies</button><button data-admin-section="security">Security & Settings</button><button data-admin-section="notifications">Notifications</button><button data-admin-section="activity">Admin Activity</button><button data-admin-section="logs">System Logs</button></div><div id="adminSection" class="admin-section"></div>';
+   root.innerHTML='<div class="admin-menu"><button data-admin-section="dashboard">Dashboard</button><button data-admin-section="owners">Owners & Listings</button><button data-admin-section="users">Users & Bookings</button><button data-admin-section="reports">Reports & Analytics</button><button data-admin-section="listingReports">Listing Reports</button><button data-admin-section="complaints">User Complaints</button><button data-admin-section="countries">Country Management</button><button data-admin-section="content">Content & Policies</button><button data-admin-section="security">Security & Settings</button><button data-admin-section="notifications">Notifications</button><button data-admin-section="activity">Admin Activity</button><button data-admin-section="logs">System Logs</button></div><div id="adminSection" class="admin-section"></div>';
    root.querySelectorAll('[data-admin-section]').forEach(b=>b.onclick=()=>{root.querySelectorAll('[data-admin-section]').forEach(x=>x.classList.toggle('active',x===b));renderAdminSection(b.dataset.adminSection)});
    root.querySelector('[data-admin-section="dashboard"]').classList.add('active');
    await renderAdminSection('dashboard');
@@ -176,10 +186,15 @@ async function renderAdminSection(section){
    root.querySelectorAll('[data-admin-hide]').forEach(b=>b.onclick=async()=>{if(!confirm('Hide this listing from public search?'))return;try{await api('listings?id=eq.'+b.dataset.adminHide,{method:'PATCH',body:{status:'removed'},prefer:'return=representation'});toast('Listing hidden.');renderAdminSection('owners');loadListings()}catch(e){toast(e.message)}});
   }else if(section==='users'){
    const rows=await api('profiles?select=id,display_name,email,phone_number,country_code,account_type,created_at&order=created_at.desc');
-   root.innerHTML='<h3>Users & Accounts</h3>'+ (rows.map(x=>'<article class="dash-card"><div><b>'+esc(x.display_name||'Member')+'</b><p>'+esc(x.email||'')+' · '+esc(x.phone_number||'No phone')+'</p><small>'+esc(x.country_code||'')+' · '+esc(x.account_type||'user')+' · '+esc(x.id)+'</small></div></article>').join('')||'<p>No registered users yet.</p>');
+   root.innerHTML='<h3>Users & Accounts</h3>'+ (rows.map(x=>'<article class="dash-card"><div><b>'+esc(x.display_name||'Member')+'</b><p>'+esc(x.email||'')+' · '+esc(x.phone_number||'No phone')+'</p><small>'+esc(x.country_code||'')+' · '+esc(x.account_type||'user')+' · '+esc(x.moderation_status||'active')+'</small></div>'+(x.id===session.user.id?'':'<button class="outline" data-moderate="'+x.id+'" data-state="'+(x.moderation_status==='suspended'?'active':'suspended')+'">'+(x.moderation_status==='suspended'?'Reactivate':'Suspend')+'</button>')+'</article>').join('')||'<p>No registered users yet.</p>');
+   root.querySelectorAll('[data-moderate]').forEach(b=>b.onclick=async()=>{const reason=b.dataset.state==='suspended'?prompt('Reason for suspension:','Policy violation'):null;if(b.dataset.state==='suspended'&&!reason)return;try{await api('profiles?id=eq.'+b.dataset.moderate,{method:'PATCH',body:{moderation_status:b.dataset.state,moderation_reason:reason},prefer:'return=representation'});toast('Account moderation updated.');renderAdminSection('users')}catch(e){toast(e.message)}});
   }else if(section==='bookings'){
    const rows=await api('booking_requests?select=id,status,trl_number,requested_at,listing_id,listings(house_name,city)&order=requested_at.desc');
    root.innerHTML='<h3>Booking requests</h3>'+ (rows.map(x=>'<article class="dash-card"><div><b>'+esc(x.listings?.house_name||'Stay')+'</b><p>'+esc(x.listings?.city||'')+' · '+esc(x.status)+'</p><small>'+esc(x.trl_number||'Awaiting final confirmation')+'</small></div></article>').join('')||'<p>No booking requests.</p>');
+  }else if(section==='listingReports'){
+   const rows=await api('listing_reports?select=*&order=created_at.desc');
+   root.innerHTML='<h3>Listing Reports</h3>'+(rows.map(x=>'<article class="dash-card"><div><b>'+esc(x.reason)+'</b><p>'+esc(x.details||'')+'</p><small>'+esc(x.status)+' · '+new Date(x.created_at).toLocaleString()+'</small></div><div class="dash-card-actions"><button class="outline" data-report-state="'+x.id+'" data-value="reviewing">Review</button><button class="dark" data-report-state="'+x.id+'" data-value="resolved">Resolve</button><button class="outline" data-report-state="'+x.id+'" data-value="dismissed">Dismiss</button></div></article>').join('')||'<p>No listing reports.</p>');
+   root.querySelectorAll('[data-report-state]').forEach(b=>b.onclick=async()=>{try{await api('listing_reports?id=eq.'+b.dataset.reportState,{method:'PATCH',body:{status:b.dataset.value,reviewed_by:session.user.id,reviewed_at:new Date().toISOString()},prefer:'return=representation'});renderAdminSection('listingReports')}catch(e){toast(e.message)}});
   }else if(section==='complaints'){
    const rows=await api('support_tickets?select=*&order=created_at.desc');
    root.innerHTML='<h3>User Complaints & Tickets</h3>'+ (rows.map(x=>'<article class="dash-card"><div><b>'+esc(x.ticket_number)+' · '+esc(x.subject)+'</b><p>'+esc(x.message)+'</p><small>'+esc(x.status)+'</small></div><button class="outline" data-ticket-resolve="'+x.id+'">Resolve</button></article>').join('')||'<p>No complaints.</p>');
@@ -190,7 +205,8 @@ async function renderAdminSection(section){
   }else if(section==='content'){
    root.innerHTML='<h3>Content & Policies</h3><p>Public policy pages:</p><p><a href="/terms.html" target="_blank">Terms & Conditions</a></p><p><a href="/privacy.html" target="_blank">Privacy Policy</a></p><p><a href="/support.html" target="_blank">Support</a></p>';
   }else if(section==='security'){
-   root.innerHTML='<h3>Security & Settings</h3><p>Row Level Security is enabled on all application tables. Security Advisor currently reports no linter findings.</p><p>Google OAuth, phone OTP and payment processing are not configured. Never add service-role keys to browser code.</p><p>Supabase project: fbjclsnxcxorkzbcgelv</p>';
+   const [alerts,activity]=await Promise.all([api('security_alerts?select=*&order=created_at.desc&limit=100'),api('login_activity?select=*&order=created_at.desc&limit=100')]);
+   root.innerHTML='<h3>Security & Login Activity</h3><p>OAuth/phone OTP providers still need configuration. Login activity is recorded after successful sign-in.</p><h4>Security alerts</h4>'+(alerts.map(x=>'<article class="dash-card"><div><b>'+esc(x.severity)+' · '+esc(x.alert_type)+'</b><p>'+esc(x.message)+'</p><small>'+new Date(x.created_at).toLocaleString()+'</small></div><span>'+ (x.acknowledged?'Acknowledged':'Open')+'</span></article>').join('')||'<p>No security alerts recorded.</p>')+'<h4>Recent login activity</h4>'+(activity.map(x=>'<article class="dash-card"><div><b>'+esc(x.event_type)+'</b><p>'+esc(x.user_id)+'</p><small>'+new Date(x.created_at).toLocaleString()+'</small></div></article>').join('')||'<p>No login activity recorded.</p>');
   }else if(section==='notifications'){
    const rows=await api('admin_notifications?select=*&order=created_at.desc');
    root.innerHTML='<h3>Notifications</h3><form id="adminNoticeForm" class="stack"><label>Title<input name="title" required maxlength="120"></label><label>Message<textarea name="message" required maxlength="1000"></textarea></label><button class="dark">Publish notification</button></form>'+ (rows.map(x=>'<article class="dash-card"><div><b>'+esc(x.title)+'</b><p>'+esc(x.message)+'</p><small>'+(x.active?'Active':'Inactive')+'</small></div></article>').join('')||'<p>No notifications yet.</p>');
@@ -271,5 +287,26 @@ $('#nearBtn').addEventListener('click',findNearby);$('#mobileNear').addEventList
 $('#dashboardBtn').addEventListener('click',()=>openDashboard());$('#logoutBtn').addEventListener('click',async()=>{try{await fetch(AUTH+'/logout',{method:'POST',headers:{apikey:cfg.publishableKey,...authHeaders()}})}catch{}saveSession(null);profile=null;isAdmin=false;authUi();modal('dashboardModal',false);toast('Logged out.')});
 $('#supportNew').addEventListener('click',()=>{modal('ticketModal');$('#ticketMessage').textContent=''});
 $('#ticketForm').addEventListener('submit',async e=>{e.preventDefault();const b=e.submitter;b.disabled=true;try{const d=formData(e.target);const rows=await api('support_tickets',{method:'POST',body:{user_id:session.user.id,subject:d.subject.trim(),message:d.message.trim()},prefer:'return=representation'});$('#ticketMessage').textContent='Ticket created: '+rows[0].ticket_number;e.target.reset();await renderDashboard('tickets')}catch(err){$('#ticketMessage').textContent=err.message}finally{b.disabled=false}});
+async function reportListing(listingId){
+ if(!await requireLogin())return;
+ const reason=prompt('Why are you reporting this listing?','Incorrect information');if(!reason)return;
+ const details=prompt('Additional details (optional):','')||'';
+ try{await api('listing_reports',{method:'POST',body:{listing_id:listingId,reporter_id:session.user.id,reason:reason.slice(0,120),details:details.slice(0,2000)},prefer:'return=representation'});toast('Report submitted to the admin team.')}catch(e){toast(e.message)}
+}
+async function loadListingReviews(listingId){
+ const root=$('#detailReviews');root.innerHTML='<p>Loading reviews…</p>';
+ try{const rows=await api('listing_reviews?select=rating,review_text,created_at&listing_id=eq.'+listingId+'&order=created_at.desc',{auth:false});root.innerHTML='<h3>Ratings & Reviews</h3>'+(rows.map(x=>'<article class="dash-card"><div><b>'+('★'.repeat(x.rating))+'</b><p>'+esc(x.review_text||'')+'</p><small>'+new Date(x.created_at).toLocaleDateString()+'</small></div></article>').join('')||'<p>No reviews yet.</p>')}catch(e){root.textContent='Reviews unavailable: '+e.message}
+}
+async function requestCancellation(bookingId){
+ const reason=prompt('Reason for cancellation request:');if(!reason)return;
+ try{await api('booking_cancellations',{method:'POST',body:{booking_id:bookingId,requested_by:session.user.id,reason:reason.slice(0,1000)},prefer:'return=representation'});toast('Cancellation request submitted.');renderDashboard('myBookings')}catch(e){toast(e.message)}
+}
+async function submitReview(bookingId,listingId,ownerId){
+ if(!ownerId)return toast('Booking details unavailable.');
+ const rating=Number(prompt('Rate the owner from 1 to 5:','5'));if(!Number.isInteger(rating)||rating<1||rating>5)return toast('Please enter a rating from 1 to 5.');
+ const review=prompt('Write a short review (optional):','')||'';
+ try{await api('listing_reviews',{method:'POST',body:{booking_id:bookingId,listing_id:listingId,reviewer_id:session.user.id,reviewed_user_id:ownerId,rating,review_text:review.slice(0,1500)},prefer:'return=representation'});toast('Thank you. Your review was saved.');renderDashboard('reviews')}catch(e){toast(e.message)}
+}
+
 async function init(){captureAuthRedirect();authUi();await refreshSession();await refreshAccount();authUi();await loadListings()}
 init();
