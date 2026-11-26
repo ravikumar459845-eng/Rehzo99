@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<!-- REHZO 99_RELEASE_MARKER: rehzu-admin-analytics-cards-2026-11-03 -->
+<!-- REHZU_RELEASE_MARKER: rehzu-admin-analytics-cards-2026-11-03 -->
 <meta name="rehzu-release-marker" content="rehzu-security-hardening-2026-11-04-a">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -216,7 +216,7 @@ body:has(#view-admin.active) .main-wrapper{padding:8px 10px calc(88px + env(safe
     <strong id="rehzuSystemAlertTitle">Something went wrong</strong>
     <p id="rehzuSystemAlertMessage">Please try again.</p>
   </div>
-  <button type="button" class="rehzu-system-alert-close" aria-label="Dismiss alert" onclick="dismissREHZO 99SystemAlert()">×</button>
+  <button type="button" class="rehzu-system-alert-close" aria-label="Dismiss alert" onclick="dismissREHZUSystemAlert()">×</button>
 </div>
 <script src="/js/system-alerts.js"></script>
 
@@ -559,7 +559,7 @@ body:has(#view-admin.active) .main-wrapper{padding:8px 10px calc(88px + env(safe
     <div class="sub-header"><h3 class="sub-title">Help & Support</h3><span style="font-size:11px;color:#64748B;">Private complaint desk</span></div>
     <div style="background:#fff;border:1px solid #dce8e1;border-radius:16px;padding:16px;margin-bottom:14px;">
       <h3 style="margin:0 0 6px;color:#075743;">Submit a Complaint</h3><p style="font-size:12px;color:#64748B;margin:0 0 14px;">Your complaint is visible only to you and authorized REHZO 99 administrators. Do not share passwords, OTPs, UPI PINs or bank credentials.</p>
-      <form id="rehzuComplaintForm" onsubmit="submitREHZO 99Complaint(event)" style="display:grid;gap:10px;">
+      <form id="rehzuComplaintForm" onsubmit="submitREHZUComplaint(event)" style="display:grid;gap:10px;">
         <label style="font-size:12px;font-weight:800;">Complaint category<select id="rehzuComplaintCategory" required class="pill-input" style="width:100%;margin-top:5px;"><option>Account & Login</option><option>Room / Listing</option><option>Booking / TRL</option><option>Payment / Fraud</option><option>Safety / Harassment</option><option>Privacy / Data</option><option>Other</option></select></label>
         <label style="font-size:12px;font-weight:800;">Subject<input id="rehzuComplaintSubject" required minlength="5" maxlength="120" class="pill-input" style="width:100%;margin-top:5px;" placeholder="Short complaint title"></label>
         <label style="font-size:12px;font-weight:800;">Details<textarea id="rehzuComplaintDetails" required minlength="20" maxlength="3000" rows="5" class="pill-input" style="width:100%;margin-top:5px;resize:vertical;" placeholder="Explain what happened (20–3000 characters)"></textarea></label>
@@ -725,8 +725,8 @@ body:has(#view-admin.active) .main-wrapper{padding:8px 10px calc(88px + env(safe
   function showLoadFailure() {
     if (finished) return;
     finished = true;
-    if (typeof window.showREHZO 99SystemAlert === 'function') {
-      window.showREHZO 99SystemAlert(
+    if (typeof window.showREHZUSystemAlert === 'function') {
+      window.showREHZUSystemAlert(
         'REHZO 99 could not load its secure connection service. Check your internet connection and reload the app.',
         'Connection service unavailable'
       );
@@ -741,8 +741,8 @@ body:has(#view-admin.active) .main-wrapper{padding:8px 10px calc(88px + env(safe
     var app = document.createElement('script');
     app.src = '/js/app.js?v=country-proof-29';
     app.onerror = function () {
-      if (typeof window.showREHZO 99SystemAlert === 'function') {
-        window.showREHZO 99SystemAlert('The REHZO 99 app files could not be loaded. Please reload the page.', 'App files unavailable');
+      if (typeof window.showREHZUSystemAlert === 'function') {
+        window.showREHZUSystemAlert('The REHZO 99 app files could not be loaded. Please reload the page.', 'App files unavailable');
       }
     };
     document.body.appendChild(app);
