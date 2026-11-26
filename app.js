@@ -222,7 +222,7 @@ async function openListing(){
  if(!await requireLogin())return;
  modal('listingModal');$('#listingMessage').textContent='';$('#listingForm').reset();currentGps=null;$('#gpsMsg').textContent='Capture the room GPS before publishing. Exact coordinates stay private until a booking is confirmed.';
 }
-$('#captureGps').addEventListener('click',()=>{if(!navigator.geolocation){$('#gpsMsg').textContent='GPS not supported. You can still continue.';return}$('#gpsMsg').textContent='Getting GPS…';navigator.geolocation.getCurrentPosition(pos=>{currentGps={latitude:pos.coords.latitude,longitude:pos.coords.longitude};$('#gpsMsg').textContent='Room GPS captured successfully.'},err=>{$('#gpsMsg').textContent=err.code===1?'Permission denied. You can still publish without GPS.':'GPS unavailable. You can still publish without GPS.'},{enableHighAccuracy:true,timeout:15000,maximumAge:0})});
+$('#captureGps').addEventListener('click',()=>{if(!navigator.geolocation){$('#gpsMsg').textContent='GPS is required to publish a room, but this device does not support location.';return}$('#gpsMsg').textContent='Getting GPS…';navigator.geolocation.getCurrentPosition(pos=>{currentGps={latitude:pos.coords.latitude,longitude:pos.coords.longitude};$('#gpsMsg').textContent='Room GPS captured successfully.'},err=>{$('#gpsMsg').textContent=err.code===1?'Permission denied. Allow location access to publish.':'GPS unavailable. Enable device location and try again.'},{enableHighAccuracy:true,timeout:15000,maximumAge:0})});
 async function uploadPhoto(file){
  if(file.type!=='image/webp')throw new Error('Only WebP photos are allowed.');
  if(file.size>3*1024*1024)throw new Error('Each photo must be 3 MB or smaller.');
@@ -237,12 +237,12 @@ $('#listingForm').addEventListener('submit',async e=>{
  let listingId=null;
  try{
   const f=e.target,d=formData(f),photos=[...$('#listingPhotos').files];
+  if(!currentGps)throw new Error('Please capture the room GPS before publishing this listing.');
   if(photos.length>3)throw new Error('You can upload a maximum of 3 photos.');
   const photoUrls=[];for(const file of photos)photoUrls.push(await uploadPhoto(file));
   const payload={owner_id:session.user.id,house_name:d.house_name.trim(),description:d.description.trim()||null,country_code:d.country_code,city:d.city.trim(),locality:d.locality.trim()||null,currency_code:d.currency_code,monthly_rent:Number(d.monthly_rent),deposit:d.deposit?Number(d.deposit):null,room_type:d.room_type,suitable_for:[...f.querySelectorAll('[name="suitable_for"]:checked')].map(x=>x.value),amenities:[...f.querySelectorAll('[name="amenities"]:checked')].map(x=>x.value),photo_urls:photoUrls,status:'available'};
   const created=await api('listings',{method:'POST',body:payload,prefer:'return=representation'});listingId=created[0].id;
   await api('listing_private_details',{method:'POST',body:{listing_id:listingId,owner_id:session.user.id,contact_phone:d.contact_phone.trim(),contact_email:d.contact_email.trim()},prefer:'return=representation'});
-  if(!currentGps)throw new Error('Please capture the room GPS before publishing this listing.');
   {
    await api('listing_locations',{method:'POST',body:{listing_id:listingId,owner_id:session.user.id,latitude:currentGps.latitude,longitude:currentGps.longitude},prefer:'return=representation'});
    await api('listing_search_areas',{method:'POST',body:{listing_id:listingId,owner_id:session.user.id,latitude_approx:Number(currentGps.latitude.toFixed(3)),longitude_approx:Number(currentGps.longitude.toFixed(3))},prefer:'return=representation'});
