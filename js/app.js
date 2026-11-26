@@ -181,7 +181,7 @@ sb.auth.onAuthStateChange(function(event, session) {
 // ================= AUTOMATIC CLIENT-SIDE IMAGE COMPRESSOR =================
 // Room-photo allowlist: raster JPEG, PNG and WebP only. SVG/GIF/HTML and
 // executable or unknown formats are rejected. Never trust file.name or file.type alone.
-const REHZO 99_IMAGE_MAX_BYTES = 5 * 1024 * 1024;
+const REHZU_IMAGE_MAX_BYTES = 5 * 1024 * 1024;
 function rehzuDetectImageType(bytes) {
   if (bytes.length >= 3 && bytes[0] === 0xFF && bytes[1] === 0xD8 && bytes[2] === 0xFF) return 'image/jpeg';
   if (bytes.length >= 8 && bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4E && bytes[3] === 0x47 &&
@@ -191,7 +191,7 @@ function rehzuDetectImageType(bytes) {
   return '';
 }
 async function compressImageFile(file, maxWidth = 1600, quality = 0.88) {
-  if (!file || !Number.isFinite(file.size) || file.size <= 0 || file.size > REHZO 99_IMAGE_MAX_BYTES) {
+  if (!file || !Number.isFinite(file.size) || file.size <= 0 || file.size > REHZU_IMAGE_MAX_BYTES) {
     throw new Error('Photo must be between 1 byte and 5 MB.');
   }
   const bytes = new Uint8Array(await file.slice(0, 16).arrayBuffer());
@@ -231,7 +231,7 @@ async function compressImageFile(file, maxWidth = 1600, quality = 0.88) {
       if (blob.size <= 450 * 1024) break;
       if (attempt >= 2) scale *= 0.88;
     }
-    if (!blob || blob.size > REHZO 99_IMAGE_MAX_BYTES) {
+    if (!blob || blob.size > REHZU_IMAGE_MAX_BYTES) {
       throw new Error('Photo could not be compressed to a safe size. Please choose another photo.');
     }
     return new File([blob], 'room-photo.webp', { type: 'image/webp', lastModified: Date.now() });
