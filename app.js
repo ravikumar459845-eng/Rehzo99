@@ -51,7 +51,12 @@ function showAuth(mode='login'){modal('authModal');setAuthMode(mode)}
 function setAuthMode(mode){const signup=mode==='signup';$('#loginForm').hidden=signup;$('#signupForm').hidden=!signup;$('#showLogin').classList.toggle('active',!signup);$('#showSignup').classList.toggle('active',signup);$('#authHeading').textContent=signup?'Create your free account':'Log in to continue';$('#authHelp').textContent=signup?'Create an account with your email. Verify it if email confirmation is enabled.':'Use your email and password to access your account.';$('#authMessage').textContent=''}
 $('#accountBtn').addEventListener('click',()=>showAuth());$('#mobileAccount').addEventListener('click',()=>session?openDashboard():showAuth());$('#showLogin').addEventListener('click',()=>setAuthMode('login'));$('#showSignup').addEventListener('click',()=>setAuthMode('signup'));
 $('#loginForm').addEventListener('submit',async e=>{e.preventDefault();const b=e.submitter;b.disabled=true;$('#authMessage').textContent='Signing in…';try{const d=formData(e.target);const data=await authRequest('token?grant_type=password',{email:d.email,password:d.password});saveSession(data);await refreshAccount();modal('authModal',false);toast('You are logged in.');}catch(err){$('#authMessage').textContent=err.message}finally{b.disabled=false}});
-$('#signupForm').addEventListener('submit',async e=>{e.preventDefault();const b=e.submitter;b.disabled=true;$('#authMessage').textContent='Creating your account…';try{const d=formData(e.target);const data=await authRequest('signup',{email:d.email,password:d.password,data:{display_name:d.display_name,phone_number:d.phone_number,country_code:d.country_code,preferred_currency:d.country_code==='IN'?'INR':''}});if(data.session){saveSession(data.session);await refreshAccount();modal('authModal',false);toast('Account created successfully.')}else{$('#authMessage').textContent='Account created. Please verify your email using the message sent to '+d.email+', then log in.';setAuthMode('login')}}catch(err){$('#authMessage').textContent=err.message}finally{b.disabled=false}});
+$('#signupForm').addEventListener('submit',async e=>{e.preventDefault();const b=e.submitter;b.disabled=true;$('#authMessage').textContent='Creating your account…';try{const d=formData(e.target);const data=await authRequest('signup?redirect_to='+encodeURIComponent(location.origin+'/#auth-confirmed'),{email:d.email,password:d.password,data:{display_name:d.display_name,phone_number:d.phone_number,country_code:d.country_code,preferred_currency:d.country_code==='IN'?'INR':''}});if(data.session){saveSession(data.session);await refreshAccount();modal('authModal',false);toast('Account created successfully.')}else{$('#authMessage').textContent='Account created. Please verify your email using the message sent to '+d.email+', then log in.';setAuthMode('login')}}catch(err){$('#authMessage').textContent=err.message}finally{b.disabled=false}});
+function captureAuthRedirect(){
+ const hash=new URLSearchParams(location.hash.slice(1));
+ const access=hash.get('access_token'),refresh=hash.get('refresh_token');
+ if(access&&refresh){saveSession({access_token:access,refresh_token:refresh,token_type:'bearer',expires_in:Number(hash.get('expires_in')||3600)});history.replaceState(null,'',location.pathname+location.search)}
+}
 async function refreshSession(){
  if(!session?.refresh_token)return;
  try{const data=await authRequest('token?grant_type=refresh_token',{refresh_token:session.refresh_token});saveSession(data)}catch(err){console.warn('Session refresh failed',err.message);saveSession(null)}
@@ -62,6 +67,7 @@ async function refreshAccount(){
   const u=await fetch(AUTH+'/user',{headers:{apikey:cfg.publishableKey,Authorization:'Bearer '+session.access_token}});
   if(!u.ok){saveSession(null);profile=null;authUi();return}
   const user=await u.json();
+  session.user=user;saveSession(session);
   profile=(await api('profiles?select=*&id=eq.'+encodeURIComponent(user.id))).at(0)||null;
   isAdmin=(await api('admin_users?select=user_id&user_id=eq.'+encodeURIComponent(user.id))).length>0;
  }catch(err){console.warn(err);profile=null;isAdmin=false}
@@ -264,5 +270,5 @@ $('#nearBtn').addEventListener('click',findNearby);$('#mobileNear').addEventList
 $('#dashboardBtn').addEventListener('click',()=>openDashboard());$('#logoutBtn').addEventListener('click',async()=>{try{await fetch(AUTH+'/logout',{method:'POST',headers:{apikey:cfg.publishableKey,...authHeaders()}})}catch{}saveSession(null);profile=null;isAdmin=false;authUi();modal('dashboardModal',false);toast('Logged out.')});
 $('#supportNew').addEventListener('click',()=>{modal('ticketModal');$('#ticketMessage').textContent=''});
 $('#ticketForm').addEventListener('submit',async e=>{e.preventDefault();const b=e.submitter;b.disabled=true;try{const d=formData(e.target);const rows=await api('support_tickets',{method:'POST',body:{user_id:session.user.id,subject:d.subject.trim(),message:d.message.trim()},prefer:'return=representation'});$('#ticketMessage').textContent='Ticket created: '+rows[0].ticket_number;e.target.reset();await renderDashboard('tickets')}catch(err){$('#ticketMessage').textContent=err.message}finally{b.disabled=false}});
-async function init(){authUi();await refreshSession();await refreshAccount();authUi();await loadListings()}
+async function init(){captureAuthRedirect();authUi();await refreshSession();await refreshAccount();authUi();await loadListings()}
 init();
