@@ -1,5 +1,20 @@
 const $=s=>document.querySelector(s);
 const cfg=window.REHZO_SUPABASE;
+const COUNTRY_CODES='AD AE AF AG AI AL AM AO AQ AR AS AT AU AW AX AZ BA BB BD BE BF BG BH BI BJ BL BM BN BO BQ BR BS BT BV BW BY BZ CA CC CD CF CG CH CI CK CL CM CN CO CR CU CV CW CX CY CZ DE DJ DK DM DO DZ EC EE EG EH ER ES ET FI FJ FK FM FO FR GA GB GD GE GF GG GH GI GL GM GN GP GQ GR GS GT GU GW GY HK HM HN HR HT HU ID IE IL IM IN IO IQ IR IS IT JE JM JO JP KE KG KH KI KM KN KP KR KW KY KZ LA LB LC LI LK LR LS LT LU LV LY MA MC MD ME MF MG MH MK ML MM MN MO MP MQ MR MS MT MU MV MW MX MY MZ NA NC NE NF NG NI NL NO NP NR NU NZ OM PA PE PF PG PH PK PL PM PN PR PS PT PW PY QA RE RO RS RU RW SA SB SC SD SE SG SH SI SJ SK SL SM SN SO SR SS ST SV SX SY SZ TC TD TF TG TH TJ TK TL TM TN TO TR TT TV TW TZ UA UG UM US UY UZ VA VC VE VG VI VN VU WF WS YE YT ZA ZM ZW'.split(' ');
+const COUNTRY_CURRENCY={IN:'INR',US:'USD',GB:'GBP',CA:'CAD',AU:'AUD',AE:'AED',SG:'SGD',NZ:'NZD',JP:'JPY',CN:'CNY',BD:'BDT',PK:'PKR',NP:'NPR',LK:'LKR',DE:'EUR',FR:'EUR',IT:'EUR',ES:'EUR',NL:'EUR',IE:'EUR',PT:'EUR',BE:'EUR',AT:'EUR',FI:'EUR',GR:'EUR',CY:'EUR',MT:'EUR',LU:'EUR',BR:'BRL',MX:'MXN',ZA:'ZAR',SA:'SAR',QA:'QAR',KW:'KWD',OM:'OMR',BH:'BHD',MY:'MYR',TH:'THB',ID:'IDR',PH:'PHP',KR:'KRW',TR:'TRY',RU:'RUB',CH:'CHF',SE:'SEK',NO:'NOK',DK:'DKK',PL:'PLN',CZ:'CZK',HU:'HUF',EG:'EGP',NG:'NGN',KE:'KES',GH:'GHS'};
+function populateGlobalSelects(){
+ const names=new Intl.DisplayNames([navigator.language||'en'],{type:'region'});
+ document.querySelectorAll('select[name="country_code"],#country').forEach(sel=>{
+  const current=sel.value,all=sel.id==='country';sel.replaceChildren();
+  const first=document.createElement('option');first.value='';first.textContent=all?'All countries':'Select country';sel.append(first);
+  COUNTRY_CODES.forEach(code=>{const o=document.createElement('option');o.value=code;o.textContent=names.of(code)||code;sel.append(o)});
+  sel.value=current|| (all?'':'IN');
+ });
+ const currencies=(typeof Intl.supportedValuesOf==='function'?Intl.supportedValuesOf('currency'):['INR','USD','EUR','GBP','CAD','AUD','AED','SGD','JPY','CNY','BDT','PKR','NPR','LKR','NZD','BRL','MXN','ZAR','SAR','QAR','KWD','OMR','BHD','MYR','THB','IDR','PHP','KRW','TRY','RUB','CHF','SEK','NOK','DKK','PLN','CZK','HUF','EGP','NGN','KES','GHS']);
+ document.querySelectorAll('select[name="currency_code"],#currency').forEach(sel=>{const current=sel.value,all=sel.id==='currency';sel.replaceChildren();const first=document.createElement('option');first.value='';first.textContent=all?'All currencies':'Select currency';sel.append(first);currencies.forEach(code=>{const o=document.createElement('option');o.value=code;o.textContent=code;sel.append(o)});sel.value=current|| (all?'':'INR')});
+ document.querySelectorAll('select[name="country_code"]').forEach(sel=>sel.addEventListener('change',()=>{const form=sel.closest('form'),cur=form?.querySelector('select[name="currency_code"]');if(cur&&COUNTRY_CURRENCY[sel.value])cur.value=COUNTRY_CURRENCY[sel.value]}));
+}
+
 const API=cfg.url+'/rest/v1';
 const AUTH=cfg.url+'/auth/v1';
 const STORAGE=cfg.url+'/storage/v1';
@@ -30,6 +45,7 @@ document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',
 document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open')}));
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAll()});
 $('#year').textContent=new Date().getFullYear();
+populateGlobalSelects();
 function authUi(){const logged=!!session?.access_token;$('#accountBtn').hidden=logged;$('#dashboardBtn').hidden=!logged;$('#ownerBtn').textContent=logged?'Owner dashboard ↗':'List your place ↗';$('#mobileAccount').textContent=logged?'☻':'☻';}
 function showAuth(mode='login'){modal('authModal');setAuthMode(mode)}
 function setAuthMode(mode){const signup=mode==='signup';$('#loginForm').hidden=signup;$('#signupForm').hidden=!signup;$('#showLogin').classList.toggle('active',!signup);$('#showSignup').classList.toggle('active',signup);$('#authHeading').textContent=signup?'Create your free account':'Log in to continue';$('#authHelp').textContent=signup?'Create an account with your email. Verify it if email confirmation is enabled.':'Use your email and password to access your account.';$('#authMessage').textContent=''}
