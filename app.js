@@ -30,7 +30,7 @@ async function api(path,{method='GET',body,auth=true,prefer}={}){
  const headers={apikey:cfg.publishableKey,...(auth?authHeaders():{}),...(body?{'Content-Type':'application/json'}:{}),...(prefer?{Prefer:prefer}:{})};
  const res=await fetch(API+'/'+path,{method,headers,body:body?JSON.stringify(body):undefined});
  const text=await res.text();let data=null;try{data=text?JSON.parse(text):null}catch{data=text}
- if(!res.ok)throw new Error(data?.message||data?.hint||data?.details||data?.error_description||data?.msg||('Request failed ('+res.status+')'));
+ if(!res.ok){if(data?.code==='23505')throw new Error('This room has already been confirmed by another seeker. Please choose another stay.');throw new Error(data?.message||data?.hint||data?.details||data?.error_description||data?.msg||('Request failed ('+res.status+')'));}
  return data;
 }
 async function authRequest(path,body){
