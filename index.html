@@ -1,34 +1,793 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#183b30"><meta name="description" content="Discover rooms, PGs, hostels and flats with REHZO 99. Find your stay."><title>REHZO 99 – Find Your Stay</title><link rel="canonical" href="https://rehzo99.vercel.app/"><link rel="icon" href="/favicon.svg"><link rel="manifest" href="/manifest.webmanifest"><link rel="stylesheet" href="/styles.css"></head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- REHZO 99_RELEASE_MARKER: rehzu-admin-analytics-cards-2026-11-03 -->
+<meta name="rehzu-release-marker" content="rehzu-security-hardening-2026-11-04-a">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<!-- ================= GLOBAL & INTERNATIONAL SEO ================= -->
+<title>REHZO 99 Rooms — Find Rooms, PGs, Flats & Hostels</title>
+<meta name="title" content="REHZO 99 Rooms — Find Rooms, PGs, Flats & Hostels">
+<meta name="description" content="Find rooms, PGs, flats and hostels with REHZO 99. Compare rent, explore listings, send booking requests and receive a 12-digit TRL after final confirmation.">
+<meta name="keywords" content="REHZO 99, REHZO 99, REHZO 99 Rooms, REHZO 99 Room, room booking, rooms for rent, room rent, flats for rent, PG rooms, hostels, student accommodation, room rental India">
+<meta name="author" content="REHZO 99">
+<meta name="application-name" content="REHZO 99">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+<meta name="theme-color" content="#044E3B">
+<link rel="canonical" href="https://rehzo99.vercel.app/">
+
+<!-- PWA & Mobile Web App Meta -->
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="REHZO 99">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg?v=3">
+<link rel="shortcut icon" type="image/svg+xml" href="/favicon.svg?v=3">
+<link rel="apple-touch-icon" href="/favicon.svg?v=3">
+
+<!-- Canonical language target: one published language version -->
+<link rel="alternate" href="https://rehzo99.vercel.app/" hreflang="x-default" />
+
+<!-- Open Graph / Social Sharing -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://rehzo99.vercel.app/">
+<meta property="og:site_name" content="REHZO 99">
+<meta property="og:title" content="REHZO 99 Rooms — Find Rooms, PGs, Flats & Hostels">
+<meta property="og:description" content="Find rooms, PGs, flats and hostels with REHZO 99. Compare rent, explore listings and send booking requests with owners.">
+<meta property="og:image" content="https://rehzo99.vercel.app/logo.svg">
+<meta property="og:image:width" content="512">
+<meta property="og:image:height" content="512">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="en_IN">
+<meta property="og:locale:alternate" content="hi_IN">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="https://rehzo99.vercel.app/">
+<meta name="twitter:title" content="REHZO 99 Rooms — Find Rooms, PGs & Hostels">
+<meta name="twitter:description" content="Find rooms, PGs, flats and hostels. Compare rent and send booking requests with owners on REHZO 99.">
+<meta name="twitter:image" content="https://rehzo99.vercel.app/logo.svg">
+
+<!-- Google Rich Results / Schema.org -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://rehzo99.vercel.app/#website",
+      "name": "REHZO 99",
+      "alternateName": ["REHZO 99", "REHZO 99 Rooms"],
+      "url": "https://rehzo99.vercel.app/"
+    },
+    {
+      "@type": "WebApplication",
+      "@id": "https://rehzo99.vercel.app/#webapp",
+      "name": "REHZO 99",
+      "alternateName": ["REHZO 99", "REHZO 99 Rooms"],
+      "url": "https://rehzo99.vercel.app/",
+      "applicationCategory": "RealEstateApplication",
+      "operatingSystem": "All",
+      "areaServed": [
+        "Worldwide"
+      ],
+      "description": "Discover rooms, PGs, flats and hostels, compare listing details, send booking requests, and receive a 12-digit TRL after final booking confirmation.",
+      "offers": {
+        "@type": "Offer",
+        "priceCurrency": "INR",
+        "price": "0"
+      }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://rehzo99.vercel.app/#organization",
+      "name": "REHZO 99",
+      "alternateName": ["REHZO 99", "REHZO 99 Rooms"],
+      "url": "https://rehzo99.vercel.app/",
+      "logo": "https://rehzo99.vercel.app/logo.svg"
+    }
+  ]
+}
+</script>
+
+<!-- Supabase JS Client v2 CDN -->
+<!-- Supabase SDK is loaded with a CDN fallback immediately before the app bundle. -->
+
+<link rel="stylesheet" href="/styles.css?v=rehzo99-1">
+<style id="rehzu-admin-reference-layout">
+/* Screenshot-matched REHZO 99 admin: fixed left rail + 3-column dashboard */
+body:has(#view-admin.active) .top-header,
+body:has(#view-admin.active) .main-wrapper,
+body:has(#view-admin.active) .bottom-nav{max-width:none;width:100%}
+body:has(#view-admin.active) .main-wrapper{padding:8px 10px calc(88px + env(safe-area-inset-bottom))}
+.rehzu-admin-shell.rehzu-admin-v2{width:100%;max-width:none;margin:0;padding:0!important;background:#f4f7fc!important;color:#17233b!important;border:0!important;border-radius:0!important;box-shadow:none!important;overflow:visible}
+.rehzu-admin-v2 .radmin-layout{display:grid!important;grid-template-columns:60px minmax(0,1fr)!important;align-items:stretch;gap:0;width:100%;max-width:none;min-width:0;min-height:calc(100vh - 180px)}
+.rehzu-admin-v2 .radmin-sidebar{position:sticky;top:70px;align-self:start;display:flex;flex-direction:column;gap:3px;height:calc(100vh - 165px);min-height:0;overflow-y:auto;padding:7px 4px;background:#10213a;color:#fff}
+.rehzu-admin-v2 .radmin-side-brand{display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 2px 7px;margin-bottom:2px;border-bottom:1px solid #ffffff30}
+.rehzu-admin-v2 .radmin-side-brand img{width:30px;height:30px;object-fit:contain}
+.rehzu-admin-v2 .radmin-side-brand b{font-size:11px;color:#fff}
+.rehzu-admin-v2 .radmin-side-brand small{font-size:6px;color:#c4d1e5;text-align:center}
+.rehzu-admin-v2 .radmin-sidebar>button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;width:100%;min-height:46px;padding:4px 2px;border:0;border-radius:10px;background:transparent;color:#e7edf7;text-align:center;font-size:6.5px;line-height:1.12;font-weight:800;white-space:normal}
+.rehzu-admin-v2 .radmin-sidebar>button .radmin-nav-icon{font-size:14px;line-height:1}
+.rehzu-admin-v2 .radmin-sidebar>button.active,.rehzu-admin-v2 .radmin-sidebar>button:hover{background:#0875ed;color:#fff}
+.rehzu-admin-v2 .radmin-sidebar>button.radmin-side-logout{margin-top:auto;background:#b4232d}
+.rehzu-admin-v2 .radmin-main{width:100%;max-width:none;min-width:0;margin:0;padding:9px 8px 28px!important}
+.rehzu-admin-v2 .radmin-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:7px;padding:5px 2px 9px;margin:0 0 8px}
+.rehzu-admin-v2 .radmin-toolbar h2{font-size:18px;line-height:1.2;margin:0;color:#17233b}
+.rehzu-admin-v2 .radmin-toolbar p{font-size:10px;margin:3px 0;color:#718096}
+.rehzu-admin-v2 .radmin-toolbar-tools{display:flex;align-items:center;gap:6px;flex:1 1 100%;min-width:0}
+.rehzu-admin-v2 .radmin-search-wrap{display:flex;align-items:center;gap:5px;flex:1;min-width:0;padding:6px 8px;background:#fff;border:1px solid #dce4ee;border-radius:10px;font-size:11px}
+.rehzu-admin-v2 .radmin-search-wrap input{width:100%;min-width:0;border:0;outline:0;font-size:10px}
+.rehzu-admin-v2 .radmin-command-search{position:relative;flex:1;min-width:0;z-index:30}
+.rehzu-admin-v2 .radmin-search-wrap{min-height:38px;box-shadow:0 2px 8px #17212b0a}
+.rehzu-admin-v2 .radmin-search-wrap:focus-within{border-color:#2878e8;box-shadow:0 0 0 3px #2878e81c}
+.rehzu-admin-v2 .radmin-toolbar,.rehzu-admin-v2 .radmin-toolbar-tools,.rehzu-admin-v2 .radmin-command-search{overflow:visible!important}
+.rehzu-admin-v2 .rehzu-admin-search-results{position:absolute!important;left:0!important;right:auto!important;width:min(560px,calc(100vw - 28px))!important;max-height:min(72vh,620px)!important;overflow-y:auto!important;z-index:2147483000!important}
+.rehzu-admin-v2 .rehzu-admin-search-results[hidden]{display:none!important}
+.rehzu-admin-v2 .radmin-voice-search{flex:0 0 30px;width:30px;height:30px;border:0;border-radius:8px;background:#eaf2ff;color:#1757b4;font-size:16px;cursor:pointer}
+.rehzu-admin-v2 .radmin-voice-search.is-listening{background:#fee2e2;color:#b91c1c;animation:rehzuVoicePulse 1s infinite}
+@keyframes rehzuVoicePulse{50%{box-shadow:0 0 0 5px #ef444433}}
+.rehzu-admin-v2 .radmin-search-wrap kbd{flex:0 0 auto;padding:3px 5px;border:1px solid #dce4ee;border-radius:5px;background:#f7f9fc;color:#64748b;font-size:8px;white-space:nowrap}
+.rehzu-admin-v2 .rehzu-admin-search-results{position:absolute;top:calc(100% + 6px);left:0;right:0;max-height:min(62vh,430px);overflow:auto;padding:7px;border:1px solid #dbe4ef;border-radius:12px;background:#fff;box-shadow:0 14px 38px #14243b26}
+.rehzu-admin-v2 .rehzu-admin-search-results{width:min(560px,calc(100vw - 80px));max-height:min(72vh,620px);z-index:9999}
+.rehzu-admin-v2 .rehzu-admin-search-summary{padding:7px 8px;margin:3px 0 7px;border-radius:7px;background:#edf4ff;color:#24446e;font-size:9px;line-height:1.5}
+.rehzu-admin-v2 .rehzu-admin-search-record{margin:6px 0;padding:8px;border:1px solid #dce6f2;border-radius:8px;background:#f8fbff;color:#243b59;font-size:9px;line-height:1.35;overflow-wrap:anywhere}
+.rehzu-admin-v2 .rehzu-admin-search-record>b{display:block;margin-bottom:4px;color:#1358a8;font-size:9px;font-weight:900}
+.rehzu-admin-v2 .rehzu-admin-result-line{display:block;padding:2px 0;border-top:1px solid #e8eef6;font-size:8.5px;line-height:1.35;overflow-wrap:anywhere}
+.rehzu-admin-v2 .rehzu-admin-result-line b{color:#536a87;font-weight:800}
+@media(max-width:640px){.rehzu-admin-v2 .rehzu-admin-search-results{left:0;right:auto;width:min(520px,calc(100vw - 68px));max-height:72vh}.rehzu-admin-v2 .rehzu-admin-search-record{padding:6px;margin:5px 0}.rehzu-admin-v2 .rehzu-admin-result-line{font-size:8px}}
+
+.rehzu-admin-v2 .rehzu-admin-search-heading{padding:5px 7px;color:#758397;font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.07em}
+.rehzu-admin-v2 .rehzu-admin-search-item{display:flex;width:100%;align-items:center;gap:8px;padding:9px 8px;border:0;border-radius:8px;background:#fff;color:#172b49;text-align:left;font-size:10px}
+.rehzu-admin-v2 .rehzu-admin-search-item:hover,.rehzu-admin-v2 .rehzu-admin-search-item:focus{outline:0;background:#edf5ff}
+.rehzu-admin-v2 .rehzu-admin-search-item b{display:block;font-size:10px}
+.rehzu-admin-v2 .rehzu-admin-search-item small{display:block;margin-top:2px;color:#718096;font-size:8px}
+.rehzu-admin-v2 .rehzu-admin-search-tag{margin-left:auto;padding:3px 5px;border-radius:5px;background:#eef3f9;color:#52647b;font-size:8px;white-space:nowrap}
+.rehzu-admin-v2 .rehzu-admin-search-empty{padding:14px 8px;color:#64748b;font-size:10px}
+.rehzu-admin-v2 #adminRefreshBtn{border:0;border-radius:18px;padding:9px 12px;background:#1769df;color:#fff;font-size:10px;font-weight:800;white-space:nowrap}
+.rehzu-admin-v2 #adminAnalyticsUpdated,.rehzu-admin-v2 #adminLastRefresh{font-size:9px;color:#758397}
+.rehzu-admin-v2 .radmin-welcome,.rehzu-admin-v2 .radmin-booking-shortcuts{display:none!important}
+.rehzu-admin-v2 .radmin-grid-3x3{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important;align-items:stretch}
+.rehzu-admin-v2 .radmin-card{display:flex;flex-direction:column;min-width:0!important;min-height:205px;overflow:hidden;border:1px solid #d9e2ef;border-radius:11px;background:#fff;box-shadow:0 2px 8px #17212b0b}
+.rehzu-admin-v2 .radmin-card>header{display:flex;align-items:center;gap:5px;min-height:40px;padding:7px 6px;color:#fff;font-size:9px;line-height:1.15}
+.rehzu-admin-v2 .radmin-card>header span{font-size:16px;flex:0 0 auto}
+.rehzu-admin-v2 .radmin-card-value{padding:12px 8px 6px;color:#1757b4;font-size:23px;font-weight:900;line-height:1.12;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+.rehzu-admin-v2 .radmin-green .radmin-card-value{color:#078b49}.rehzu-admin-v2 .radmin-purple .radmin-card-value{color:#5830ad}.rehzu-admin-v2 .radmin-orange .radmin-card-value{color:#e76d0a}.rehzu-admin-v2 .radmin-sky .radmin-card-value{color:#0877a8}.rehzu-admin-v2 .radmin-teal .radmin-card-value{font-size:22px;color:#087d83}
+.rehzu-admin-v2 .radmin-card-lines{display:grid;gap:0;padding:0 6px 7px}
+.rehzu-admin-v2 .radmin-card-lines>div{display:flex;justify-content:space-between;gap:3px;padding:4px 1px;border-bottom:1px solid #edf1f5;color:#27364c;font-size:8px;line-height:1.2;overflow-wrap:anywhere}
+.rehzu-admin-v2 .radmin-card-lines b{color:#172b49;font-size:8px;text-align:right}
+.rehzu-admin-v2 .radmin-card>button{align-self:stretch;margin:auto 5px 6px;padding:7px 3px;border:0;border-radius:14px;background:#1769df;color:#fff;font-size:8px;line-height:1.15;font-weight:800}
+.rehzu-admin-v2 .radmin-green>header{background:#0d914b}.rehzu-admin-v2 .radmin-purple>header{background:#5930ad}.rehzu-admin-v2 .radmin-orange>header{background:#ed790d}.rehzu-admin-v2 .radmin-sky>header{background:#0877a8}.rehzu-admin-v2 .radmin-violet>header{background:#4e2bb0}.rehzu-admin-v2 .radmin-teal>header{background:#078d91}.rehzu-admin-v2 .radmin-navy>header{background:#174b91}.rehzu-admin-v2 .radmin-blue>header{background:#174b91}
+.rehzu-admin-v2 .radmin-security-state{padding:13px 7px 6px;font-size:16px;font-weight:900;color:#118347}
+.rehzu-admin-v2 .radmin-country-preview{display:grid;grid-template-columns:1fr;gap:5px;padding:0 6px 7px;min-height:65px}
+.rehzu-admin-v2 .radmin-quick-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:7px}
+.rehzu-admin-v2 .radmin-quick-grid button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-width:0;min-height:65px;padding:4px 2px;border:1px solid #d9e2ef;border-radius:8px;background:#f8faff;color:#1769df;font-size:16px}
+.rehzu-admin-v2 .radmin-quick-grid small{color:#26364d;font-size:7px;line-height:1.1;font-weight:750;text-align:center}
+.rehzu-admin-v2 .radmin-footnote{font-size:9px;color:#718096;margin-top:8px}
+@media(min-width:900px){
+ body:has(#view-admin.active) .main-wrapper{padding-left:18px;padding-right:18px}
+ .rehzu-admin-v2 .radmin-layout{grid-template-columns:115px minmax(0,1fr)!important}
+ .rehzu-admin-v2 .radmin-sidebar{padding:10px 5px}
+ .rehzu-admin-v2 .radmin-side-brand img{width:42px;height:40px}
+ .rehzu-admin-v2 .radmin-sidebar>button{min-height:42px;flex-direction:row;justify-content:flex-start;text-align:left;font-size:8px;padding:6px}
+ .rehzu-admin-v2 .radmin-sidebar>button .radmin-nav-icon{font-size:15px}
+ .rehzu-admin-v2 .radmin-main{padding:14px 16px 34px!important}
+ .rehzu-admin-v2 .radmin-grid-3x3{gap:10px!important}
+ .rehzu-admin-v2 .radmin-card{min-height:245px}
+ .rehzu-admin-v2 .radmin-card>header{font-size:13px;padding:10px}
+ .rehzu-admin-v2 .radmin-card-value{font-size:30px;padding:18px 12px 9px}
+ .rehzu-admin-v2 .radmin-card-lines>div{font-size:10px;padding:6px 2px}
+ .rehzu-admin-v2 .radmin-card-lines b{font-size:10px}
+ .rehzu-admin-v2 .radmin-card>button{font-size:10px;padding:8px}
+}
+@media(max-width:380px){
+ .rehzu-admin-v2 .radmin-layout{grid-template-columns:54px minmax(0,1fr)!important}
+ .rehzu-admin-v2 .radmin-sidebar>button{min-height:40px;font-size:5.8px}
+ .rehzu-admin-v2 .radmin-sidebar>button .radmin-nav-icon{font-size:13px}
+ .rehzu-admin-v2 .radmin-main{padding-left:5px!important;padding-right:5px!important}
+ .rehzu-admin-v2 .radmin-card>header{font-size:7px;padding:5px 3px}
+ .rehzu-admin-v2 .radmin-card>header span{font-size:13px}
+ .rehzu-admin-v2 .radmin-card-value{font-size:18px;padding:9px 5px 5px}
+ .rehzu-admin-v2 .radmin-card-lines>div,.rehzu-admin-v2 .radmin-card-lines b{font-size:6.5px}
+ .rehzu-admin-v2 .radmin-card>button{font-size:6.5px}
+}
+</style>
+
+<style id="owner-form-spacing-tune">
+  /* Give every owner listing field a clear, consistent breathing space on phones. */
+  #ownerFormWrap form .pill-grid {
+    column-gap: 16px !important;
+    row-gap: 18px !important;
+    margin-bottom: 18px !important;
+    align-items: start;
+  }
+  #ownerFormWrap form .field-box { min-width: 0; }
+  #ownerFormWrap form .form-section-title { margin-top: 22px !important; margin-bottom: 12px !important; }
+  #ownerFormWrap form .map-lock-btn { margin-top: 6px; margin-bottom: 14px; }
+</style>
+</head>
 <body>
-<header class="top"><a class="brand" href="/"><b class="logo">R</b><span>REHZO <strong>99</strong><small>FIND YOUR STAY</small></span></a><nav><a href="#explore">Explore</a><a href="#how">How it works</a><a href="/support.html">Support</a></nav><div class="top-actions"><button class="quiet" id="accountBtn">Log in</button><button class="dark" id="dashboardBtn" hidden>My account</button><button class="dark" id="ownerBtn">List your place ↗</button></div></header>
-<main>
-<section class="hero"><div><label class="eyebrow">● YOUR NEXT STAY STARTS HERE</label><h1>Find a place<br>that feels like <i>home.</i></h1><p>Discover rooms, PGs, hostels and flats. Search by house name or your 12-digit TRL number.</p><div class="search"><span>⌕</span><input id="q" placeholder="Your House Name or 12-digit TRL No."><button class="lime" id="searchBtn">Search stays →</button></div><small class="sub">A simpler way to find your next stay.</small></div><div class="art"><div class="sun"></div><div class="building"><div class="roof"></div><div class="windows"><i></i><i></i><i></i><i></i></div></div><div class="float"><b>⌂</b><span><strong>Room Around You</strong><small>Your next chapter awaits</small></span>↗</div></div></section>
-<section class="section" id="explore"><div class="heading"><div><label class="eyebrow">EXPLORE STAYS</label><h2>Make yourself at home.</h2></div><p>Find a stay that fits your life.</p></div><div class="filters"><label>Country<select id="country"><option value="">All countries</option><option value="IN">India</option><option value="US">United States</option><option value="GB">United Kingdom</option><option value="CA">Canada</option><option value="AU">Australia</option><option value="AE">United Arab Emirates</option><option value="SG">Singapore</option></select></label><label>Room type<select id="type"><option value="">All room types</option><option>Single Room</option><option>1 RK</option><option>2 BHK</option><option>3 BHK</option><option>PG</option><option>Flat</option><option>Hostel</option><option>Shared</option></select></label><label>Currency<select id="currency"><option value="">All currencies</option><option value="INR">INR – ₹</option><option value="USD">USD – $</option><option value="GBP">GBP – £</option><option value="CAD">CAD – $</option><option value="AUD">AUD – $</option><option value="AED">AED</option><option value="SGD">SGD</option></select></label><button class="outline" id="clearBtn">Clear filters</button></div><div class="results-grid" id="results"><div class="empty"><div class="house">⌂</div><h3>Loading verified stays…</h3></div></div></section>
-<section class="near"><div><label class="eyebrow">A LITTLE CLOSER TO HOME</label><h2>Room Around You</h2><p>Find available stays near your current location. Your exact location is not shown publicly.</p><button class="lime" id="nearBtn">◎ &nbsp; Find Room</button><small id="locationMsg">Your location is not being accessed.</small></div><div class="map"><span class="pin">⌂</span><b>YOUR AREA</b></div></section>
-<section class="section how" id="how"><label class="eyebrow">SIMPLE BY DESIGN</label><h2>Finding a stay, made easy.</h2><div class="steps"><article><em>01</em><h3>Discover</h3><p>Search by house name, TRL number or room type.</p></article><article><em>02</em><h3>Send a request</h3><p>Choose a place and send a booking request to its owner.</p></article><article><em>03</em><h3>Confirm your stay</h3><p>Review the owner's response and confirm when ready.</p></article></div></section>
-<section class="owner-cta"><div><label class="eyebrow">HAVE A PLACE TO SHARE?</label><h2>Good spaces deserve<br>good people.</h2><p>Bring your room, PG, hostel or flat to REHZO 99.</p></div><button class="lime" id="ownerCta">List your place →</button></section>
-</main>
-<footer><a class="brand" href="/"><b class="logo">R</b><span>REHZO <strong>99</strong><small>FIND YOUR STAY</small></span></a><div><a href="/terms.html">Terms & Conditions</a><a href="/privacy.html">Privacy Policy</a><a href="/support.html">Support</a></div><small>© <span id="year"></span> REHZO 99</small></footer>
-<nav class="mobile"><a href="/">⌂<small>Home</small></a><a href="#explore">⌕<small>Search</small></a><button id="mobileNear">◎<small>Near Me</small></button><button id="mobileOwner">＋<small>Owner</small></button><button id="mobileAccount">☻<small>Account</small></button></nav>
+<!-- Accessible global error alert for unexpected runtime/network failures. -->
+<div id="rehzuSystemAlert" class="rehzu-system-alert" role="alert" aria-live="assertive" aria-atomic="true" hidden>
+  <span class="rehzu-system-alert-icon" aria-hidden="true">!</span>
+  <div class="rehzu-system-alert-copy">
+    <strong id="rehzuSystemAlertTitle">Something went wrong</strong>
+    <p id="rehzuSystemAlertMessage">Please try again.</p>
+  </div>
+  <button type="button" class="rehzu-system-alert-close" aria-label="Dismiss alert" onclick="dismissREHZO 99SystemAlert()">×</button>
+</div>
+<script src="/js/system-alerts.js"></script>
 
-<div class="modal" id="authModal"><div class="dialog wide"><button class="x" data-close>×</button><label class="eyebrow">WELCOME TO REHZO 99</label><h2 id="authHeading">Log in to continue</h2><p id="authHelp">Use your email and password to access your account.</p><div class="auth-tabs"><button class="active" id="showLogin">Log in</button><button id="showSignup">Create account</button></div>
-<form id="loginForm" class="stack"><label>Email<input name="email" type="email" autocomplete="email" required placeholder="you@example.com"></label><label>Password<input name="password" type="password" autocomplete="current-password" required minlength="6" maxlength="72"></label><button class="dark full" type="submit">Log in</button></form>
-<form id="signupForm" class="stack" hidden><label>Your name<input name="display_name" required maxlength="80" autocomplete="name"></label><label>Email address<input name="email" type="email" required autocomplete="email"></label><label>Phone number with country code (optional)<input name="phone_number" type="tel" maxlength="20" autocomplete="tel" placeholder="+91 98765 43210"></label><label>Password (6–12 characters; letters, numbers and a special character)<input name="password" type="password" required minlength="6" maxlength="12" pattern="(?=.*[A-Za-z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{6,12}" autocomplete="new-password"></label><label>Country<select name="country_code" required><option value="IN">India</option><option value="US">United States</option><option value="GB">United Kingdom</option><option value="CA">Canada</option><option value="AU">Australia</option><option value="AE">United Arab Emirates</option><option value="SG">Singapore</option></select></label><button class="dark full" type="submit">Create free account</button></form><p class="form-message" id="authMessage" role="status"></p><small>Email confirmation may be required before you can log in. Never share your password or OTP.</small></div></div>
+<!-- APP SPLASH / WELCOME SCREEN -->
+<div id="splashOverlay">
+  <img src="logo.svg" alt="REHZO 99" style="width: 72px; height: auto; margin-bottom: 10px;" onerror="this.style.display='none'">
+  <div class="splash-title">REHZO 99</div>
+  <div class="splash-sub">Find Your Perfect Room</div>
+</div>
+<script src="/js/splash-failsafe.js"></script>
 
-<div class="modal" id="listingModal"><div class="dialog wide"><button class="x" data-close>×</button><label class="eyebrow">OWNER LISTING</label><h2>List your place</h2><p>Enter real details. Your contact and exact room location stay private until a booking is finally confirmed.</p>
-<form id="listingForm" class="stack">
-<div class="form-grid"><label>House / property name<input name="house_name" required maxlength="100" placeholder="Your House Name"></label><label>Room type<select name="room_type" required><option>Single Room</option><option>1 RK</option><option>2 BHK</option><option>3 BHK</option><option>PG</option><option>Flat</option><option>Hostel</option><option>Shared</option></select></label><label>Country<select name="country_code" required><option value="IN">India</option><option value="US">United States</option><option value="GB">United Kingdom</option><option value="CA">Canada</option><option value="AU">Australia</option><option value="AE">United Arab Emirates</option><option value="SG">Singapore</option></select></label><label>City<input name="city" required maxlength="80"></label><label>Locality / area<input name="locality" maxlength="100"></label><label>Currency<select name="currency_code" required><option value="INR">INR – ₹</option><option value="USD">USD – $</option><option value="GBP">GBP – £</option><option value="CAD">CAD – $</option><option value="AUD">AUD – $</option><option value="AED">AED</option><option value="SGD">SGD</option></select></label><label>Monthly rent<input name="monthly_rent" type="number" min="1" step="0.01" required></label><label>Deposit (optional)<input name="deposit" type="number" min="0" step="0.01"></label></div>
-<label>Description<textarea name="description" rows="3" maxlength="1500" placeholder="Describe the room and house rules"></textarea></label>
-<fieldset><legend>Suitable for</legend><div class="check-grid"><label><input type="checkbox" name="suitable_for" value="Anyone"> Anyone</label><label><input type="checkbox" name="suitable_for" value="Students"> Students</label><label><input type="checkbox" name="suitable_for" value="Family"> Family</label><label><input type="checkbox" name="suitable_for" value="Worker"> Worker</label></div></fieldset>
-<fieldset><legend>Amenities</legend><div class="check-grid"><label><input type="checkbox" name="amenities" value="Wi-Fi"> Wi-Fi</label><label><input type="checkbox" name="amenities" value="AC"> AC</label><label><input type="checkbox" name="amenities" value="Parking"> Parking</label><label><input type="checkbox" name="amenities" value="Kitchen"> Kitchen</label><label><input type="checkbox" name="amenities" value="Furnished"> Furnished</label><label><input type="checkbox" name="amenities" value="Geyser"> Geyser</label><label><input type="checkbox" name="amenities" value="Lift"> Lift</label><label><input type="checkbox" name="amenities" value="Power Backup"> Power Backup</label></div></fieldset>
-<label>Room photos (up to 3 WebP images, max 3 MB each)<input name="photos" id="listingPhotos" type="file" accept="image/webp" multiple></label>
-<div class="form-grid"><label>Contact phone<input name="contact_phone" type="tel" required maxlength="20"></label><label>Contact email<input name="contact_email" type="email" required></label></div>
-<div class="gps-row"><button type="button" class="outline" id="captureGps">Capture Room GPS</button><span id="gpsMsg">GPS is optional. Exact coordinates stay private.</span></div>
-<button class="dark full" type="submit">Publish listing</button><p class="form-message" id="listingMessage" role="status"></p></form></div></div>
+<!-- TOP HEADER -->
+<header class="top-header">
+  <div class="brand" onclick="handleBrandLogoTap()">
+    <img src="logo.svg" alt="REHZO 99" style="height: 34px; width: auto; object-fit: contain;" onerror="this.style.display='none'">
+    <div class="brand-text">
+      <h1>REHZO 99</h1>
+      <p>Find Your Stay</p>
+    </div>
+  </div>
+  <div class="header-actions">
+    <div class="user-chip" id="userHeaderChip" onclick="openProfileModal()">👤 Login</div>
+    <button class="icon-btn" onclick="goView('notifications')">
+      🔔
+      <span class="notif-badge" id="headerNotifBadge">0</span>
+    </button>
+  </div>
+</header>
 
-<div class="modal" id="detailModal"><div class="dialog wide"><button class="x" data-close>×</button><div id="detailContent"></div></div></div>
-<div class="modal" id="dashboardModal"><div class="dialog wide dashboard"><button class="x" data-close>×</button><label class="eyebrow">YOUR REHZO ACCOUNT</label><h2>My dashboard</h2><p id="profileSummary"></p><div class="dash-tabs"><button data-dash="myListings" class="active">My listings</button><button data-dash="incoming">Requests received</button><button data-dash="myBookings">My bookings</button><button data-dash="tickets">Support tickets</button><button data-dash="notifications">Notifications</button><button data-dash="admin" id="adminTab" hidden>Admin</button></div><div id="dashContent" class="dash-content"></div><div class="dash-actions"><button class="outline" id="supportNew">Create support ticket</button><button class="outline" id="logoutBtn">Log out</button></div></div></div>
-<div class="modal" id="ticketModal"><div class="dialog"><button class="x" data-close>×</button><h2>Contact support</h2><form id="ticketForm" class="stack"><label>Subject<input name="subject" required maxlength="120"></label><label>Message<textarea name="message" required maxlength="3000" rows="5"></textarea></label><button class="dark full">Submit ticket</button></form><p class="form-message" id="ticketMessage"></p></div></div>
-<div class="toast" id="toast" role="status"></div>
-<script src="/config.js"></script><script src="/app.js" defer></script></body></html>
+<div class="main-wrapper">
+
+  <!-- ================= 1. HOME VIEW (100% Clean) ================= -->
+  <section id="view-home" class="view active">
+    <div style="display:flex;justify-content:flex-end;margin:0 0 10px;">
+    </div>
+    <div class="banner">
+      <h2>Better Rooms, Brighter Days</h2>
+      <p>Find, book & settle in your verified space.</p>
+      <div id="userDetectedCountryBadge" class="country-detector-badge">📍 Detecting your country…</div>
+      <div class="search-bar">
+        <input id="homeSearchInput" placeholder="Search city, house or 12-digit TRL No…" oninput="handleSearch(this.value)">
+        <button onclick="handleSearch(document.getElementById('homeSearchInput').value)">Go</button>
+      </div>
+    </div>
+
+    <!-- TRL Search Alert -->
+    <div id="trlAlertBox" style="display:none; margin-top:10px; padding:10px; background:#ECFDF5; border:1px solid #10B981; border-radius:14px; font-size:11px;">
+      <b>✓ Authentic REHZO 99 Record Found!</b>
+      <div id="trlAlertDetails" style="margin-top:2px; color:#065F46;"></div>
+      <button id="trlViewSlipBtn" style="margin-top:6px; padding:4px 10px; background:#044E3B; color:#fff; border:none; border-radius:12px; font-size:10px; font-weight:800; cursor:pointer;">View Official TRL Slip</button>
+    </div>
+
+    <!-- Country & Room Type Filters -->
+    <div class="filter-row">
+      <select id="countryFilter" class="pill-select" onchange="applyFilters()">
+        <option value="">Current Country</option>
+      </select>
+      <select id="typeFilter" class="pill-select" onchange="applyFilters()">
+        <option value="">All Room Types</option>
+        <option value="Single Room">Single Room</option>
+        <option value="1 RK">1 RK</option>
+        <option value="2 BHK">2 BHK</option>
+        <option value="3 BHK">3 BHK</option>
+        <option value="PG">PG</option>
+        <option value="Hostel">Hostel</option>
+      </select>
+    </div>
+
+    <div class="chip-row">
+      <button class="chip active" onclick="filterChip('all', this)">All Rooms</button>
+      <button class="chip" onclick="filterChip('Student', this)">For Students</button>
+      <button class="chip" onclick="filterChip('Family', this)">For Families</button>
+      <button class="chip" onclick="filterChip('Worker', this)">For Workers</button>
+    </div>
+
+    <div class="section-title">
+      <h3>Available Rooms</h3>
+    </div>
+
+    <div class="room-grid" id="homeRoomsGrid"></div>
+  </section>
+
+  <!-- ================= 2. SEARCH VIEW (ADVANCED GLOBAL FILTER) ================= -->
+  <section id="view-search" class="view">
+    <div class="sub-header">
+      <h3 class="sub-title">Search Stays</h3>
+    </div>
+    <div class="search-stay-field">
+      <span aria-hidden="true" class="search-stay-icon">⌕</span>
+      <input id="searchScreenInput" class="pill-input" type="search" placeholder="Search Stay" aria-label="Search Stay" autocomplete="off" oninput="handleAdvancedSearch(this.value)">
+      <button type="button" class="search-stay-clear" aria-label="Clear search" onclick="var s=document.getElementById('searchScreenInput');s.value='';handleAdvancedSearch('');s.focus();">×</button>
+    </div>
+    <div class="room-grid" id="searchRoomsGrid"></div>
+  </section>
+
+  <!-- ================= 3. NEAR ME VIEW ================= -->
+  <section id="view-near" class="view">
+    <div class="near-hero" style="width:100%;max-width:100%;box-sizing:border-box;background:linear-gradient(145deg,#063F31 0%,#08745A 58%,#12A078 100%);border-radius:18px;padding:14px 15px;margin:0 0 14px;color:#fff;box-shadow:0 8px 22px rgba(4,78,59,.16);position:relative;overflow:hidden;">
+      <div style="position:absolute;right:-24px;top:-38px;width:118px;height:118px;border:1px solid rgba(255,255,255,.16);border-radius:50%;pointer-events:none;"></div>
+      <div style="position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:54px;">
+        <div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1;">
+          <div style="width:42px;height:42px;flex:0 0 42px;border-radius:14px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.24);display:flex;align-items:center;justify-content:center;font-size:23px;">⌖</div>
+          <div style="min-width:0;">
+            <div style="font-size:13px;line-height:1.3;font-weight:900;letter-spacing:.1px;">Detecting real live GPS</div>
+            <div id="nearStatusText" aria-live="polite" style="font-size:10px;line-height:1.45;color:#E1F5EC;margin-top:4px;">Waiting for live location…</div>
+          </div>
+        </div>
+        <button id="gpsRefreshBtn" type="button" onclick="detectGPS(true)" style="flex:0 0 auto;min-width:104px;padding:12px 15px;background:#fff;color:#07513C;border:0;border-radius:12px;font-size:12px;font-weight:900;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.1);">Find Room</button>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin:4px 2px 11px;gap:8px;">
+      <div>
+        <div style="font-size:17px;font-weight:900;color:#102C22;">Nearby rooms</div>
+        <div style="font-size:10px;color:#718078;margin-top:3px;">Available stays near your location</div>
+      </div>
+      <div id="nearResultsCount" style="font-size:11px;color:#07513C;background:#E8F6EF;border:1px solid #D0EBDD;border-radius:12px;padding:8px 10px;font-weight:900;white-space:nowrap;">GPS required</div>
+    </div>
+    <div class="room-grid" id="nearRoomsGrid"></div>
+  </section>
+
+  <!-- ================= 4. MY BOOKINGS VIEW ================= -->
+  <section id="view-bookings" class="view">
+    <div class="sub-header">
+      <h3 class="sub-title">My Bookings</h3>
+    </div>
+    <div class="sub-tabs-row">
+      <button class="sub-tab-btn active" id="tabBookingsCurrent" onclick="switchBookingsTab('current')">Current</button>
+      <button class="sub-tab-btn" id="tabBookingsConfirm" onclick="switchBookingsTab('confirm')">Confirm</button>
+      <button class="sub-tab-btn" id="tabBookingsCancelled" onclick="switchBookingsTab('cancelled')">Cancelled</button>
+    </div>
+    <div id="bookingsListContainer"></div>
+  </section>
+
+  <!-- ================= 5. OWNER VIEW ================= -->
+  <section id="view-owner" class="view">
+    <div id="ownerDashboardWrap">
+      <div class="sub-header">
+        <h3 class="sub-title">Owner Dashboard</h3>
+        <button onclick="checkOwnerAddAction()" style="background:#044E3B; color:#fff; border:none; border-radius:20px; padding:6px 14px; font-size:11px; font-weight:800; cursor:pointer;">+ Add</button>
+      </div>
+
+      <div class="stats-grid-3">
+        <div class="stat-card">
+          <div class="stat-num" id="statActiveCount">0</div>
+          <div class="stat-label">Active</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="statRequestsCount">0</div>
+          <div class="stat-label">Requests</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="statExpiredCount">0</div>
+          <div class="stat-label">Expired</div>
+        </div>
+      </div>
+
+      <div class="sub-tabs-row">
+        <button class="sub-tab-btn active" id="tabOwnerRooms" onclick="switchOwnerTab('rooms')">My Rooms</button>
+        <button class="sub-tab-btn" id="tabOwnerRequests" onclick="switchOwnerTab('requests')">Requests</button>
+        <button class="sub-tab-btn" id="tabOwnerExpired" onclick="switchOwnerTab('expired')">Expired</button>
+      </div>
+
+      <div id="ownerContentContainer"></div>
+    </div>
+
+    <!-- OWNER LIST PROPERTY FORM -->
+    <div id="ownerFormWrap" style="display:none;">
+      <div class="sub-header">
+        <div class="back-btn-row" onclick="toggleOwnerForm(false)">
+          <span class="back-arrow">‹</span>
+          <h3 class="sub-title">List Your Property</h3>
+        </div>
+      </div>
+
+      <form onsubmit="handlePublishProperty(event)">
+        <div class="pill-grid">
+          <div class="field-box">
+
+            <input id="opCountryDisplay" class="pill-input" aria-label="Current Location Country" readonly style="background:#F1F5F9; font-weight:800; color:#044E3B;">
+            <input type="hidden" id="opCountry">
+          </div>
+          <div class="field-box">
+
+            <input id="opName" class="pill-input" aria-label="Your Name" placeholder="Owner Full Name" required maxlength="60">
+          </div>
+        </div>
+
+        <div class="pill-grid">
+          <div class="field-box">
+
+            <div class="dial-prefix-wrap">
+              <span id="opDialPrefix" style="font-size:11px; font-weight:700; color:#044E3B; margin-left:6px;">+91</span>
+              <input id="opPhone" type="tel" aria-label="Contact Number" placeholder="Contact No." required maxlength="15">
+            </div>
+          </div>
+          <div class="field-box">
+
+            <input id="opGmail" class="pill-input" aria-label="Gmail optional" type="email" placeholder="name@email.com" maxlength="80">
+          </div>
+        </div>
+
+        <div class="form-section-title">Room Details</div>
+        <div class="pill-grid">
+          <div class="field-box">
+
+            <input id="opHouse" class="pill-input" aria-label="House Name" placeholder="House Name" required maxlength="80">
+          </div>
+          <div class="field-box">
+
+            <select id="opRoomType" class="pill-input" aria-label="Room Type">
+              <option>Single Room</option>
+              <option>1 RK</option>
+              <option>2 BHK</option>
+              <option>3 BHK</option>
+              <option>PG</option>
+              <option>Hostel</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="pill-grid" style="align-items:start;">
+          <div class="field-box">
+
+            <div class="collapsible-trigger" onclick="toggleDrawer('suitableDrawer')">
+              <span id="suitableSelectedText" aria-label="Suitable For">Family</span>
+              <span>▾</span>
+            </div>
+            <div class="collapsible-drawer" id="suitableDrawer">
+              <div class="radio-chip selected" onclick="toggleSelectChip(this, 'suitable', 'Family')"><div class="circle-indicator"></div> Family</div>
+              <div class="radio-chip" onclick="toggleSelectChip(this, 'suitable', 'Student')"><div class="circle-indicator"></div> Student</div>
+              <div class="radio-chip" onclick="toggleSelectChip(this, 'suitable', 'Worker')"><div class="circle-indicator"></div> Worker</div>
+              <div class="radio-chip" onclick="toggleSelectChip(this, 'suitable', 'Anyone')"><div class="circle-indicator"></div> Anyone</div>
+            </div>
+          </div>
+
+          <div class="field-box">
+
+            <div class="collapsible-trigger" onclick="toggleDrawer('amenitiesDrawer')">
+              <span id="amenitiesSelectedText" aria-label="Amenities">Wi-Fi, Parking</span>
+              <span>▾</span>
+            </div>
+            <div class="collapsible-drawer" id="amenitiesDrawer">
+              <div class="radio-chip selected" onclick="toggleSelectChip(this, 'amenity', 'Wi-Fi')"><div class="circle-indicator"></div> Wi-Fi</div>
+              <div class="radio-chip" onclick="toggleSelectChip(this, 'amenity', 'AC')"><div class="circle-indicator"></div> AC</div>
+              <div class="radio-chip selected" onclick="toggleSelectChip(this, 'amenity', 'Parking')"><div class="circle-indicator"></div> Parking</div>
+              <div class="radio-chip" onclick="toggleSelectChip(this, 'amenity', 'RO Water')"><div class="circle-indicator"></div> RO Water</div>
+              <div class="radio-chip" onclick="toggleSelectChip(this, 'amenity', 'Geyser')"><div class="circle-indicator"></div> Geyser</div>
+              <div class="radio-chip" onclick="toggleSelectChip(this, 'amenity', 'CCTV Security')"><div class="circle-indicator"></div> CCTV Security</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section-title">Rent & Deposit</div>
+        <div class="pill-grid">
+          <div class="field-box">
+
+            <div class="dial-prefix-wrap">
+              <span id="opRentSym" style="font-size:11px; font-weight:700; color:#044E3B; margin-left:6px;">₹</span>
+              <input id="opRent" type="number" aria-label="Monthly Rent" placeholder="Rent" required min="1" max="10000000">
+            </div>
+          </div>
+          <div class="field-box">
+
+            <div class="dial-prefix-wrap">
+              <span id="opDepSym" style="font-size:11px; font-weight:700; color:#044E3B; margin-left:6px;">₹</span>
+              <input id="opDeposit" type="number" aria-label="Security Deposit optional" placeholder="Deposit" min="0" max="10000000">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section-title">Location</div>
+        <div class="pill-grid">
+          <div class="field-box">
+
+            <input id="opState" class="pill-input" aria-label="State optional" placeholder="State" maxlength="50" oninput="invalidateRoomMapAddressCheck()">
+          </div>
+          <div class="field-box">
+
+            <input id="opCity" class="pill-input" aria-label="City" placeholder="City" required maxlength="50" oninput="invalidateRoomMapAddressCheck()">
+          </div>
+        </div>
+        <div class="pill-grid">
+          <div class="field-box">
+
+            <input id="opPin" class="pill-input" aria-label="Area Code" placeholder="Area Code" required maxlength="12" oninput="invalidateRoomMapAddressCheck()">
+          </div>
+          <div class="field-box">
+
+            <input id="opAddr" class="pill-input" aria-label="Full Address" placeholder="Full Address" required maxlength="200" oninput="invalidateRoomMapAddressCheck()">
+          </div>
+        </div>
+
+        <button type="button" class="map-lock-btn" id="opMapLockBtn" onclick="saveExactMapLocation()">
+          <span>📍</span> <span id="opMapLockText">Capture Room GPS Location *</span>
+        </button>
+        <div id="opMapLocationStatus" aria-live="polite" style="margin:8px 2px 0;font-size:12px;line-height:1.5;color:#64748B;"></div>
+
+        <div class="form-section-title">Photos & Rules</div>
+        <div class="pill-grid" style="align-items:start;">
+          <div class="field-box">
+
+            <div class="photo-upload-row" id="photoPreviewContainer" aria-label="Room Photos"></div>
+            <input type="file" id="photoFileInput" accept="image/jpeg,image/png,image/webp" multiple onchange="handlePhotoPick(event)" style="display:none;">
+            <div class="photo-add-box" onclick="document.getElementById('photoFileInput').click()">
+              <span style="font-size:16px;">⇪</span>
+              <span>Add Photo</span>
+              <span id="photoCountText">(0/3)</span>
+            </div>
+          </div>
+          <div class="field-box">
+
+            <div class="collapsible-trigger" onclick="toggleDrawer('rulesDrawer')">
+              <span id="rulesSelectedText" aria-label="Owner Conditions and Rules">Rules List</span>
+              <span>▾</span>
+            </div>
+            <div class="collapsible-drawer" id="rulesDrawer">
+              <div class="radio-chip selected" onclick="toggleSelectChip(this, 'rule', 'No Smoking')"><div class="circle-indicator"></div> No Smoking</div>
+              <div class="radio-chip" onclick="toggleSelectChip(this, 'rule', 'No Pets')"><div class="circle-indicator"></div> No Pets</div>
+              <div class="radio-chip" onclick="toggleSelectChip(this, 'rule', 'No Loud Music')"><div class="circle-indicator"></div> No Loud Music</div>
+              <div class="radio-chip" onclick="toggleSelectChip(this, 'rule', 'ID Proof Required')"><div class="circle-indicator"></div> ID Proof Required</div>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" id="btnPublishSubmit" class="big-action-btn">Publish Listing</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ================= 6. NOTIFICATIONS ================= -->
+  <section id="view-notifications" class="view">
+    <div class="sub-header">
+      <h3 class="sub-title">Notifications & Requests</h3>
+      <span onclick="markAllNotifsRead()" style="font-size:11px; font-weight:700; color:#044E3B; cursor:pointer;">Mark all read</span>
+    </div>
+    <div id="notificationsContainer" style="display:flex; flex-direction:column; gap:8px;"></div>
+  </section>
+
+  <section id="view-support" class="view">
+    <div class="sub-header"><h3 class="sub-title">Help & Support</h3><span style="font-size:11px;color:#64748B;">Private complaint desk</span></div>
+    <div style="background:#fff;border:1px solid #dce8e1;border-radius:16px;padding:16px;margin-bottom:14px;">
+      <h3 style="margin:0 0 6px;color:#075743;">Submit a Complaint</h3><p style="font-size:12px;color:#64748B;margin:0 0 14px;">Your complaint is visible only to you and authorized REHZO 99 administrators. Do not share passwords, OTPs, UPI PINs or bank credentials.</p>
+      <form id="rehzuComplaintForm" onsubmit="submitREHZO 99Complaint(event)" style="display:grid;gap:10px;">
+        <label style="font-size:12px;font-weight:800;">Complaint category<select id="rehzuComplaintCategory" required class="pill-input" style="width:100%;margin-top:5px;"><option>Account & Login</option><option>Room / Listing</option><option>Booking / TRL</option><option>Payment / Fraud</option><option>Safety / Harassment</option><option>Privacy / Data</option><option>Other</option></select></label>
+        <label style="font-size:12px;font-weight:800;">Subject<input id="rehzuComplaintSubject" required minlength="5" maxlength="120" class="pill-input" style="width:100%;margin-top:5px;" placeholder="Short complaint title"></label>
+        <label style="font-size:12px;font-weight:800;">Details<textarea id="rehzuComplaintDetails" required minlength="20" maxlength="3000" rows="5" class="pill-input" style="width:100%;margin-top:5px;resize:vertical;" placeholder="Explain what happened (20–3000 characters)"></textarea></label>
+        <label style="font-size:12px;font-weight:800;">Related Listing ID / Booking TRL (optional)<input id="rehzuComplaintReference" maxlength="120" class="pill-input" style="width:100%;margin-top:5px;" placeholder="Only if relevant"></label>
+        <label style="font-size:12px;font-weight:800;">Contact phone (optional)<input id="rehzuComplaintPhone" type="tel" maxlength="30" class="pill-input" style="width:100%;margin-top:5px;" placeholder="Phone number"></label>
+        <label style="font-size:12px;font-weight:800;">Contact email (optional)<input id="rehzuComplaintEmail" type="email" maxlength="120" class="pill-input" style="width:100%;margin-top:5px;" placeholder="Email address"></label>
+        <button id="rehzuComplaintSubmit" type="submit" class="big-action-btn">Submit Complaint Securely</button>
+        <p id="rehzuComplaintMessage" role="status" aria-live="polite" style="font-size:12px;margin:0;color:#075743;"></p>
+      </form>
+    </div>
+    <div style="background:#fff;border:1px solid #dce8e1;border-radius:16px;padding:16px;"><h3 style="margin:0 0 10px;color:#075743;">My Complaints & Status</h3><div id="rehzuMyComplaints"><p style="font-size:12px;color:#64748B;">Sign in to view your complaints.</p></div></div>
+    <p style="font-size:11px;color:#64748B;margin:12px 2px;">Need another contact channel? <a href="/legal#policy-grievance" style="color:#075743;font-weight:800;">Grievance contact details</a>.</p>
+  </section>
+
+  <!-- REHZO 99 ADMIN: unified operations workspace -->
+  <section id="view-admin" class="view rehzu-admin-shell rehzu-admin-v2">
+  <div class="radmin-layout">
+    <nav class="rehzu-admin-compact-nav radmin-sidebar" aria-label="Admin sections">
+      <div class="radmin-side-brand"><img src="/logo.svg" alt="REHZO 99"><b>REHZO 99</b><small>Find Your Stay</small></div>
+      <button class="active" onclick="adminControlTab('dashboard')"><span class="radmin-nav-icon">▦</span><span>Dashboard</span></button>
+      <button onclick="adminControlTab('owners')"><span class="radmin-nav-icon">♙</span><span>Owners & Listings</span></button>
+      <button onclick="adminControlTab('users')"><span class="radmin-nav-icon">♟</span><span>Users & Bookings</span></button>
+      <button onclick="adminControlTab('reports')"><span class="radmin-nav-icon">▥</span><span>Reports & Analytics</span></button>
+      <button onclick="adminControlTab('complaints')"><span class="radmin-nav-icon">✉</span><span>User Complaints</span></button>
+      <button onclick="adminControlTab('countries')"><span class="radmin-nav-icon">◎</span><span>Country Management</span></button>
+      <button onclick="adminControlTab('settings')"><span class="radmin-nav-icon">▤</span><span>Content & Policies</span></button>
+      <button onclick="adminControlTab('security')"><span class="radmin-nav-icon">⬟</span><span>Security & Settings</span></button>
+      <button onclick="adminControlTab('notifications')"><span class="radmin-nav-icon">♢</span><span>Notifications</span></button>
+      <button onclick="adminControlTab('activity')"><span class="radmin-nav-icon">◷</span><span>Admin Activity</span></button>
+      <button onclick="adminControlTab('health')"><span class="radmin-nav-icon">⚙</span><span>System Logs</span></button>
+      <button class="radmin-side-logout" onclick="goView('home')"><span class="radmin-nav-icon">⇦</span><span>Logout</span></button>
+    </nav>
+    <main class="radmin-main">
+    <div class="radmin-toolbar"><div><h2 id="adminCurrentSectionTitle">Dashboard</h2><p id="adminSectionDescription">Real-time overview of REHZO 99 rooms, users and bookings.</p></div><div class="radmin-toolbar-tools"><div class="radmin-command-search"><label class="radmin-search-wrap"><span aria-hidden="true">⌕</span><input id="adminSearchInput" aria-label="Search across REHZO 99 admin records" placeholder="Search users, rooms, TRL, bookings…" autocomplete="off" oninput="rehzuAdminGlobalSearch(this.value)" onfocus="rehzuAdminGlobalSearch(this.value)"><button type="button" id="adminVoiceSearchBtn" class="radmin-voice-search" aria-label="Search by voice" title="Search by voice" onclick="rehzuAdminStartVoiceSearch()">🎙</button><kbd>Ctrl K</kbd></label><div id="rehzuAdminSearchResults" class="rehzu-admin-search-results" hidden></div></div><button type="button" id="adminRefreshBtn" onclick="adminRefreshAll()">↻ Refresh</button></div><span id="adminAnalyticsUpdated">Waiting for data</span><span id="adminLastRefresh" class="radmin-last-refresh">Data updates when refreshed</span></div>
+    <div id="adminDashboardSection" class="ra-panel radmin-panel radmin-dashboard" style="display:block">
+      <div class="radmin-welcome"><div><h3>Welcome, Admin</h3><p>REHZO 99 · Live platform overview</p></div><span class="radmin-updated-chip">● Live database metrics</span></div><div class="radmin-booking-shortcuts"><button onclick="adminQuickOpen('confirmed')"><b id="adminBookingConfirmedShortcut">0</b><span>Confirmed</span></button><button onclick="adminQuickOpen('pending')"><b id="adminBookingPendingShortcut">0</b><span>Pending</span></button><button onclick="adminQuickOpen('rejected')"><b id="adminBookingRejectedShortcut">0</b><span>Rejected</span></button><button onclick="adminQuickOpen('cancelled')"><b id="adminBookingCancelledShortcut">0</b><span>Cancelled</span></button></div><div class="radmin-grid-3x3">
+        <article class="radmin-card radmin-blue"><header><span>♟</span><b>Total Users</b></header><div class="radmin-card-value" id="adminTotalRegisteredUsers">0</div><div class="radmin-card-lines"><div>Yesterday Register <b id="adminYesterdayUsersCount">0</b></div><div>Today Register <b id="adminTodayUsersCount">0</b></div><div>Live Users <b id="adminLiveUsersCount">—</b></div><div>Yesterday Live Users <b id="adminYesterdayLiveUsersCount">—</b></div></div><button onclick="adminControlTab('users')">View Users →</button></article>
+        <article class="radmin-card radmin-green"><header><span>⌂</span><b>Total Listings</b></header><div class="radmin-card-value" id="adminTotalListings">0</div><div class="radmin-card-lines"><div>Yesterday Listing <b id="adminYesterdayListingsCount">0</b></div><div>Today Listing <b id="adminTodayListingsCount">0</b></div><div>Live Listing <b id="adminLiveListingsCount">0</b></div><div>Yesterday Live Listing <b id="adminYesterdayLiveListingsCount">—</b></div></div><button onclick="adminControlTab('owners')">View Listings →</button></article>
+        <article class="radmin-card radmin-purple"><header><span>▣</span><b>Total Bookings</b></header><div class="radmin-card-value" id="adminTotalBookingRequests">0</div><div class="radmin-card-lines"><div>Yesterday Booking <b id="adminYesterdayBookingsCount">0</b></div><div>Today Booking <b id="adminTodayBookingsCount">0</b></div><div>Confirmed <b id="adminConfirmedBookingsCount">0</b></div><div>Pending <b id="adminLivePendingCount">0</b></div></div><button onclick="adminControlTab('bookings')">View Bookings →</button></article>
+        <article class="radmin-card radmin-green"><header><span>◉</span><b>Total Active Users</b></header><div class="radmin-card-value" id="adminTotalActiveUsers">0</div><div class="radmin-card-lines"><div>Active Users <b id="adminActiveUsersCount">0</b></div><div>Inactive Users <b id="adminInactiveUsersCount">0</b></div><div>Total Registered <b id="adminActiveUsersDetail">0</b></div></div><button onclick="adminControlTab('users')">Manage Users →</button></article>
+        <article class="radmin-card radmin-orange"><header><span>★</span><b>Listing Status</b></header><div class="radmin-card-value" id="adminListingAvailableCount">0</div><div class="radmin-card-lines"><div>Available <b id="adminListingAvailableDetail">0</b></div><div>Pending <b id="adminListingPendingCount">0</b></div><div>Booked <b id="adminListingBookedCount">0</b></div></div><button onclick="adminControlTab('owners')">View Details →</button></article>
+        <article class="radmin-card radmin-sky"><header><span>▥</span><b>App Analytics</b></header><div class="radmin-card-value">Live Status</div><div class="radmin-card-lines"><div>Database <b id="adminDatabaseLiveStatus">Checking…</b></div><div>Traffic <b id="adminTrafficLiveStatus">Waiting…</b></div><div>Response time <b id="adminResponseTime">—</b></div></div><button onclick="adminControlTab('health')">View Analytics →</button></article>
+        <article class="radmin-card radmin-violet"><header><span>⬟</span><b>Security Overview</b></header><div class="radmin-security-state">Admin protected</div><div class="radmin-card-lines"><div>Access <b>Admin only</b></div><div>Recent alerts <b id="adminSecurityEventCount">—</b></div><div>Unreviewed <b id="adminSecurityUnreviewedCount">—</b></div></div><button onclick="adminControlTab('security')">Security Details →</button></article>
+        <article class="radmin-card radmin-teal"><header><span>⚑</span><b>Country Management</b></header><div class="radmin-card-value">Country-wise</div><div class="radmin-country-preview"><div id="adminListingsCountryBreakdown"><p class="ra-empty-note">Loading listing countries…</p></div><div id="adminUsersCountryBreakdown"><p class="ra-empty-note">Loading user countries…</p></div></div><button onclick="adminControlTab('countries')">Manage Countries →</button></article>
+        <article class="radmin-card radmin-navy"><header><span>⚙</span><b>Quick Controls</b></header><div class="radmin-quick-grid"><button onclick="adminControlTab('users')"><span>⊘</span><small>Block User</small></button><button onclick="adminControlTab('owners')"><span>▤</span><small>Remove Listing</small></button><button type="button" disabled aria-disabled="true" title="Secure data-purge workflow is not enabled"><span>▤</span><small>Purge Data</small></button><button onclick="adminControlTab('notifications')"><span>♢</span><small>Send Notification</small></button><button onclick="adminControlTab('settings')"><span>☷</span><small>Update Policies</small></button><button onclick="adminControlTab('settings')"><span>⚙</span><small>System Settings</small></button></div></article>
+      </div>
+      <p class="radmin-footnote">Dashboard values are loaded from recorded platform data. Metrics not collected by REHZO 99 are clearly marked as unavailable.</p>
+    </div>
+    <div id="adminOwnersSection" class="ra-panel radmin-panel" style="display:none"><div class="ra-panel-title"><div><h4>Owners & property listings</h4><p>Registered owners, their properties and current listing status.</p></div></div><div id="adminOwnersListContainer"></div><div class="ra-panel-title radmin-listings-heading"><div><h4>All room listings</h4><p>Search and review every listing published on REHZO 99.</p></div></div><div id="adminListingsControl"></div></div>
+    <div id="adminUsersSection" class="ra-panel radmin-panel" style="display:none"><div class="ra-panel-title"><div><h4>Users & account access</h4><p>Review user accounts and available moderation actions.</p></div></div><div id="adminUsersListContainer"></div><div class="ra-moderation"><h4>Account moderation</h4><p>Block, unblock or warn accounts. Administrator accounts remain protected.</p><div id="adminModerationList">Loading account status…</div></div></div>
+    <div id="adminRoomsSection" class="ra-panel radmin-panel" style="display:none"><div class="ra-moderation ra-danger"><h4>Flagged & reported listings</h4><p>Review reports submitted by users and resolve or dismiss them.</p><div id="adminReportedListingsControl"></div></div></div>
+    <div id="adminBookingsSection" class="ra-panel radmin-panel" style="display:none"><div class="ra-bookings-heading"><div><h3>Incoming Reservations</h3><p>All room requests · Live booking records</p></div><span class="ra-bookings-live"><i></i> Live data</span></div><div id="adminBookingsListContainer"></div></div>
+    <div id="adminComplaintsSection" class="ra-panel radmin-panel" style="display:none"><div class="ra-panel-title"><div><h4>User complaints & grievance tickets</h4><p>Private complaints submitted by signed-in users. Only authorized admins can review them.</p></div><button class="ra-secondary" type="button" onclick="renderAdminComplaints()">Refresh</button></div><div id="adminComplaintsList">Open this section to load complaints.</div></div>
+    <div id="adminSecuritySection" class="ra-panel radmin-panel" style="display:none"><div class="ra-panel-title"><div><h4>Security activity</h4><p>Recorded security events. An empty list does not prove that no attack occurred.</p></div>
+
+<span class="ra-secure-pill">Admin only</span></div><div class="ra-security-actions"><button class="ra-secondary" onclick="renderAdminSecurityAlerts()">Refresh alerts</button><button class="ra-secondary" onclick="renderAdminSecurityAlerts(true)">Unreviewed only</button></div><div id="adminSecurityAlertsList">Open this section to load alerts.</div></div>
+    <div id="adminRatingsSection" class="ra-panel radmin-panel" style="display:none"><h3>Ratings & Reviews</h3><p>Real reviews submitted by users. Updates appear automatically.</p><div id="adminRatingsFeed"><p class="ra-empty-note">Open this section to load reviews.</p></div></div>
+    <div id="adminNotificationsSection" class="ra-panel radmin-panel" style="display:none"><h3>Live Notifications</h3><p>Recent platform changes from the live database event log. This is an Admin activity feed, not a message sent to users.</p><div id="adminNotificationsFeed"><p class="ra-empty-note">Open this section to load events.</p></div></div>
+    <div id="adminCountriesSection" class="ra-panel radmin-panel" style="display:none"><h3>Country Management</h3><p>Country-wise overview from recorded account and listing data.</p><h4>Listings by country</h4><div id="adminCountryListings"></div><h4>Users by country</h4><div id="adminCountryUsers"></div><p>Country verification rules cannot be overridden here.</p></div>
+    <div id="adminActivitySection" class="ra-panel radmin-panel" style="display:none"><h3>Admin Activity Log</h3><p>Database-backed event history for account, room, booking, report, review, policy and security changes.</p><div id="adminActivityFeed"><p class="ra-empty-note">Open this section to load activity.</p></div></div>
+    <div id="adminSettingsSection" class="ra-panel radmin-panel" style="display:none"><h3>Admin Settings</h3><p>Admin access is verified by the existing server-side rehzu_is_admin check. Role changes and credential changes are not exposed in the public client.</p></div>
+    <div id="adminExportSection" class="ra-panel radmin-panel" style="display:none"><h3>Data Export</h3><p>Download non-sensitive summary counts only.</p><button type="button" class="ra-secondary" onclick="adminExportSummaryCsv()">Export summary CSV</button></div>
+    <div id="adminHealthSection" class="ra-panel radmin-panel" style="display:none"><h3>System Health</h3><p id="adminHealthStatus">Run a check for current admin session and database connectivity.</p><button type="button" class="ra-secondary" onclick="adminCheckSystemHealth()">Check system health</button></div>
+    </main>
+  </div>
+</section>
+
+</div>
+
+<!-- BOTTOM NAVIGATION -->
+<nav class="bottom-nav">
+  <button class="nav-item active" data-view="home" onclick="goView('home')">
+    <svg class="nav-svg" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a22 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+    <span>Home</span>
+  </button>
+  <button class="nav-item" data-view="search" onclick="goView('search')">
+    <svg class="nav-svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+    <span>Search</span>
+  </button>
+  <button class="nav-item" data-view="near" onclick="goView('near')">
+    <svg class="nav-svg" viewBox="0 0 24 24"><circle cx="12" cy="10" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+    <span>Near</span>
+  </button>
+  <button class="nav-item" data-view="bookings" onclick="goView('bookings')">
+    <svg class="nav-svg" viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><polyline points="9 14 11 16 15 11"></polyline></svg>
+    <span>My Bookings</span>
+  </button>
+  <button class="nav-item" data-view="owner" onclick="goView('owner')">
+    <svg class="nav-svg" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><line x1="9" y1="6" x2="9" y2="6.01"></line><line x1="15" y1="6" x2="15" y2="6.01"></line><line x1="9" y1="10" x2="9" y2="10.01"></line><line x1="15" y1="10" x2="15" y2="10.01"></line><line x1="9" y1="14" x2="9" y2="14.01"></line><line x1="15" y1="14" x2="15" y2="14.01"></line></svg>
+    <span>Owner</span>
+  </button>
+</nav>
+
+<div id="modalSlot"></div>
+
+
+<script>
+/* REHZO 99 global tap sound: initialized before the app bundle so it works on every view. */
+(function () {
+  if (window.__rehzuGlobalTapSound) return;
+  window.__rehzuGlobalTapSound = true;
+  var ctx = null;
+  var lastSound = 0;
+
+  function tone() {
+    if (!ctx || ctx.state !== 'running') return;
+    var t = ctx.currentTime;
+    try {
+      var osc = ctx.createOscillator();
+      var gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(740, t);
+      osc.frequency.exponentialRampToValueAtTime(520, t + 0.075);
+      gain.gain.setValueAtTime(0.0001, t);
+      gain.gain.linearRampToValueAtTime(0.12, t + 0.008);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.09);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(t);
+      osc.stop(t + 0.095);
+      osc.onended = function () { osc.disconnect(); gain.disconnect(); };
+    } catch (e) {}
+  }
+
+  function tap(event) {
+    if (event && event.isTrusted === false) return;
+    var target = event && event.target;
+    if (!target || !target.closest) return;
+    var el = target.closest('button,a,[role="button"],[role="tab"],[onclick],.nav-item,.room-card,.listing-card,summary,select,input[type="checkbox"],input[type="radio"],[data-view]');
+    if (!el || el.disabled || el.getAttribute('aria-disabled') === 'true') return;
+
+    var now = Date.now();
+    if (now - lastSound < 220) return;
+    lastSound = now;
+
+    var AudioCtor = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtor) return;
+    try {
+      if (!ctx) ctx = new AudioCtor();
+      if (ctx.state === 'suspended') {
+        var resumed = ctx.resume();
+        if (resumed && typeof resumed.then === 'function') resumed.then(tone).catch(function () {});
+      } else {
+        tone();
+      }
+    } catch (e) {}
+  }
+
+  document.addEventListener('pointerdown', tap, true);
+  document.addEventListener('click', tap, true);
+})();
+</script>
+
+<script>
+(function () {
+  var sources = [
+    'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0',
+    'https://unpkg.com/@supabase/supabase-js@2.119.0'
+  ];
+  var attempt = 0;
+  var finished = false;
+
+  function showLoadFailure() {
+    if (finished) return;
+    finished = true;
+    if (typeof window.showREHZO 99SystemAlert === 'function') {
+      window.showREHZO 99SystemAlert(
+        'REHZO 99 could not load its secure connection service. Check your internet connection and reload the app.',
+        'Connection service unavailable'
+      );
+    }
+    var splash = document.getElementById('splashOverlay');
+    if (splash) splash.style.display = 'none';
+  }
+
+  function startApp() {
+    if (finished) return;
+    finished = true;
+    var app = document.createElement('script');
+    app.src = '/js/app.js?v=country-proof-29';
+    app.onerror = function () {
+      if (typeof window.showREHZO 99SystemAlert === 'function') {
+        window.showREHZO 99SystemAlert('The REHZO 99 app files could not be loaded. Please reload the page.', 'App files unavailable');
+      }
+    };
+    document.body.appendChild(app);
+  }
+
+  function loadSdk() {
+    if (attempt >= sources.length) {
+      showLoadFailure();
+      return;
+    }
+    var currentAttempt = ++attempt;
+    var script = document.createElement('script');
+    var timeout = setTimeout(function () {
+      if (finished || currentAttempt !== attempt) return;
+      script.onload = script.onerror = null;
+      script.remove();
+      loadSdk();
+    }, 12000);
+    script.src = sources[currentAttempt - 1];
+    script.async = true;
+    script.onload = function () {
+      clearTimeout(timeout);
+      if (finished || currentAttempt !== attempt) return;
+      if (window.supabase && typeof window.supabase.createClient === 'function') {
+        startApp();
+      } else {
+        script.remove();
+        loadSdk();
+      }
+    };
+    script.onerror = function () {
+      clearTimeout(timeout);
+      if (finished || currentAttempt !== attempt) return;
+      script.remove();
+      loadSdk();
+    };
+    document.head.appendChild(script);
+  }
+
+  loadSdk();
+})();
+</script>
+
+
+
+
+</body>
+</html>

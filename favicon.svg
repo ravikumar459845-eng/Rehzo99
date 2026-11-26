@@ -1,1 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="18" fill="#183b30"/><path d="M17 47V17h17c9 0 14 5 14 13 0 6-3 10-9 12l10 5H37l-9-10h-1v10zm10-18h7c3 0 5-1 5-4s-2-4-5-4h-7z" fill="#d8f078"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+<defs><linearGradient id="t" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#38d4b8"/><stop offset="1" stop-color="#078d9b"/></linearGradient></defs>
+<path d="M52 91 116 40c13-10 31-9 44 1l60 48c20 16 24 46 8 67-10 13-22 20-40 23l-28 5-67 54c-19 15-46 2-46-22v-95c0-16-14-24-2-30Z" fill="none" stroke="url(#t)" stroke-width="21" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="m153 187 52 48" stroke="#1d304c" stroke-width="23" stroke-linecap="round"/>
+<g fill="#1d304c"><rect x="100" y="101" width="22" height="22" rx="4"/><rect x="130" y="101" width="22" height="22" rx="4"/><rect x="100" y="131" width="22" height="22" rx="4"/><rect x="130" y="131" width="22" height="22" rx="4"/></g>
+<path d="M203 14c-16 0-29 13-29 29 0 21 29 46 29 46s29-25 29-46c0-16-13-29-29-29Zm0 39a10 10 0 1 1 0-20 10 10 0 0 1 0 20Z" fill="#f29a28"/>
+</svg>
