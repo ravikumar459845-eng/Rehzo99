@@ -147,6 +147,9 @@ async function renderDashboard(tab){
   }else if(tab==='tickets'){
    const rows=await api('support_tickets?select=*&user_id=eq.'+session.user.id+'&order=created_at.desc');
    root.innerHTML=rows.length?rows.map(x=>'<article class="dash-card"><div><b>'+esc(x.ticket_number||'Support ticket')+' · '+esc(x.subject)+'</b><p>'+esc(x.message)+'</p></div><span class="listing-meta">'+esc(x.status)+'</span></article>').join(''):'<p>No support tickets yet.</p>';
+  }else if(tab==='notifications'){
+   const rows=await api('admin_notifications?select=id,title,message,created_at&active=eq.true&order=created_at.desc');
+   root.innerHTML=rows.length?rows.map(x=>'<article class="dash-card"><div><b>'+esc(x.title)+'</b><p>'+esc(x.message)+'</p><small>'+new Date(x.created_at).toLocaleString()+'</small></div></article>').join(''):'<p>No new notifications.</p>';
   }else if(tab==='admin'&&isAdmin){
    root.innerHTML='<div class="admin-menu"><button data-admin-section="dashboard">Dashboard</button><button data-admin-section="owners">Owners & Listings</button><button data-admin-section="users">Users & Bookings</button><button data-admin-section="reports">Reports & Analytics</button><button data-admin-section="complaints">User Complaints</button><button data-admin-section="countries">Country Management</button><button data-admin-section="content">Content & Policies</button><button data-admin-section="security">Security & Settings</button><button data-admin-section="notifications">Notifications</button><button data-admin-section="activity">Admin Activity</button><button data-admin-section="logs">System Logs</button></div><div id="adminSection" class="admin-section"></div>';
    root.querySelectorAll('[data-admin-section]').forEach(b=>b.onclick=()=>{root.querySelectorAll('[data-admin-section]').forEach(x=>x.classList.toggle('active',x===b));renderAdminSection(b.dataset.adminSection)});
