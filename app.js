@@ -118,9 +118,10 @@ async function renderDashboard(tab){
   }else if(tab==='incoming'){
    const rows=await api('booking_requests?select=id,status,trl_number,requested_at,listing_id,listings(house_name,city,owner_id)&order=requested_at.desc');
    const own=rows.filter(x=>x.listings?.owner_id===session.user.id);
-   root.innerHTML=own.length?own.map(x=>'<article class="dash-card"><div><b>'+esc(x.listings.house_name)+'</b><p>'+esc(x.listings.city)+' · '+esc(x.status)+'</p><small>'+new Date(x.requested_at).toLocaleString()+'</small></div><div class="dash-card-actions">'+(x.status==='pending'?'<button class="dark" data-accept="'+x.id+'">Accept</button><button class="outline" data-reject="'+x.id+'">Reject</button>':'<span class="listing-meta">'+esc(x.status)+'</span>')+'</div></article>').join(''):'<p>No booking requests received yet.</p>';
+   root.innerHTML=own.length?own.map(x=>'<article class="dash-card"><div><b>'+esc(x.listings.house_name)+'</b><p>'+esc(x.listings.city)+' · '+esc(x.status)+'</p><small>'+new Date(x.requested_at).toLocaleString()+'</small></div><div class="dash-card-actions">'+(x.status==='pending'?'<button class="dark" data-accept="'+x.id+'">Accept</button><button class="outline" data-reject="'+x.id+'">Reject</button>':'<span class="listing-meta">'+esc(x.status)+'</span>'+(x.status==='final_confirmed'?'<button class="outline" data-renter="'+x.seeker_id+'">Renter contact</button>':''))+'</div></article>').join(''):'<p>No booking requests received yet.</p>';
    root.querySelectorAll('[data-accept]').forEach(b=>b.onclick=()=>respondBooking(b.dataset.accept,'accepted'));
    root.querySelectorAll('[data-reject]').forEach(b=>b.onclick=()=>respondBooking(b.dataset.reject,'owner_rejected'));
+   root.querySelectorAll('[data-renter]').forEach(b=>b.onclick=()=>showRenterContact(b.dataset.renter));
   }else if(tab==='myBookings'){
    const rows=await api('booking_requests?select=id,status,trl_number,requested_at,finalised_at,listing_id,listings(house_name,city,owner_id)&seeker_id=eq.'+session.user.id+'&order=requested_at.desc');
    root.innerHTML=rows.length?rows.map(x=>'<article class="dash-card"><div><b>'+esc(x.listings?.house_name||'Stay')+'</b><p>'+esc(x.listings?.city||'')+' · '+esc(x.status)+'</p>'+(x.trl_number?'<strong>TRL: '+esc(x.trl_number)+'</strong>':'')+'</div><div class="dash-card-actions">'+(x.status==='accepted'?'<button class="dark" data-confirm="'+x.id+'">Final confirm</button><button class="outline" data-decline="'+x.id+'">Reject</button>':'')+(x.status==='final_confirmed'?'<button class="outline" data-contact="'+x.listing_id+'">Room directions & contact</button>':'')+'</div></article>').join(''):'<p>You have not sent any booking requests.</p>';
@@ -140,6 +141,9 @@ async function renderDashboard(tab){
 }
 async function respondBooking(id,status){try{await api('booking_requests?id=eq.'+id,{method:'PATCH',body:{status},prefer:'return=representation'});toast(status==='accepted'?'Booking accepted. Waiting for user final confirmation.':'Booking updated.');renderDashboard(dashTab)}catch(e){toast(e.message)}}
 async function finaliseBooking(id){if(!confirm('Final confirmation will reserve this room. The first confirmed booking wins. Continue?'))return;try{const rows=await api('booking_requests?id=eq.'+id,{method:'PATCH',body:{status:'final_confirmed'},prefer:'return=representation'});if(!rows?.length)throw new Error('Could not confirm. This room may already have been booked.');toast('Booking finally confirmed. Your 12-digit TRL is '+rows[0].trl_number);renderDashboard('myBookings');loadListings()}catch(e){toast(e.message)}}
+async function showRenterContact(userId){
+ try{const rows=await api('profiles?select=display_name,email,phone_number&id=eq.'+userId);const p=rows[0];if(!p)throw new Error('Renter contact is unavailable.');$('#detailContent').innerHTML='<label class="eyebrow">CONFIRMED BOOKING</label><h2>Renter contact</h2><p>Name: '+esc(p.display_name||'Not provided')+'</p><p>Phone: '+esc(p.phone_number||'Not provided')+'</p><p>Email: '+esc(p.email||'Not provided')+'</p>';modal('detailModal')}catch(e){toast(e.message)}
+}
 async function showConfirmedDetails(listingId){
  try{
   const [details,loc]=await Promise.all([api('listing_private_details?select=contact_phone,contact_email&listing_id=eq.'+listingId),api('listing_locations?select=latitude,longitude&listing_id=eq.'+listingId)]);
