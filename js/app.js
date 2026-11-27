@@ -1538,6 +1538,7 @@ async function submitUnifiedRegistration(e, callbackAction) {
     if (authPasswordRes.error) throw new Error('Could not set your secure login password. Please retry Google verification.');
 
     var newProfile = {
+      id: submitAuthUser.id,
       uid: fullUid,
       name: name,
       phone: fullPhone,
