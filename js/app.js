@@ -401,7 +401,7 @@ function getFreshDeviceCoordinates(maxAccuracyMeters) {
       if (settled) return;
       if (error && error.code === 1) {
         settled = true;
-        reject(new Error('Location permission is blocked. Allow location access for rehzu.vercel.app in your browser and Windows settings, then reload.'));
+        reject(new Error('Location permission is blocked. Allow location access for ' + location.hostname + ' in your browser and device settings, then reload.'));
         return;
       }
       // Many laptops have no GPS chip. Retry once using the browser/OS
@@ -413,7 +413,7 @@ function getFreshDeviceCoordinates(maxAccuracyMeters) {
           if (settled) return;
           settled = true;
           if (fallbackError && fallbackError.code === 1) {
-            reject(new Error('Location permission is blocked. Allow location access for rehzu.vercel.app in your browser and Windows settings, then reload.'));
+            reject(new Error('Location permission is blocked. Allow location access for ' + location.hostname + ' in your browser and device settings, then reload.'));
           } else if (fallbackError && fallbackError.code === 3) {
             reject(new Error('Laptop location timed out. Turn on Windows Location, connect to Wi-Fi, allow location for REHZO 99 in Chrome/Edge, and retry.'));
           } else {
@@ -441,7 +441,7 @@ async function autoDetectUserCountry(coordsOverride) {
     var coords = coordsOverride || await getFreshDeviceCoordinates();
     // Keep the verified live device position for Home distance labels and directions.
     userGeo = { lat: Number(coords.latitude), lng: Number(coords.longitude) };
-    var countryProofUrl = SUPABASE_URL.replace(/\/$/, '') + '/functions/v1/rehzo99-country-proof';
+    var countryProofUrl = SUPABASE_URL.replace(/\/$/, '') + '/functions/v1/rehzu-country-proof';
     var res = await fetch(countryProofUrl, {
       method: 'POST',
       cache: 'no-store',
