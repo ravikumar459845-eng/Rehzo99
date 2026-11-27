@@ -441,6 +441,18 @@ async function autoDetectUserCountry(coordsOverride) {
     var coords = coordsOverride || await getFreshDeviceCoordinates();
     // Keep the verified live device position for Home distance labels and directions.
     userGeo = { lat: Number(coords.latitude), lng: Number(coords.longitude) };
+    // BigDataCloud's free reverse-geocoding endpoint is explicitly client-side:
+    // call it from this consented device request, never from the Edge server.
+    var reverseUrl = 'https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=' +
+      encodeURIComponent(String(coords.latitude)) + '&longitude=' +
+      encodeURIComponent(String(coords.longitude)) + '&localityLanguage=en';
+    var reverseResponse = await fetch(reverseUrl, { method: 'GET', cache: 'no-store', headers: { Accept: 'application/json' } });
+    if (!reverseResponse.ok) throw new Error('GPS country lookup is temporarily unavailable (' + reverseResponse.status + '). Please retry.');
+    var reverseData = await reverseResponse.json();
+    var gpsCountryCode = String(reverseData.countryCode || '').trim().toUpperCase();
+    if (!/^[A-Z]{2}$/.test(gpsCountryCode) || gpsCountryCode === 'XX') {
+      throw new Error('GPS could not identify your country. Turn on precise location and retry.');
+    }
     var countryProofUrl = SUPABASE_URL.replace(/\/$/, '') + '/functions/v1/rehzu-country-proof';
     var res = await fetch(countryProofUrl, {
       method: 'POST',
@@ -453,7 +465,8 @@ async function autoDetectUserCountry(coordsOverride) {
       body: JSON.stringify({
         latitude: coords.latitude,
         longitude: coords.longitude,
-        accuracy: coords.accuracy
+        accuracy: coords.accuracy,
+        gps_country_code: gpsCountryCode
       })
     });
     var data = await res.json().catch(function(){ return {}; });
@@ -469,7 +482,7 @@ async function autoDetectUserCountry(coordsOverride) {
     countryVerified = true;
 
     var badge = document.getElementById('userDetectedCountryBadge');
-    if (badge) badge.innerText = '📍 GPS verified current country: ' + found.name + ' · © OpenStreetMap contributors';
+    if (badge) badge.innerText = '📍 GPS verified current country: ' + found.name';
     var cf = document.getElementById('countryFilter');
     if (cf) {
       cf.innerHTML = '';
