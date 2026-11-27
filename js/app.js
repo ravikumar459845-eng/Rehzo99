@@ -1,18 +1,19 @@
-// ================= PWA SERVICE WORKER =================
+// ================= PWA CACHE CLEANUP =================
+// This repository has no sw.js. Remove any older worker/cache so it cannot
+// keep serving stale JavaScript after a production update.
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
-    navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' }).then(function(registration) {
-      // Ask the browser to check for a newer worker on every app launch.
-      return registration.update().catch(function() {});
-    }).catch(function(err) {
-      console.log('SW notice:', err);
-    });
+    navigator.serviceWorker.getRegistrations().then(function(registrations) {
+      registrations.forEach(function(registration) { registration.unregister().catch(function() {}); });
+    }).catch(function() {});
   });
-  // When the new worker takes control, reload once so stale HTML/JS is replaced.
-  navigator.serviceWorker.addEventListener('controllerchange', function() {
-    if (window.__rehzuControllerReloading) return;
-    window.__rehzuControllerReloading = true;
-    window.location.reload();
+}
+if ('caches' in window) {
+  window.addEventListener('load', function() {
+    caches.keys().then(function(keys) {
+      keys.filter(function(key) { return key.indexOf('rehzo99') !== -1 || key.indexOf('rehzu') !== -1; })
+        .forEach(function(key) { caches.delete(key).catch(function() {}); });
+    }).catch(function() {});
   });
 }
 
@@ -482,7 +483,7 @@ async function autoDetectUserCountry(coordsOverride) {
     countryVerified = true;
 
     var badge = document.getElementById('userDetectedCountryBadge');
-    if (badge) badge.innerText = '📍 GPS verified current country: ' + found.name';
+    if (badge) badge.innerText = '📍 GPS verified current country: ' + found.name;
     var cf = document.getElementById('countryFilter');
     if (cf) {
       cf.innerHTML = '';
