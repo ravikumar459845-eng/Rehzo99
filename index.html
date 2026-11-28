@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<!-- REHZU_RELEASE_MARKER: rehzu-admin-analytics-cards-2026-11-03 -->
-<meta name="rehzu-release-marker" content="rehzu-security-hardening-2026-11-04-a">
+<!-- rehzo99_RELEASE_MARKER: rehzo99-admin-analytics-cards-2026-11-03 -->
+<meta name="rehzo99-release-marker" content="rehzo99-security-hardening-2026-11-04-a">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
@@ -96,102 +96,102 @@
 <!-- Supabase SDK is loaded with a CDN fallback immediately before the app bundle. -->
 
 <link rel="stylesheet" href="/styles.css?v=rehzo99-2">
-<style id="rehzu-admin-reference-layout">
+<style id="rehzo99-admin-reference-layout">
 /* Screenshot-matched REHZO 99 admin: fixed left rail + 3-column dashboard */
 body:has(#view-admin.active) .top-header,
 body:has(#view-admin.active) .main-wrapper,
 body:has(#view-admin.active) .bottom-nav{max-width:none;width:100%}
 body:has(#view-admin.active) .main-wrapper{padding:8px 10px calc(88px + env(safe-area-inset-bottom))}
-.rehzu-admin-shell.rehzu-admin-v2{width:100%;max-width:none;margin:0;padding:0!important;background:#f4f7fc!important;color:#17233b!important;border:0!important;border-radius:0!important;box-shadow:none!important;overflow:visible}
-.rehzu-admin-v2 .radmin-layout{display:grid!important;grid-template-columns:60px minmax(0,1fr)!important;align-items:stretch;gap:0;width:100%;max-width:none;min-width:0;min-height:calc(100vh - 180px)}
-.rehzu-admin-v2 .radmin-sidebar{position:sticky;top:70px;align-self:start;display:flex;flex-direction:column;gap:3px;height:calc(100vh - 165px);min-height:0;overflow-y:auto;padding:7px 4px;background:#10213a;color:#fff}
-.rehzu-admin-v2 .radmin-side-brand{display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 2px 7px;margin-bottom:2px;border-bottom:1px solid #ffffff30}
-.rehzu-admin-v2 .radmin-side-brand img{width:30px;height:30px;object-fit:contain}
-.rehzu-admin-v2 .radmin-side-brand b{font-size:11px;color:#fff}
-.rehzu-admin-v2 .radmin-side-brand small{font-size:6px;color:#c4d1e5;text-align:center}
-.rehzu-admin-v2 .radmin-sidebar>button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;width:100%;min-height:46px;padding:4px 2px;border:0;border-radius:10px;background:transparent;color:#e7edf7;text-align:center;font-size:6.5px;line-height:1.12;font-weight:800;white-space:normal}
-.rehzu-admin-v2 .radmin-sidebar>button .radmin-nav-icon{font-size:14px;line-height:1}
-.rehzu-admin-v2 .radmin-sidebar>button.active,.rehzu-admin-v2 .radmin-sidebar>button:hover{background:#0875ed;color:#fff}
-.rehzu-admin-v2 .radmin-sidebar>button.radmin-side-logout{margin-top:auto;background:#b4232d}
-.rehzu-admin-v2 .radmin-main{width:100%;max-width:none;min-width:0;margin:0;padding:9px 8px 28px!important}
-.rehzu-admin-v2 .radmin-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:7px;padding:5px 2px 9px;margin:0 0 8px}
-.rehzu-admin-v2 .radmin-toolbar h2{font-size:18px;line-height:1.2;margin:0;color:#17233b}
-.rehzu-admin-v2 .radmin-toolbar p{font-size:10px;margin:3px 0;color:#718096}
-.rehzu-admin-v2 .radmin-toolbar-tools{display:flex;align-items:center;gap:6px;flex:1 1 100%;min-width:0}
-.rehzu-admin-v2 .radmin-search-wrap{display:flex;align-items:center;gap:5px;flex:1;min-width:0;padding:6px 8px;background:#fff;border:1px solid #dce4ee;border-radius:10px;font-size:11px}
-.rehzu-admin-v2 .radmin-search-wrap input{width:100%;min-width:0;border:0;outline:0;font-size:10px}
-.rehzu-admin-v2 .radmin-command-search{position:relative;flex:1;min-width:0;z-index:30}
-.rehzu-admin-v2 .radmin-search-wrap{min-height:38px;box-shadow:0 2px 8px #17212b0a}
-.rehzu-admin-v2 .radmin-search-wrap:focus-within{border-color:#2878e8;box-shadow:0 0 0 3px #2878e81c}
-.rehzu-admin-v2 .radmin-toolbar,.rehzu-admin-v2 .radmin-toolbar-tools,.rehzu-admin-v2 .radmin-command-search{overflow:visible!important}
-.rehzu-admin-v2 .rehzu-admin-search-results{position:absolute!important;left:0!important;right:auto!important;width:min(560px,calc(100vw - 28px))!important;max-height:min(72vh,620px)!important;overflow-y:auto!important;z-index:2147483000!important}
-.rehzu-admin-v2 .rehzu-admin-search-results[hidden]{display:none!important}
-.rehzu-admin-v2 .radmin-voice-search{flex:0 0 30px;width:30px;height:30px;border:0;border-radius:8px;background:#eaf2ff;color:#1757b4;font-size:16px;cursor:pointer}
-.rehzu-admin-v2 .radmin-voice-search.is-listening{background:#fee2e2;color:#b91c1c;animation:rehzuVoicePulse 1s infinite}
-@keyframes rehzuVoicePulse{50%{box-shadow:0 0 0 5px #ef444433}}
-.rehzu-admin-v2 .radmin-search-wrap kbd{flex:0 0 auto;padding:3px 5px;border:1px solid #dce4ee;border-radius:5px;background:#f7f9fc;color:#64748b;font-size:8px;white-space:nowrap}
-.rehzu-admin-v2 .rehzu-admin-search-results{position:absolute;top:calc(100% + 6px);left:0;right:0;max-height:min(62vh,430px);overflow:auto;padding:7px;border:1px solid #dbe4ef;border-radius:12px;background:#fff;box-shadow:0 14px 38px #14243b26}
-.rehzu-admin-v2 .rehzu-admin-search-results{width:min(560px,calc(100vw - 80px));max-height:min(72vh,620px);z-index:9999}
-.rehzu-admin-v2 .rehzu-admin-search-summary{padding:7px 8px;margin:3px 0 7px;border-radius:7px;background:#edf4ff;color:#24446e;font-size:9px;line-height:1.5}
-.rehzu-admin-v2 .rehzu-admin-search-record{margin:6px 0;padding:8px;border:1px solid #dce6f2;border-radius:8px;background:#f8fbff;color:#243b59;font-size:9px;line-height:1.35;overflow-wrap:anywhere}
-.rehzu-admin-v2 .rehzu-admin-search-record>b{display:block;margin-bottom:4px;color:#1358a8;font-size:9px;font-weight:900}
-.rehzu-admin-v2 .rehzu-admin-result-line{display:block;padding:2px 0;border-top:1px solid #e8eef6;font-size:8.5px;line-height:1.35;overflow-wrap:anywhere}
-.rehzu-admin-v2 .rehzu-admin-result-line b{color:#536a87;font-weight:800}
-@media(max-width:640px){.rehzu-admin-v2 .rehzu-admin-search-results{left:0;right:auto;width:min(520px,calc(100vw - 68px));max-height:72vh}.rehzu-admin-v2 .rehzu-admin-search-record{padding:6px;margin:5px 0}.rehzu-admin-v2 .rehzu-admin-result-line{font-size:8px}}
+.rehzo99-admin-shell.rehzo99-admin-v2{width:100%;max-width:none;margin:0;padding:0!important;background:#f4f7fc!important;color:#17233b!important;border:0!important;border-radius:0!important;box-shadow:none!important;overflow:visible}
+.rehzo99-admin-v2 .radmin-layout{display:grid!important;grid-template-columns:60px minmax(0,1fr)!important;align-items:stretch;gap:0;width:100%;max-width:none;min-width:0;min-height:calc(100vh - 180px)}
+.rehzo99-admin-v2 .radmin-sidebar{position:sticky;top:70px;align-self:start;display:flex;flex-direction:column;gap:3px;height:calc(100vh - 165px);min-height:0;overflow-y:auto;padding:7px 4px;background:#10213a;color:#fff}
+.rehzo99-admin-v2 .radmin-side-brand{display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 2px 7px;margin-bottom:2px;border-bottom:1px solid #ffffff30}
+.rehzo99-admin-v2 .radmin-side-brand img{width:30px;height:30px;object-fit:contain}
+.rehzo99-admin-v2 .radmin-side-brand b{font-size:11px;color:#fff}
+.rehzo99-admin-v2 .radmin-side-brand small{font-size:6px;color:#c4d1e5;text-align:center}
+.rehzo99-admin-v2 .radmin-sidebar>button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;width:100%;min-height:46px;padding:4px 2px;border:0;border-radius:10px;background:transparent;color:#e7edf7;text-align:center;font-size:6.5px;line-height:1.12;font-weight:800;white-space:normal}
+.rehzo99-admin-v2 .radmin-sidebar>button .radmin-nav-icon{font-size:14px;line-height:1}
+.rehzo99-admin-v2 .radmin-sidebar>button.active,.rehzo99-admin-v2 .radmin-sidebar>button:hover{background:#0875ed;color:#fff}
+.rehzo99-admin-v2 .radmin-sidebar>button.radmin-side-logout{margin-top:auto;background:#b4232d}
+.rehzo99-admin-v2 .radmin-main{width:100%;max-width:none;min-width:0;margin:0;padding:9px 8px 28px!important}
+.rehzo99-admin-v2 .radmin-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:7px;padding:5px 2px 9px;margin:0 0 8px}
+.rehzo99-admin-v2 .radmin-toolbar h2{font-size:18px;line-height:1.2;margin:0;color:#17233b}
+.rehzo99-admin-v2 .radmin-toolbar p{font-size:10px;margin:3px 0;color:#718096}
+.rehzo99-admin-v2 .radmin-toolbar-tools{display:flex;align-items:center;gap:6px;flex:1 1 100%;min-width:0}
+.rehzo99-admin-v2 .radmin-search-wrap{display:flex;align-items:center;gap:5px;flex:1;min-width:0;padding:6px 8px;background:#fff;border:1px solid #dce4ee;border-radius:10px;font-size:11px}
+.rehzo99-admin-v2 .radmin-search-wrap input{width:100%;min-width:0;border:0;outline:0;font-size:10px}
+.rehzo99-admin-v2 .radmin-command-search{position:relative;flex:1;min-width:0;z-index:30}
+.rehzo99-admin-v2 .radmin-search-wrap{min-height:38px;box-shadow:0 2px 8px #17212b0a}
+.rehzo99-admin-v2 .radmin-search-wrap:focus-within{border-color:#2878e8;box-shadow:0 0 0 3px #2878e81c}
+.rehzo99-admin-v2 .radmin-toolbar,.rehzo99-admin-v2 .radmin-toolbar-tools,.rehzo99-admin-v2 .radmin-command-search{overflow:visible!important}
+.rehzo99-admin-v2 .rehzo99-admin-search-results{position:absolute!important;left:0!important;right:auto!important;width:min(560px,calc(100vw - 28px))!important;max-height:min(72vh,620px)!important;overflow-y:auto!important;z-index:2147483000!important}
+.rehzo99-admin-v2 .rehzo99-admin-search-results[hidden]{display:none!important}
+.rehzo99-admin-v2 .radmin-voice-search{flex:0 0 30px;width:30px;height:30px;border:0;border-radius:8px;background:#eaf2ff;color:#1757b4;font-size:16px;cursor:pointer}
+.rehzo99-admin-v2 .radmin-voice-search.is-listening{background:#fee2e2;color:#b91c1c;animation:rehzo99VoicePulse 1s infinite}
+@keyframes rehzo99VoicePulse{50%{box-shadow:0 0 0 5px #ef444433}}
+.rehzo99-admin-v2 .radmin-search-wrap kbd{flex:0 0 auto;padding:3px 5px;border:1px solid #dce4ee;border-radius:5px;background:#f7f9fc;color:#64748b;font-size:8px;white-space:nowrap}
+.rehzo99-admin-v2 .rehzo99-admin-search-results{position:absolute;top:calc(100% + 6px);left:0;right:0;max-height:min(62vh,430px);overflow:auto;padding:7px;border:1px solid #dbe4ef;border-radius:12px;background:#fff;box-shadow:0 14px 38px #14243b26}
+.rehzo99-admin-v2 .rehzo99-admin-search-results{width:min(560px,calc(100vw - 80px));max-height:min(72vh,620px);z-index:9999}
+.rehzo99-admin-v2 .rehzo99-admin-search-summary{padding:7px 8px;margin:3px 0 7px;border-radius:7px;background:#edf4ff;color:#24446e;font-size:9px;line-height:1.5}
+.rehzo99-admin-v2 .rehzo99-admin-search-record{margin:6px 0;padding:8px;border:1px solid #dce6f2;border-radius:8px;background:#f8fbff;color:#243b59;font-size:9px;line-height:1.35;overflow-wrap:anywhere}
+.rehzo99-admin-v2 .rehzo99-admin-search-record>b{display:block;margin-bottom:4px;color:#1358a8;font-size:9px;font-weight:900}
+.rehzo99-admin-v2 .rehzo99-admin-result-line{display:block;padding:2px 0;border-top:1px solid #e8eef6;font-size:8.5px;line-height:1.35;overflow-wrap:anywhere}
+.rehzo99-admin-v2 .rehzo99-admin-result-line b{color:#536a87;font-weight:800}
+@media(max-width:640px){.rehzo99-admin-v2 .rehzo99-admin-search-results{left:0;right:auto;width:min(520px,calc(100vw - 68px));max-height:72vh}.rehzo99-admin-v2 .rehzo99-admin-search-record{padding:6px;margin:5px 0}.rehzo99-admin-v2 .rehzo99-admin-result-line{font-size:8px}}
 
-.rehzu-admin-v2 .rehzu-admin-search-heading{padding:5px 7px;color:#758397;font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.07em}
-.rehzu-admin-v2 .rehzu-admin-search-item{display:flex;width:100%;align-items:center;gap:8px;padding:9px 8px;border:0;border-radius:8px;background:#fff;color:#172b49;text-align:left;font-size:10px}
-.rehzu-admin-v2 .rehzu-admin-search-item:hover,.rehzu-admin-v2 .rehzu-admin-search-item:focus{outline:0;background:#edf5ff}
-.rehzu-admin-v2 .rehzu-admin-search-item b{display:block;font-size:10px}
-.rehzu-admin-v2 .rehzu-admin-search-item small{display:block;margin-top:2px;color:#718096;font-size:8px}
-.rehzu-admin-v2 .rehzu-admin-search-tag{margin-left:auto;padding:3px 5px;border-radius:5px;background:#eef3f9;color:#52647b;font-size:8px;white-space:nowrap}
-.rehzu-admin-v2 .rehzu-admin-search-empty{padding:14px 8px;color:#64748b;font-size:10px}
-.rehzu-admin-v2 #adminRefreshBtn{border:0;border-radius:18px;padding:9px 12px;background:#1769df;color:#fff;font-size:10px;font-weight:800;white-space:nowrap}
-.rehzu-admin-v2 #adminAnalyticsUpdated,.rehzu-admin-v2 #adminLastRefresh{font-size:9px;color:#758397}
-.rehzu-admin-v2 .radmin-welcome,.rehzu-admin-v2 .radmin-booking-shortcuts{display:none!important}
-.rehzu-admin-v2 .radmin-grid-3x3{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important;align-items:stretch}
-.rehzu-admin-v2 .radmin-card{display:flex;flex-direction:column;min-width:0!important;min-height:205px;overflow:hidden;border:1px solid #d9e2ef;border-radius:11px;background:#fff;box-shadow:0 2px 8px #17212b0b}
-.rehzu-admin-v2 .radmin-card>header{display:flex;align-items:center;gap:5px;min-height:40px;padding:7px 6px;color:#fff;font-size:9px;line-height:1.15}
-.rehzu-admin-v2 .radmin-card>header span{font-size:16px;flex:0 0 auto}
-.rehzu-admin-v2 .radmin-card-value{padding:12px 8px 6px;color:#1757b4;font-size:23px;font-weight:900;line-height:1.12;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
-.rehzu-admin-v2 .radmin-green .radmin-card-value{color:#078b49}.rehzu-admin-v2 .radmin-purple .radmin-card-value{color:#5830ad}.rehzu-admin-v2 .radmin-orange .radmin-card-value{color:#e76d0a}.rehzu-admin-v2 .radmin-sky .radmin-card-value{color:#0877a8}.rehzu-admin-v2 .radmin-teal .radmin-card-value{font-size:22px;color:#087d83}
-.rehzu-admin-v2 .radmin-card-lines{display:grid;gap:0;padding:0 6px 7px}
-.rehzu-admin-v2 .radmin-card-lines>div{display:flex;justify-content:space-between;gap:3px;padding:4px 1px;border-bottom:1px solid #edf1f5;color:#27364c;font-size:8px;line-height:1.2;overflow-wrap:anywhere}
-.rehzu-admin-v2 .radmin-card-lines b{color:#172b49;font-size:8px;text-align:right}
-.rehzu-admin-v2 .radmin-card>button{align-self:stretch;margin:auto 5px 6px;padding:7px 3px;border:0;border-radius:14px;background:#1769df;color:#fff;font-size:8px;line-height:1.15;font-weight:800}
-.rehzu-admin-v2 .radmin-green>header{background:#0d914b}.rehzu-admin-v2 .radmin-purple>header{background:#5930ad}.rehzu-admin-v2 .radmin-orange>header{background:#ed790d}.rehzu-admin-v2 .radmin-sky>header{background:#0877a8}.rehzu-admin-v2 .radmin-violet>header{background:#4e2bb0}.rehzu-admin-v2 .radmin-teal>header{background:#078d91}.rehzu-admin-v2 .radmin-navy>header{background:#174b91}.rehzu-admin-v2 .radmin-blue>header{background:#174b91}
-.rehzu-admin-v2 .radmin-security-state{padding:13px 7px 6px;font-size:16px;font-weight:900;color:#118347}
-.rehzu-admin-v2 .radmin-country-preview{display:grid;grid-template-columns:1fr;gap:5px;padding:0 6px 7px;min-height:65px}
-.rehzu-admin-v2 .radmin-quick-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:7px}
-.rehzu-admin-v2 .radmin-quick-grid button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-width:0;min-height:65px;padding:4px 2px;border:1px solid #d9e2ef;border-radius:8px;background:#f8faff;color:#1769df;font-size:16px}
-.rehzu-admin-v2 .radmin-quick-grid small{color:#26364d;font-size:7px;line-height:1.1;font-weight:750;text-align:center}
-.rehzu-admin-v2 .radmin-footnote{font-size:9px;color:#718096;margin-top:8px}
+.rehzo99-admin-v2 .rehzo99-admin-search-heading{padding:5px 7px;color:#758397;font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.07em}
+.rehzo99-admin-v2 .rehzo99-admin-search-item{display:flex;width:100%;align-items:center;gap:8px;padding:9px 8px;border:0;border-radius:8px;background:#fff;color:#172b49;text-align:left;font-size:10px}
+.rehzo99-admin-v2 .rehzo99-admin-search-item:hover,.rehzo99-admin-v2 .rehzo99-admin-search-item:focus{outline:0;background:#edf5ff}
+.rehzo99-admin-v2 .rehzo99-admin-search-item b{display:block;font-size:10px}
+.rehzo99-admin-v2 .rehzo99-admin-search-item small{display:block;margin-top:2px;color:#718096;font-size:8px}
+.rehzo99-admin-v2 .rehzo99-admin-search-tag{margin-left:auto;padding:3px 5px;border-radius:5px;background:#eef3f9;color:#52647b;font-size:8px;white-space:nowrap}
+.rehzo99-admin-v2 .rehzo99-admin-search-empty{padding:14px 8px;color:#64748b;font-size:10px}
+.rehzo99-admin-v2 #adminRefreshBtn{border:0;border-radius:18px;padding:9px 12px;background:#1769df;color:#fff;font-size:10px;font-weight:800;white-space:nowrap}
+.rehzo99-admin-v2 #adminAnalyticsUpdated,.rehzo99-admin-v2 #adminLastRefresh{font-size:9px;color:#758397}
+.rehzo99-admin-v2 .radmin-welcome,.rehzo99-admin-v2 .radmin-booking-shortcuts{display:none!important}
+.rehzo99-admin-v2 .radmin-grid-3x3{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important;align-items:stretch}
+.rehzo99-admin-v2 .radmin-card{display:flex;flex-direction:column;min-width:0!important;min-height:205px;overflow:hidden;border:1px solid #d9e2ef;border-radius:11px;background:#fff;box-shadow:0 2px 8px #17212b0b}
+.rehzo99-admin-v2 .radmin-card>header{display:flex;align-items:center;gap:5px;min-height:40px;padding:7px 6px;color:#fff;font-size:9px;line-height:1.15}
+.rehzo99-admin-v2 .radmin-card>header span{font-size:16px;flex:0 0 auto}
+.rehzo99-admin-v2 .radmin-card-value{padding:12px 8px 6px;color:#1757b4;font-size:23px;font-weight:900;line-height:1.12;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+.rehzo99-admin-v2 .radmin-green .radmin-card-value{color:#078b49}.rehzo99-admin-v2 .radmin-purple .radmin-card-value{color:#5830ad}.rehzo99-admin-v2 .radmin-orange .radmin-card-value{color:#e76d0a}.rehzo99-admin-v2 .radmin-sky .radmin-card-value{color:#0877a8}.rehzo99-admin-v2 .radmin-teal .radmin-card-value{font-size:22px;color:#087d83}
+.rehzo99-admin-v2 .radmin-card-lines{display:grid;gap:0;padding:0 6px 7px}
+.rehzo99-admin-v2 .radmin-card-lines>div{display:flex;justify-content:space-between;gap:3px;padding:4px 1px;border-bottom:1px solid #edf1f5;color:#27364c;font-size:8px;line-height:1.2;overflow-wrap:anywhere}
+.rehzo99-admin-v2 .radmin-card-lines b{color:#172b49;font-size:8px;text-align:right}
+.rehzo99-admin-v2 .radmin-card>button{align-self:stretch;margin:auto 5px 6px;padding:7px 3px;border:0;border-radius:14px;background:#1769df;color:#fff;font-size:8px;line-height:1.15;font-weight:800}
+.rehzo99-admin-v2 .radmin-green>header{background:#0d914b}.rehzo99-admin-v2 .radmin-purple>header{background:#5930ad}.rehzo99-admin-v2 .radmin-orange>header{background:#ed790d}.rehzo99-admin-v2 .radmin-sky>header{background:#0877a8}.rehzo99-admin-v2 .radmin-violet>header{background:#4e2bb0}.rehzo99-admin-v2 .radmin-teal>header{background:#078d91}.rehzo99-admin-v2 .radmin-navy>header{background:#174b91}.rehzo99-admin-v2 .radmin-blue>header{background:#174b91}
+.rehzo99-admin-v2 .radmin-security-state{padding:13px 7px 6px;font-size:16px;font-weight:900;color:#118347}
+.rehzo99-admin-v2 .radmin-country-preview{display:grid;grid-template-columns:1fr;gap:5px;padding:0 6px 7px;min-height:65px}
+.rehzo99-admin-v2 .radmin-quick-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:7px}
+.rehzo99-admin-v2 .radmin-quick-grid button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-width:0;min-height:65px;padding:4px 2px;border:1px solid #d9e2ef;border-radius:8px;background:#f8faff;color:#1769df;font-size:16px}
+.rehzo99-admin-v2 .radmin-quick-grid small{color:#26364d;font-size:7px;line-height:1.1;font-weight:750;text-align:center}
+.rehzo99-admin-v2 .radmin-footnote{font-size:9px;color:#718096;margin-top:8px}
 @media(min-width:900px){
  body:has(#view-admin.active) .main-wrapper{padding-left:18px;padding-right:18px}
- .rehzu-admin-v2 .radmin-layout{grid-template-columns:115px minmax(0,1fr)!important}
- .rehzu-admin-v2 .radmin-sidebar{padding:10px 5px}
- .rehzu-admin-v2 .radmin-side-brand img{width:42px;height:40px}
- .rehzu-admin-v2 .radmin-sidebar>button{min-height:42px;flex-direction:row;justify-content:flex-start;text-align:left;font-size:8px;padding:6px}
- .rehzu-admin-v2 .radmin-sidebar>button .radmin-nav-icon{font-size:15px}
- .rehzu-admin-v2 .radmin-main{padding:14px 16px 34px!important}
- .rehzu-admin-v2 .radmin-grid-3x3{gap:10px!important}
- .rehzu-admin-v2 .radmin-card{min-height:245px}
- .rehzu-admin-v2 .radmin-card>header{font-size:13px;padding:10px}
- .rehzu-admin-v2 .radmin-card-value{font-size:30px;padding:18px 12px 9px}
- .rehzu-admin-v2 .radmin-card-lines>div{font-size:10px;padding:6px 2px}
- .rehzu-admin-v2 .radmin-card-lines b{font-size:10px}
- .rehzu-admin-v2 .radmin-card>button{font-size:10px;padding:8px}
+ .rehzo99-admin-v2 .radmin-layout{grid-template-columns:115px minmax(0,1fr)!important}
+ .rehzo99-admin-v2 .radmin-sidebar{padding:10px 5px}
+ .rehzo99-admin-v2 .radmin-side-brand img{width:42px;height:40px}
+ .rehzo99-admin-v2 .radmin-sidebar>button{min-height:42px;flex-direction:row;justify-content:flex-start;text-align:left;font-size:8px;padding:6px}
+ .rehzo99-admin-v2 .radmin-sidebar>button .radmin-nav-icon{font-size:15px}
+ .rehzo99-admin-v2 .radmin-main{padding:14px 16px 34px!important}
+ .rehzo99-admin-v2 .radmin-grid-3x3{gap:10px!important}
+ .rehzo99-admin-v2 .radmin-card{min-height:245px}
+ .rehzo99-admin-v2 .radmin-card>header{font-size:13px;padding:10px}
+ .rehzo99-admin-v2 .radmin-card-value{font-size:30px;padding:18px 12px 9px}
+ .rehzo99-admin-v2 .radmin-card-lines>div{font-size:10px;padding:6px 2px}
+ .rehzo99-admin-v2 .radmin-card-lines b{font-size:10px}
+ .rehzo99-admin-v2 .radmin-card>button{font-size:10px;padding:8px}
 }
 @media(max-width:380px){
- .rehzu-admin-v2 .radmin-layout{grid-template-columns:54px minmax(0,1fr)!important}
- .rehzu-admin-v2 .radmin-sidebar>button{min-height:40px;font-size:5.8px}
- .rehzu-admin-v2 .radmin-sidebar>button .radmin-nav-icon{font-size:13px}
- .rehzu-admin-v2 .radmin-main{padding-left:5px!important;padding-right:5px!important}
- .rehzu-admin-v2 .radmin-card>header{font-size:7px;padding:5px 3px}
- .rehzu-admin-v2 .radmin-card>header span{font-size:13px}
- .rehzu-admin-v2 .radmin-card-value{font-size:18px;padding:9px 5px 5px}
- .rehzu-admin-v2 .radmin-card-lines>div,.rehzu-admin-v2 .radmin-card-lines b{font-size:6.5px}
- .rehzu-admin-v2 .radmin-card>button{font-size:6.5px}
+ .rehzo99-admin-v2 .radmin-layout{grid-template-columns:54px minmax(0,1fr)!important}
+ .rehzo99-admin-v2 .radmin-sidebar>button{min-height:40px;font-size:5.8px}
+ .rehzo99-admin-v2 .radmin-sidebar>button .radmin-nav-icon{font-size:13px}
+ .rehzo99-admin-v2 .radmin-main{padding-left:5px!important;padding-right:5px!important}
+ .rehzo99-admin-v2 .radmin-card>header{font-size:7px;padding:5px 3px}
+ .rehzo99-admin-v2 .radmin-card>header span{font-size:13px}
+ .rehzo99-admin-v2 .radmin-card-value{font-size:18px;padding:9px 5px 5px}
+ .rehzo99-admin-v2 .radmin-card-lines>div,.rehzo99-admin-v2 .radmin-card-lines b{font-size:6.5px}
+ .rehzo99-admin-v2 .radmin-card>button{font-size:6.5px}
 }
 </style>
 
@@ -210,13 +210,13 @@ body:has(#view-admin.active) .main-wrapper{padding:8px 10px calc(88px + env(safe
 </head>
 <body>
 <!-- Accessible global error alert for unexpected runtime/network failures. -->
-<div id="rehzuSystemAlert" class="rehzu-system-alert" role="alert" aria-live="assertive" aria-atomic="true" hidden>
-  <span class="rehzu-system-alert-icon" aria-hidden="true">!</span>
-  <div class="rehzu-system-alert-copy">
-    <strong id="rehzuSystemAlertTitle">Something went wrong</strong>
-    <p id="rehzuSystemAlertMessage">Please try again.</p>
+<div id="rehzo99SystemAlert" class="rehzo99-system-alert" role="alert" aria-live="assertive" aria-atomic="true" hidden>
+  <span class="rehzo99-system-alert-icon" aria-hidden="true">!</span>
+  <div class="rehzo99-system-alert-copy">
+    <strong id="rehzo99SystemAlertTitle">Something went wrong</strong>
+    <p id="rehzo99SystemAlertMessage">Please try again.</p>
   </div>
-  <button type="button" class="rehzu-system-alert-close" aria-label="Dismiss alert" onclick="dismissREHZUSystemAlert()">×</button>
+  <button type="button" class="rehzo99-system-alert-close" aria-label="Dismiss alert" onclick="dismissrehzo99SystemAlert()">×</button>
 </div>
 <script src="/js/system-alerts.js"></script>
 
@@ -559,25 +559,25 @@ body:has(#view-admin.active) .main-wrapper{padding:8px 10px calc(88px + env(safe
     <div class="sub-header"><h3 class="sub-title">Help & Support</h3><span style="font-size:11px;color:#64748B;">Private complaint desk</span></div>
     <div style="background:#fff;border:1px solid #dce8e1;border-radius:16px;padding:16px;margin-bottom:14px;">
       <h3 style="margin:0 0 6px;color:#075743;">Submit a Complaint</h3><p style="font-size:12px;color:#64748B;margin:0 0 14px;">Your complaint is visible only to you and authorized REHZO 99 administrators. Do not share passwords, OTPs, UPI PINs or bank credentials.</p>
-      <form id="rehzuComplaintForm" onsubmit="submitREHZUComplaint(event)" style="display:grid;gap:10px;">
-        <label style="font-size:12px;font-weight:800;">Complaint category<select id="rehzuComplaintCategory" required class="pill-input" style="width:100%;margin-top:5px;"><option>Account & Login</option><option>Room / Listing</option><option>Booking / TRL</option><option>Payment / Fraud</option><option>Safety / Harassment</option><option>Privacy / Data</option><option>Other</option></select></label>
-        <label style="font-size:12px;font-weight:800;">Subject<input id="rehzuComplaintSubject" required minlength="5" maxlength="120" class="pill-input" style="width:100%;margin-top:5px;" placeholder="Short complaint title"></label>
-        <label style="font-size:12px;font-weight:800;">Details<textarea id="rehzuComplaintDetails" required minlength="20" maxlength="3000" rows="5" class="pill-input" style="width:100%;margin-top:5px;resize:vertical;" placeholder="Explain what happened (20–3000 characters)"></textarea></label>
-        <label style="font-size:12px;font-weight:800;">Related Listing ID / Booking TRL (optional)<input id="rehzuComplaintReference" maxlength="120" class="pill-input" style="width:100%;margin-top:5px;" placeholder="Only if relevant"></label>
-        <label style="font-size:12px;font-weight:800;">Contact phone (optional)<input id="rehzuComplaintPhone" type="tel" maxlength="30" class="pill-input" style="width:100%;margin-top:5px;" placeholder="Phone number"></label>
-        <label style="font-size:12px;font-weight:800;">Contact email (optional)<input id="rehzuComplaintEmail" type="email" maxlength="120" class="pill-input" style="width:100%;margin-top:5px;" placeholder="Email address"></label>
-        <button id="rehzuComplaintSubmit" type="submit" class="big-action-btn">Submit Complaint Securely</button>
-        <p id="rehzuComplaintMessage" role="status" aria-live="polite" style="font-size:12px;margin:0;color:#075743;"></p>
+      <form id="rehzo99ComplaintForm" onsubmit="submitrehzo99Complaint(event)" style="display:grid;gap:10px;">
+        <label style="font-size:12px;font-weight:800;">Complaint category<select id="rehzo99ComplaintCategory" required class="pill-input" style="width:100%;margin-top:5px;"><option>Account & Login</option><option>Room / Listing</option><option>Booking / TRL</option><option>Payment / Fraud</option><option>Safety / Harassment</option><option>Privacy / Data</option><option>Other</option></select></label>
+        <label style="font-size:12px;font-weight:800;">Subject<input id="rehzo99ComplaintSubject" required minlength="5" maxlength="120" class="pill-input" style="width:100%;margin-top:5px;" placeholder="Short complaint title"></label>
+        <label style="font-size:12px;font-weight:800;">Details<textarea id="rehzo99ComplaintDetails" required minlength="20" maxlength="3000" rows="5" class="pill-input" style="width:100%;margin-top:5px;resize:vertical;" placeholder="Explain what happened (20–3000 characters)"></textarea></label>
+        <label style="font-size:12px;font-weight:800;">Related Listing ID / Booking TRL (optional)<input id="rehzo99ComplaintReference" maxlength="120" class="pill-input" style="width:100%;margin-top:5px;" placeholder="Only if relevant"></label>
+        <label style="font-size:12px;font-weight:800;">Contact phone (optional)<input id="rehzo99ComplaintPhone" type="tel" maxlength="30" class="pill-input" style="width:100%;margin-top:5px;" placeholder="Phone number"></label>
+        <label style="font-size:12px;font-weight:800;">Contact email (optional)<input id="rehzo99ComplaintEmail" type="email" maxlength="120" class="pill-input" style="width:100%;margin-top:5px;" placeholder="Email address"></label>
+        <button id="rehzo99ComplaintSubmit" type="submit" class="big-action-btn">Submit Complaint Securely</button>
+        <p id="rehzo99ComplaintMessage" role="status" aria-live="polite" style="font-size:12px;margin:0;color:#075743;"></p>
       </form>
     </div>
-    <div style="background:#fff;border:1px solid #dce8e1;border-radius:16px;padding:16px;"><h3 style="margin:0 0 10px;color:#075743;">My Complaints & Status</h3><div id="rehzuMyComplaints"><p style="font-size:12px;color:#64748B;">Sign in to view your complaints.</p></div></div>
+    <div style="background:#fff;border:1px solid #dce8e1;border-radius:16px;padding:16px;"><h3 style="margin:0 0 10px;color:#075743;">My Complaints & Status</h3><div id="rehzo99MyComplaints"><p style="font-size:12px;color:#64748B;">Sign in to view your complaints.</p></div></div>
     <p style="font-size:11px;color:#64748B;margin:12px 2px;">Need another contact channel? <a href="/legal#policy-grievance" style="color:#075743;font-weight:800;">Grievance contact details</a>.</p>
   </section>
 
   <!-- REHZO 99 ADMIN: unified operations workspace -->
-  <section id="view-admin" class="view rehzu-admin-shell rehzu-admin-v2">
+  <section id="view-admin" class="view rehzo99-admin-shell rehzo99-admin-v2">
   <div class="radmin-layout">
-    <nav class="rehzu-admin-compact-nav radmin-sidebar" aria-label="Admin sections">
+    <nav class="rehzo99-admin-compact-nav radmin-sidebar" aria-label="Admin sections">
       <div class="radmin-side-brand"><img src="/logo.svg" alt="REHZO 99"><b>REHZO 99</b><small>Find Your Stay</small></div>
       <button class="active" onclick="adminControlTab('dashboard')"><span class="radmin-nav-icon">▦</span><span>Dashboard</span></button>
       <button onclick="adminControlTab('owners')"><span class="radmin-nav-icon">♙</span><span>Owners & Listings</span></button>
@@ -593,7 +593,7 @@ body:has(#view-admin.active) .main-wrapper{padding:8px 10px calc(88px + env(safe
       <button class="radmin-side-logout" onclick="goView('home')"><span class="radmin-nav-icon">⇦</span><span>Logout</span></button>
     </nav>
     <main class="radmin-main">
-    <div class="radmin-toolbar"><div><h2 id="adminCurrentSectionTitle">Dashboard</h2><p id="adminSectionDescription">Real-time overview of REHZO 99 rooms, users and bookings.</p></div><div class="radmin-toolbar-tools"><div class="radmin-command-search"><label class="radmin-search-wrap"><span aria-hidden="true">⌕</span><input id="adminSearchInput" aria-label="Search across REHZO 99 admin records" placeholder="Search users, rooms, TRL, bookings…" autocomplete="off" oninput="rehzuAdminGlobalSearch(this.value)" onfocus="rehzuAdminGlobalSearch(this.value)"><button type="button" id="adminVoiceSearchBtn" class="radmin-voice-search" aria-label="Search by voice" title="Search by voice" onclick="rehzuAdminStartVoiceSearch()">🎙</button><kbd>Ctrl K</kbd></label><div id="rehzuAdminSearchResults" class="rehzu-admin-search-results" hidden></div></div><button type="button" id="adminRefreshBtn" onclick="adminRefreshAll()">↻ Refresh</button></div><span id="adminAnalyticsUpdated">Waiting for data</span><span id="adminLastRefresh" class="radmin-last-refresh">Data updates when refreshed</span></div>
+    <div class="radmin-toolbar"><div><h2 id="adminCurrentSectionTitle">Dashboard</h2><p id="adminSectionDescription">Real-time overview of REHZO 99 rooms, users and bookings.</p></div><div class="radmin-toolbar-tools"><div class="radmin-command-search"><label class="radmin-search-wrap"><span aria-hidden="true">⌕</span><input id="adminSearchInput" aria-label="Search across REHZO 99 admin records" placeholder="Search users, rooms, TRL, bookings…" autocomplete="off" oninput="rehzo99AdminGlobalSearch(this.value)" onfocus="rehzo99AdminGlobalSearch(this.value)"><button type="button" id="adminVoiceSearchBtn" class="radmin-voice-search" aria-label="Search by voice" title="Search by voice" onclick="rehzo99AdminStartVoiceSearch()">🎙</button><kbd>Ctrl K</kbd></label><div id="rehzo99AdminSearchResults" class="rehzo99-admin-search-results" hidden></div></div><button type="button" id="adminRefreshBtn" onclick="adminRefreshAll()">↻ Refresh</button></div><span id="adminAnalyticsUpdated">Waiting for data</span><span id="adminLastRefresh" class="radmin-last-refresh">Data updates when refreshed</span></div>
     <div id="adminDashboardSection" class="ra-panel radmin-panel radmin-dashboard" style="display:block">
       <div class="radmin-welcome"><div><h3>Welcome, Admin</h3><p>REHZO 99 · Live platform overview</p></div><span class="radmin-updated-chip">● Live database metrics</span></div><div class="radmin-booking-shortcuts"><button onclick="adminQuickOpen('confirmed')"><b id="adminBookingConfirmedShortcut">0</b><span>Confirmed</span></button><button onclick="adminQuickOpen('pending')"><b id="adminBookingPendingShortcut">0</b><span>Pending</span></button><button onclick="adminQuickOpen('rejected')"><b id="adminBookingRejectedShortcut">0</b><span>Rejected</span></button><button onclick="adminQuickOpen('cancelled')"><b id="adminBookingCancelledShortcut">0</b><span>Cancelled</span></button></div><div class="radmin-grid-3x3">
         <article class="radmin-card radmin-blue"><header><span>♟</span><b>Total Users</b></header><div class="radmin-card-value" id="adminTotalRegisteredUsers">0</div><div class="radmin-card-lines"><div>Yesterday Register <b id="adminYesterdayUsersCount">0</b></div><div>Today Register <b id="adminTodayUsersCount">0</b></div><div>Live Users <b id="adminLiveUsersCount">—</b></div><div>Yesterday Live Users <b id="adminYesterdayLiveUsersCount">—</b></div></div><button onclick="adminControlTab('users')">View Users →</button></article>
@@ -620,7 +620,7 @@ body:has(#view-admin.active) .main-wrapper{padding:8px 10px calc(88px + env(safe
     <div id="adminNotificationsSection" class="ra-panel radmin-panel" style="display:none"><h3>Live Notifications</h3><p>Recent platform changes from the live database event log. This is an Admin activity feed, not a message sent to users.</p><div id="adminNotificationsFeed"><p class="ra-empty-note">Open this section to load events.</p></div></div>
     <div id="adminCountriesSection" class="ra-panel radmin-panel" style="display:none"><h3>Country Management</h3><p>Country-wise overview from recorded account and listing data.</p><h4>Listings by country</h4><div id="adminCountryListings"></div><h4>Users by country</h4><div id="adminCountryUsers"></div><p>Country verification rules cannot be overridden here.</p></div>
     <div id="adminActivitySection" class="ra-panel radmin-panel" style="display:none"><h3>Admin Activity Log</h3><p>Database-backed event history for account, room, booking, report, review, policy and security changes.</p><div id="adminActivityFeed"><p class="ra-empty-note">Open this section to load activity.</p></div></div>
-    <div id="adminSettingsSection" class="ra-panel radmin-panel" style="display:none"><h3>Admin Settings</h3><p>Admin access is verified by the existing server-side rehzu_is_admin check. Role changes and credential changes are not exposed in the public client.</p></div>
+    <div id="adminSettingsSection" class="ra-panel radmin-panel" style="display:none"><h3>Admin Settings</h3><p>Admin access is verified by the existing server-side rehzo99_is_admin check. Role changes and credential changes are not exposed in the public client.</p></div>
     <div id="adminExportSection" class="ra-panel radmin-panel" style="display:none"><h3>Data Export</h3><p>Download non-sensitive summary counts only.</p><button type="button" class="ra-secondary" onclick="adminExportSummaryCsv()">Export summary CSV</button></div>
     <div id="adminHealthSection" class="ra-panel radmin-panel" style="display:none"><h3>System Health</h3><p id="adminHealthStatus">Run a check for current admin session and database connectivity.</p><button type="button" class="ra-secondary" onclick="adminCheckSystemHealth()">Check system health</button></div>
     </main>
@@ -659,8 +659,8 @@ body:has(#view-admin.active) .main-wrapper{padding:8px 10px calc(88px + env(safe
 <script>
 /* REHZO 99 global tap sound: initialized before the app bundle so it works on every view. */
 (function () {
-  if (window.__rehzuGlobalTapSound) return;
-  window.__rehzuGlobalTapSound = true;
+  if (window.__rehzo99GlobalTapSound) return;
+  window.__rehzo99GlobalTapSound = true;
   var ctx = null;
   var lastSound = 0;
 
@@ -725,8 +725,8 @@ body:has(#view-admin.active) .main-wrapper{padding:8px 10px calc(88px + env(safe
   function showLoadFailure() {
     if (finished) return;
     finished = true;
-    if (typeof window.showREHZUSystemAlert === 'function') {
-      window.showREHZUSystemAlert(
+    if (typeof window.showrehzo99SystemAlert === 'function') {
+      window.showrehzo99SystemAlert(
         'REHZO 99 could not load its secure connection service. Check your internet connection and reload the app.',
         'Connection service unavailable'
       );
@@ -741,8 +741,8 @@ body:has(#view-admin.active) .main-wrapper{padding:8px 10px calc(88px + env(safe
     var app = document.createElement('script');
     app.src = '/js/app.js?v=login-auth-1';
     app.onerror = function () {
-      if (typeof window.showREHZUSystemAlert === 'function') {
-        window.showREHZUSystemAlert('The REHZO 99 app files could not be loaded. Please reload the page.', 'App files unavailable');
+      if (typeof window.showrehzo99SystemAlert === 'function') {
+        window.showrehzo99SystemAlert('The REHZO 99 app files could not be loaded. Please reload the page.', 'App files unavailable');
       }
     };
     document.body.appendChild(app);
