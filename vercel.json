@@ -1,20 +1,35 @@
 {
+  "cleanUrls": true,
   "redirects": [
     {
       "source": "/terms.html",
-      "destination": "/legal#policy-terms",
+      "destination": "/legal",
+      "permanent": true
+    },
+    {
+      "source": "/terms",
+      "destination": "/legal",
       "permanent": true
     },
     {
       "source": "/privacy.html",
-      "destination": "/legal#policy-privacy",
+      "destination": "/legal",
+      "permanent": true
+    },
+    {
+      "source": "/privacy",
+      "destination": "/legal",
       "permanent": true
     },
     {
       "source": "/support.html",
-      "destination": "/legal#support",
+      "destination": "/legal",
+      "permanent": true
+    },
+    {
+      "source": "/support",
+      "destination": "/legal",
       "permanent": true
     }
-  ],
-  "cleanUrls": true
+  ]
 }
