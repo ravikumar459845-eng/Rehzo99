@@ -15,7 +15,7 @@ Mobile-first room, PG, hostel and flat discovery and booking platform.
 - Owner dashboard, discount duration, booking history and support tickets.
 - Protected admin view, available only to explicitly provisioned admin users.
 - Booking expiry after 24 months and a daily cleanup job for old booking history.
-- Terms, Privacy and Support pages.
+- One consolidated Terms, Conditions, Policies & Support page (`/legal`).
 
 ## Supabase
 Project ref: fbjclsnxcxorkzbcgelv (Free plan selected). Browser configuration contains only the publishable key. Never expose a service-role key in client code.
