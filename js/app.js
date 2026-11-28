@@ -1238,7 +1238,7 @@ function openProfileModal(callbackAction) {
           '<a href="/legal" aria-label="Terms, Policies and Support" style="display:inline-flex; align-items:center; gap:3px; color:#64748B; font-size:9px; line-height:1.2; font-weight:600; text-decoration:none; padding:2px 0;">☷ Terms, Policies &amp; Support</a>' +
         '</div>' +
 
-        '<button class="big-action-btn" id="btnLoginSubmit" onclick="submitCredentialsLogin(' + (callbackAction ? '\'' + callbackAction + '\'' : 'null') + ')">Login with Rehzu ID </button>' +
+        '<button class="big-action-btn" id="btnLoginSubmit" onclick="submitCredentialsLogin(' + (callbackAction ? '\'' + callbackAction + '\'' : 'null') + ')">Login with REHZO 99 ID </button>' +
         
         '<div style="text-align:center; margin-top:14px;">' +
           '<span style="font-size:11px; color:#044E3B; font-weight:800; cursor:pointer;" onclick="openRegistrationModal(null, ' + (callbackAction ? '\'' + callbackAction + '\'' : 'null') + ')">New here? Create REHZO 99 Account</span>' +
@@ -1644,7 +1644,7 @@ async function submitCredentialsLogin(callbackAction) {
     alert(safeUserError(e, "Login failed. Please check your details and try again."));
   } finally {
     btn.disabled = false;
-    btn.innerText = 'Login with Rehzu ID ';
+    btn.innerText = 'Login with REHZO 99 ID ';
   }
 }
 
