@@ -1235,7 +1235,7 @@ function openProfileModal(callbackAction) {
 
         '<div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px; margin-bottom:12px;">' +
           '<span style="font-size:10.5px; color:#044E3B; font-weight:700; cursor:pointer;" onclick="openForgotCredentialsModal()">Forgot User ID or Password?</span>' +
-          '<a href="/legal.html" aria-label="Terms, Policies and Support" style="display:inline-flex; align-items:center; gap:3px; color:#64748B; font-size:9px; line-height:1.2; font-weight:600; text-decoration:none; padding:2px 0;">☷ Terms, Policies &amp; Support</a>' +
+          '<a href="/legal" aria-label="Terms, Policies and Support" style="display:inline-flex; align-items:center; gap:3px; color:#64748B; font-size:9px; line-height:1.2; font-weight:600; text-decoration:none; padding:2px 0;">☷ Terms, Policies &amp; Support</a>' +
         '</div>' +
 
         '<button class="big-action-btn" id="btnLoginSubmit" onclick="submitCredentialsLogin(' + (callbackAction ? '\'' + callbackAction + '\'' : 'null') + ')">Login with Rehzu ID </button>' +
@@ -1345,7 +1345,7 @@ function openRegistrationModal(prefillData, callbackAction) {
 
         '<label style="display:flex;align-items:flex-start;gap:8px;font-size:11px;line-height:1.45;color:#334155;margin:8px 0 12px;">' +
           '<input id="regPolicyConsent" type="checkbox" required style="margin-top:2px;flex:0 0 auto;">' +
-          '<span>I have read and agree to the <a href="/legal.html#policy-terms" target="_blank" rel="noopener noreferrer">Terms &amp; Conditions</a>, <a href="/legal.html#policy-privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a> and <a href="/legal.html#policy-fraud-security" target="_blank" rel="noopener noreferrer">Fraud &amp; Data Security Policy</a>.</span>' +
+          '<span>I have read and agree to the <a href="/legal#policy-terms" target="_blank" rel="noopener noreferrer">Terms &amp; Conditions</a>, <a href="/legal#policy-privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a> and <a href="/legal#policy-fraud-security" target="_blank" rel="noopener noreferrer">Fraud &amp; Data Security Policy</a>.</span>' +
         '</label>' +
         '<button type="submit" id="btnRegisterSubmit" class="big-action-btn">Complete & Enter Rehzu </button>' +
       '</form>' +
@@ -3525,7 +3525,7 @@ function openBookingPillModal(id) {
       '</div>' +
       '<label style="display:flex;align-items:flex-start;gap:8px;font-size:10.5px;line-height:1.45;color:#334155;margin:8px 0 12px;">' +
         '<input id="bpPolicyConsent" type="checkbox" required style="margin-top:2px;flex:0 0 auto;">' +
-        '<span>I agree to the <a href="/legal.html#policy-booking-policy" target="_blank" rel="noopener noreferrer">Booking &amp; Cancellation Policy</a>, <a href="/legal.html#policy-terms" target="_blank" rel="noopener noreferrer">Terms</a> and <a href="/legal.html#policy-privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.</span>' +
+        '<span>I agree to the <a href="/legal#policy-booking-policy" target="_blank" rel="noopener noreferrer">Booking &amp; Cancellation Policy</a>, <a href="/legal#policy-terms" target="_blank" rel="noopener noreferrer">Terms</a> and <a href="/legal#policy-privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.</span>' +
       '</label>' +
       '<button class="big-action-btn" id="btnConfirmBooking" onclick="submitBookingRequest()">Send Request to Owner </button>' +
     '</div>' +
