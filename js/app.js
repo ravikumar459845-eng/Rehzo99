@@ -3168,35 +3168,28 @@ async function saveFullRoomEdit(roomId) {
       finalPhotos.push(urlData.data.publicUrl);
     }
 
+    var editCountryProof = await ensureCurrentCountryProof();
     var listingUpdate = {
+      country_proof: editCountryProof,
       house_name: houseName,
       room_type: roomType,
-      rent: rent,
+      monthly_rent: rent,
       deposit: deposit,
       city: city,
       state: state,
-      pin: pin,
-      address: address,
-      photos: finalPhotos
+      postal_code: pin,
+      exact_address: address,
+      status: status,
+      photo_urls: finalPhotos,
+      latitude: currentEditGpsRoomId === roomId && currentEditGpsCoord ? currentEditGpsCoord.lat : null,
+      longitude: currentEditGpsRoomId === roomId && currentEditGpsCoord ? currentEditGpsCoord.lng : null
     };
-    if (currentEditGpsRoomId === roomId && currentEditGpsCoord) {
-      listingUpdate.lat = currentEditGpsCoord.lat;
-      listingUpdate.lng = currentEditGpsCoord.lng;
-    }
-    var res = await sb.from('listings').update(listingUpdate).eq('id', roomId);
-
-    if (res.error) throw res.error;
-
-    var statusRes = await sb.rpc('rehzo99_owner_set_listing_status', {
+    var res = await sb.rpc('rehzo99_owner_update_listing', {
       p_listing_id: roomId,
-      p_status: status
+      p_listing: listingUpdate
     });
+    if (res.error || res.data !== true) throw (res.error || new Error('Listing update was not confirmed by the database.'));
 
-    if (statusRes.error) {
-      alert(safeUserError(statusRes.error, "Property details were saved, but availability status was not changed."));
-    } else {
-      alert("Property updated successfully!");
-    }
     closeModal();
     currentEditGpsRoomId = '';
     currentEditGpsCoord = null;
