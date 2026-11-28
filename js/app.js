@@ -1552,7 +1552,7 @@ async function submitUnifiedRegistration(e, callbackAction) {
       country_code: /^[A-Z]{2}$/.test(String(detectedCountryCode || '').toUpperCase()) ? String(detectedCountryCode).toUpperCase() : null
     };
 
-    var insertRes = await sb.from('profiles').insert([newProfile]).select('id,uid,name,phone,gmail,created_at,country_code').single();
+    var insertRes = await sb.from('profiles').upsert([newProfile], { onConflict: 'id' }).select('id,uid,name,phone,gmail,created_at,country_code').single();
     if (insertRes.error) throw insertRes.error;
 
     DB.currentUser = insertRes.data;
