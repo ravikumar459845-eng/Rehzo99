@@ -3423,24 +3423,21 @@ async function handlePublishProperty(e) {
       suitable_for: selectedSuitable,
       amenities: selectedAmenities,
       rules: selectedRules,
-      rent: Math.max(1, parseFloat(document.getElementById('opRent').value) || 2500),
-      deposit: Math.max(0, parseFloat(document.getElementById('opDeposit').value) || 0),
-      country: detectedCountryCode,
+      monthly_rent: Number(document.getElementById('opRent').value),
+      deposit: Number(document.getElementById('opDeposit').value || 0),
+      country_code: String(detectedCountryCode || '').toUpperCase(),
       city: cleanText(document.getElementById('opCity').value),
       state: cleanText(document.getElementById('opState').value),
-      pin: cleanText(document.getElementById('opPin').value),
-      address: cleanText(document.getElementById('opAddr').value),
-      lat: lockedMapCoord.lat,
-      lng: lockedMapCoord.lng,
-      owner_uid: DB.currentUser.uid,
-      owner_name: cleanText(document.getElementById('opName').value),
-      owner_phone: document.getElementById('opPhone').value.trim(),
-      owner_gmail: document.getElementById('opGmail').value.trim() || null,
-      status: 'available',
-      photos: photoUrls
+      postal_code: cleanText(document.getElementById('opPin').value),
+      exact_address: cleanText(document.getElementById('opAddr').value),
+      latitude: Number(lockedMapCoord.lat),
+      longitude: Number(lockedMapCoord.lng),
+      photo_urls: photoUrls
     };
 
-    var insertRes = await sb.from('listings').insert([newListing]);
+    // The database verifies the short-lived country proof, active owner profile,
+    // currency mapping, photo ownership and GPS, then writes all related rows atomically.
+    var insertRes = await sb.rpc('rehzo99_create_listing', { p_listing: newListing });
     if (insertRes.error) throw insertRes.error;
 
     alert("Room successfully published to Supabase Cloud for 90 Days in " + cleanText(detectedCountryCode) + "!");
