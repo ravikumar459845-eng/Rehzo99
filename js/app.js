@@ -1048,9 +1048,12 @@ async function handleOAuthRedirect() {
         }
         googleEmail = verifiedUser.email.toLowerCase().trim();
 
-        var profCheck = await sb.from('profiles').select('id,uid,name,phone,gmail,created_at').ilike('gmail', googleEmail);
-        if (profCheck.data && profCheck.data.length > 0) {
-          alert("Account already exists with this Gmail (" + googleEmail + ")!\nPlease login with your existing account.");
+        // Check the verified Auth identity server-side. A unique database index
+        // remains the final protection against duplicate Gmail addresses across RLS.
+        var profCheck = await sb.rpc('rehzo_registration_email_available');
+        if (profCheck.error) throw new Error('Could not verify this Gmail for registration. Please retry.');
+        if (profCheck.data !== true) {
+          alert("Account already exists with this Gmail (" + googleEmail + ")!\\nPlease login with your existing account.");
           openProfileModal();
           return;
         }
