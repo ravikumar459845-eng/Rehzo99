@@ -608,7 +608,7 @@ async function syncFromSupabase() {
     var publicListingsRes = { data: [], error: null };
     try {
       var countryProof = await ensureCurrentCountryProof();
-      publicListingsRes = await sb.rpc('rehzu_list_public_listings', { p_country_proof: countryProof });
+      publicListingsRes = await sb.rpc('rehzo99_list_public_listings', { p_country_proof: countryProof });
     } catch (publicReadError) {
       console.warn('Verified country room discovery unavailable; hiding public rooms.');
       publicListingsRes.error = publicReadError;
@@ -634,7 +634,7 @@ async function syncFromSupabase() {
     // Admin authorization comes from the verified Supabase Auth session and
     // server-side role check, never from a possibly stale browser profile cache.
     if (verifiedAuthUser) {
-      var adminCheck = await sb.rpc('rehzu_is_admin');
+      var adminCheck = await sb.rpc('rehzo99_is_admin');
       isAdminView = !adminCheck.error && adminCheck.data === true;
     }
 
@@ -642,13 +642,13 @@ async function syncFromSupabase() {
       DB.adminMetrics = null;
       DB.adminSecurityAlerts = null;
       try {
-        var adminMetricsResult = await sb.rpc('rehzu_admin_dashboard_metrics');
+        var adminMetricsResult = await sb.rpc('rehzo99_admin_dashboard_metrics');
         if (!adminMetricsResult.error && adminMetricsResult.data) DB.adminMetrics = adminMetricsResult.data;
       } catch (adminMetricsError) {
         console.warn('Admin live metrics unavailable:', adminMetricsError);
       }
       try {
-        var adminSecurityResult = await sb.rpc('rehzu_admin_list_security_alerts', { p_limit: 100 });
+        var adminSecurityResult = await sb.rpc('rehzo99_admin_list_security_alerts', { p_limit: 100 });
         if (!adminSecurityResult.error && Array.isArray(adminSecurityResult.data)) DB.adminSecurityAlerts = adminSecurityResult.data;
       } catch (adminSecurityError) {
         console.warn('Admin security summary unavailable:', adminSecurityError);
@@ -659,8 +659,8 @@ async function syncFromSupabase() {
     // Regular accounts continue to receive only their own listings.
     if (isAdminView || currentUid) {
       privateListingsRes = isAdminView
-        ? await sb.rpc('rehzu_admin_list_all_listings')
-        : await sb.rpc('rehzu_list_my_listings');
+        ? await sb.rpc('rehzo99_admin_list_all_listings')
+        : await sb.rpc('rehzo99_list_my_listings');
     }
 
     function mapListing(item) {
@@ -726,8 +726,8 @@ async function syncFromSupabase() {
     var resBookings = { data: [], error: null };
     if (isAdminView || currentUid) {
       var bookingRpc = isAdminView
-        ? await sb.rpc('rehzu_admin_list_all_bookings')
-        : await sb.rpc('rehzu_list_my_bookings');
+        ? await sb.rpc('rehzo99_admin_list_all_bookings')
+        : await sb.rpc('rehzo99_list_my_bookings');
       if (bookingRpc.error) resBookings.error = bookingRpc.error;
       else resBookings.data = Array.isArray(bookingRpc.data) ? bookingRpc.data : [];
     }
@@ -770,7 +770,7 @@ async function syncFromSupabase() {
         DB.profiles = resProfiles.data;
         if (isAdminView) {
           try {
-            var loginActivity = await sb.rpc('rehzu_admin_login_activity');
+            var loginActivity = await sb.rpc('rehzo99_admin_login_activity');
             if (loginActivity.error) throw loginActivity.error;
             var loginByUid = {};
             (Array.isArray(loginActivity.data) ? loginActivity.data : []).forEach(function(row) {
@@ -1631,7 +1631,7 @@ async function submitCredentialsLogin(callbackAction) {
       throw new Error('Signed-in identity does not match this REHZO 99 account.');
     }
 
-    var adminRoleCheck = await sb.rpc('rehzu_is_admin');
+    var adminRoleCheck = await sb.rpc('rehzo99_is_admin');
     profile.role = (!adminRoleCheck.error && adminRoleCheck.data === true) ? 'admin' : 'user';
     DB.currentUser = profile;
     sessionStorage.setItem('rehzo99_current_user', JSON.stringify(DB.currentUser));
@@ -1899,7 +1899,7 @@ async function checkAdminAccess() {
     if (authResult.error || !authResult.data || !authResult.data.user) {
       throw new Error("A valid signed-in session is required.");
     }
-    var adminCheck = await sb.rpc('rehzu_is_admin');
+    var adminCheck = await sb.rpc('rehzo99_is_admin');
     if (adminCheck.error) throw adminCheck.error;
     if (adminCheck.data === true) {
       adminEntryDataLoaded = false;
@@ -1935,7 +1935,7 @@ async function reportListing(listingId) {
   try {
     var authRes = await sb.auth.getUser();
     if (authRes.error || !authRes.data || !authRes.data.user) throw new Error("Please sign in again before reporting.");
-    var reportRes = await sb.rpc('rehzu_submit_listing_report', {p_listing_id: listingId, p_reason: reasonText});
+    var reportRes = await sb.rpc('rehzo99_submit_listing_report', {p_listing_id: listingId, p_reason: reasonText});
     if (reportRes.error) throw reportRes.error;
     alert("Report submitted securely. Admin can review it.");
   } catch (err) {
@@ -2188,7 +2188,7 @@ async function handleSearch(val) {
       if (typeof openProfileModal === 'function') openProfileModal();
       return;
     }
-    var verifyRes = await sb.rpc('rehzu_verify_trl', { p_trl: q.toUpperCase() });
+    var verifyRes = await sb.rpc('rehzo99_verify_trl', { p_trl: q.toUpperCase() });
     if (verifyRes.error) {
       alertBox.style.display = 'block';
       alertBox.style.background = '#FFF7ED';
@@ -2472,7 +2472,7 @@ async function openBookingReviewModal(bookingId) {
   if (!booking || !isBookingReviewWindowOpen(booking)) {
     showrehzo99SystemAlert('You can rate this room after your booked stay is completed.', 'Rating not available yet'); return;
   }
-  var loaded = await sb.rpc('rehzu_get_my_booking_review', { p_booking_id: bookingId });
+  var loaded = await sb.rpc('rehzo99_get_my_booking_review', { p_booking_id: bookingId });
   if (loaded.error) { showrehzo99SystemAlert('Could not load your rating. Please try again.', 'Rating unavailable'); return; }
   var existing = loaded.data || null;
   rehzo99ReviewBookingId = bookingId; rehzo99SelectedReviewRating = existing ? Number(existing.rating) : 0;
@@ -2501,7 +2501,7 @@ async function submitrehzo99BookingReview() {
   if (!rehzo99ReviewBookingId || rating < 1 || rating > 5) { showrehzo99SystemAlert('Please select a star rating from 1 to 5.', 'Choose a rating'); return; }
   var submit = document.getElementById('rehzo99ReviewSubmit');
   if (submit) { submit.disabled = true; submit.textContent = 'Submitting...'; }
-  var result = await sb.rpc('rehzu_submit_listing_review', { p_booking_id: rehzo99ReviewBookingId, p_rating: rating, p_review: review });
+  var result = await sb.rpc('rehzo99_submit_listing_review', { p_booking_id: rehzo99ReviewBookingId, p_rating: rating, p_review: review });
   if (result.error) {
     if (submit) { submit.disabled = false; submit.textContent = 'Submit Rating'; }
     showrehzo99SystemAlert('Your rating could not be saved. Please check that your stay is complete and try again.', 'Rating not saved'); return;
@@ -2511,7 +2511,7 @@ async function submitrehzo99BookingReview() {
 }
 async function loadListingReviewSummary(listingId) {
   var target = document.getElementById('listingRatingSummary'); if (!target) return;
-  var result = await sb.rpc('rehzu_get_listing_review_summary', { p_listing_id: listingId });
+  var result = await sb.rpc('rehzo99_get_listing_review_summary', { p_listing_id: listingId });
   target = document.getElementById('listingRatingSummary'); if (!target) return;
   if (result.error || !result.data) { target.textContent = '⭐ Ratings temporarily unavailable'; return; }
   var count = Number(result.data.count) || 0, average = Number(result.data.average) || 0;
@@ -2624,14 +2624,14 @@ async function tenantFinalConfirmBooking(bookingId) {
   var verifyRes = await sb.from('listings').select('status').eq('id', b.listingId).single();
   if (verifyRes.data && verifyRes.data.status === 'booked') {
     alert("Sorry! This room was just confirmed by another tenant. Your request has been cancelled.");
-    var rejectRes = await sb.rpc('rehzu_owner_reject_booking', { p_booking_id: bookingId });
+    var rejectRes = await sb.rpc('rehzo99_owner_reject_booking', { p_booking_id: bookingId });
     if (rejectRes.error) alert(safeUserError(rejectRes.error, 'Could not reject this booking. Please try again.'));
     await syncFromSupabase();
     return;
   }
 
   // The database creates the permanent 12-digit numeric TRL during confirmation.
-  var res = await sb.rpc('rehzu_confirm_booking', { p_booking_id: bookingId });
+  var res = await sb.rpc('rehzo99_confirm_booking', { p_booking_id: bookingId });
 
   if (!res.error && b.listingId) {
     var targetListing = DB.listings.find(function(x){ return x.id === b.listingId; });
@@ -2657,7 +2657,7 @@ async function tenantRejectBooking(bookingId) {
     return;
   }
   if (!confirm('Reject this accepted room request? The room will remain available for other users.')) return;
-  var result = await sb.rpc('rehzu_tenant_reject_booking', { p_booking_id: bookingId });
+  var result = await sb.rpc('rehzo99_tenant_reject_booking', { p_booking_id: bookingId });
   if (result.error || result.data !== true) {
     alert(safeUserError(result.error, 'Could not reject this request. Please try again.'));
     return;
@@ -2668,7 +2668,7 @@ async function tenantRejectBooking(bookingId) {
 
 async function requestCancelBooking(id, role) {
   if (confirm("Send cancellation request?")) {
-    var res = await sb.rpc('rehzu_request_booking_cancel', { p_booking_id: id, p_actor: role });
+    var res = await sb.rpc('rehzo99_request_booking_cancel', { p_booking_id: id, p_actor: role });
     if (!res.error) {
       alert("Cancellation request sent!");
       await syncFromSupabase();
@@ -2679,7 +2679,7 @@ async function requestCancelBooking(id, role) {
 async function acceptCancelBooking(id) {
   if (confirm("Accept cancellation? Room will immediately be released and live on Home screen.")) {
     var b = DB.bookings.find(function(x){ return x.id === id; });
-    var res = await sb.rpc('rehzu_resolve_booking_cancel', { p_booking_id: id, p_accept: true });
+    var res = await sb.rpc('rehzo99_resolve_booking_cancel', { p_booking_id: id, p_accept: true });
     if (!res.error && b && b.listingId) {
       var targetListing = DB.listings.find(function(x){ return x.id === b.listingId; });
       if (targetListing) targetListing.status = 'available';
@@ -2692,7 +2692,7 @@ async function acceptCancelBooking(id) {
 
 async function rejectCancelBooking(id) {
   if (confirm("Reject this cancellation request? Booking will remain active.")) {
-    var res = await sb.rpc('rehzu_resolve_booking_cancel', { p_booking_id: id, p_accept: false });
+    var res = await sb.rpc('rehzo99_resolve_booking_cancel', { p_booking_id: id, p_accept: false });
     if (!res.error) {
       alert("Cancellation request rejected. Booking stays confirmed.");
       await syncFromSupabase();
@@ -2953,7 +2953,7 @@ function renderOwnerView() {
 }
 
 async function ownerAcceptRequest(bookingId) {
-  var res = await sb.rpc('rehzu_owner_accept_booking', { p_booking_id: bookingId });
+  var res = await sb.rpc('rehzo99_owner_accept_booking', { p_booking_id: bookingId });
   if (!res.error) {
     alert("Request Accepted!\nTenant will now confirm finally to book the room.");
     await syncFromSupabase();
@@ -2962,7 +2962,7 @@ async function ownerAcceptRequest(bookingId) {
 
 async function ownerRejectRequest(bookingId) {
   if (confirm("Reject this booking request?")) {
-    var rejectRes = await sb.rpc('rehzu_owner_reject_booking', { p_booking_id: bookingId });
+    var rejectRes = await sb.rpc('rehzo99_owner_reject_booking', { p_booking_id: bookingId });
     if (rejectRes.error) { alert(safeUserError(rejectRes.error, "Could not reject this booking. Please try again.")); return; }
     alert("Booking request rejected.");
     await syncFromSupabase();
@@ -3187,7 +3187,7 @@ async function saveFullRoomEdit(roomId) {
 
     if (res.error) throw res.error;
 
-    var statusRes = await sb.rpc('rehzu_owner_set_listing_status', {
+    var statusRes = await sb.rpc('rehzo99_owner_set_listing_status', {
       p_listing_id: roomId,
       p_status: status
     });
@@ -3651,7 +3651,7 @@ async function submitBookingRequest() {
     return;
   }
 
-  var res = await sb.rpc('rehzu_create_booking_request', {
+  var res = await sb.rpc('rehzo99_create_booking_request', {
     p_country_proof: currentCountryProof,
     p_listing_id: activeBookingRoom.id,
     p_duration: months,
@@ -3780,7 +3780,7 @@ function adminExportSummaryCsv() {
   (async function(){
     try {
       var auth=await sb.auth.getUser(); if(auth.error||!auth.data||!auth.data.user) throw new Error();
-      var check=await sb.rpc('rehzu_is_admin'); if(check.error||check.data!==true) throw new Error();
+      var check=await sb.rpc('rehzo99_is_admin'); if(check.error||check.data!==true) throw new Error();
       var rows=[['Metric','Count'],['Total users',(DB.profiles||[]).length],['Total listings',(DB.listings||[]).length],['Booking requests',(DB.bookings||[]).length]];
       var csv=rows.map(function(r){return r.map(function(v){return '"'+String(v).replace(/"/g,'""')+'"';}).join(',');}).join('\r\n');
       var blob=new Blob([csv],{type:'text/csv;charset=utf-8'}); var url=URL.createObjectURL(blob);
@@ -3790,7 +3790,7 @@ function adminExportSummaryCsv() {
 }
 async function adminCheckSystemHealth() {
   var el=document.getElementById('adminHealthStatus');if(!el)return;el.textContent='Checking…';
-  try {var a=await sb.auth.getUser();if(a.error||!a.data||!a.data.user)throw 0;var c=await sb.rpc('rehzu_is_admin');if(c.error||c.data!==true)throw 0;var p=await sb.from('profiles').select('id',{count:'exact',head:true});if(p.error)throw 0;el.textContent='Connected · Admin authorization verified · Database query successful';}
+  try {var a=await sb.auth.getUser();if(a.error||!a.data||!a.data.user)throw 0;var c=await sb.rpc('rehzo99_is_admin');if(c.error||c.data!==true)throw 0;var p=await sb.from('profiles').select('id',{count:'exact',head:true});if(p.error)throw 0;el.textContent='Connected · Admin authorization verified · Database query successful';}
   catch(e){el.textContent='Check failed. Verify connection, session and server permissions.';}
 }
 
@@ -4398,7 +4398,7 @@ async function adminRefreshAll() {
   try {
     var auth = await sb.auth.getUser();
     if (auth.error || !auth.data || !auth.data.user) throw new Error('Sign in again to refresh admin data.');
-    var check = await sb.rpc('rehzu_is_admin');
+    var check = await sb.rpc('rehzo99_is_admin');
     if (check.error || check.data !== true) throw new Error('Administrator access required.');
     await syncFromSupabase();
     await renderAdminDashboardMetrics();
@@ -4414,9 +4414,9 @@ async function adminRefreshAll() {
 async function adminLoadActivityEvents() {
   var auth = await sb.auth.getUser();
   if (auth.error || !auth.data || !auth.data.user) throw new Error('Sign in again to view admin activity.');
-  var check = await sb.rpc('rehzu_is_admin');
+  var check = await sb.rpc('rehzo99_is_admin');
   if (check.error || check.data !== true) throw new Error('Administrator access required.');
-  var result = await sb.rpc('rehzu_admin_list_activity', { p_limit: 100 });
+  var result = await sb.rpc('rehzo99_admin_list_activity', { p_limit: 100 });
   if (result.error) throw result.error;
   return Array.isArray(result.data) ? result.data : [];
 }
@@ -4456,9 +4456,9 @@ async function renderAdminRatingsFeed() {
   try {
     var auth = await sb.auth.getUser();
     if (auth.error || !auth.data || !auth.data.user) throw new Error('Sign in again to view reviews.');
-    var check = await sb.rpc('rehzu_is_admin');
+    var check = await sb.rpc('rehzo99_is_admin');
     if (check.error || check.data !== true) throw new Error('Administrator access required.');
-    var result = await sb.rpc('rehzu_admin_list_reviews', { p_limit: 100 });
+    var result = await sb.rpc('rehzo99_admin_list_reviews', { p_limit: 100 });
     if (result.error) throw result.error;
     var rows = Array.isArray(result.data) ? result.data : [];
     if (!rows.length) {
@@ -4485,9 +4485,9 @@ async function renderAdminSecurityAlerts(unacknowledgedOnly) {
   try {
     var auth = await sb.auth.getUser();
     if (auth.error || !auth.data || !auth.data.user) throw new Error('Please sign in again.');
-    var adminCheck = await sb.rpc('rehzu_is_admin');
+    var adminCheck = await sb.rpc('rehzo99_is_admin');
     if (adminCheck.error || adminCheck.data !== true) throw new Error('Admin authorization failed.');
-    var result = await sb.rpc('rehzu_admin_list_security_alerts', { p_limit: 100 });
+    var result = await sb.rpc('rehzo99_admin_list_security_alerts', { p_limit: 100 });
     if (result.error) throw result.error;
     var rows = Array.isArray(result.data) ? result.data : [];
     if (unacknowledgedOnly) rows = rows.filter(function(row){ return !row.acknowledged_at; });
@@ -4517,9 +4517,9 @@ async function acknowledgeAdminSecurityAlert(alertId) {
   try {
     var auth = await sb.auth.getUser();
     if (auth.error || !auth.data || !auth.data.user) throw new Error('Sign-in required');
-    var adminCheck = await sb.rpc('rehzu_is_admin');
+    var adminCheck = await sb.rpc('rehzo99_is_admin');
     if (adminCheck.error || adminCheck.data !== true) throw new Error('Admin authorization failed');
-    var result = await sb.rpc('rehzu_admin_ack_security_alert', { p_alert_id: Number(alertId) });
+    var result = await sb.rpc('rehzo99_admin_ack_security_alert', { p_alert_id: Number(alertId) });
     if (result.error) throw result.error;
     await renderAdminSecurityAlerts();
   } catch (err) {
@@ -4534,7 +4534,7 @@ async function renderAdminModeration() {
     if (authResult.error || !authResult.data || !authResult.data.user) {
       throw new Error("Signed-in session required.");
     }
-    var adminCheck = await sb.rpc('rehzu_is_admin');
+    var adminCheck = await sb.rpc('rehzo99_is_admin');
     if (adminCheck.error) throw adminCheck.error;
     // This authenticated RPC round-trip is the real database health check.
     // Do not leave the dashboard stuck at "Connecting…" merely because the
@@ -4856,9 +4856,9 @@ async function renderAdminModerationUsers(query) {
   try {
     var authRes = await sb.auth.getUser();
     if (authRes.error || !authRes.data || !authRes.data.user) throw new Error('Sign-in required.');
-    var check = await sb.rpc('rehzu_is_admin');
+    var check = await sb.rpc('rehzo99_is_admin');
     if (check.error || check.data !== true) throw new Error('Admin access required.');
-    var result = await sb.rpc('rehzu_admin_moderation_list');
+    var result = await sb.rpc('rehzo99_admin_moderation_list');
     if (result.error) throw result.error;
     var q = String(query || '').toLowerCase().trim();
     var users = (result.data || []).filter(function(u) {
@@ -4897,9 +4897,9 @@ async function adminModerateUser(uid, action) {
   try {
     var authRes = await sb.auth.getUser();
     if (authRes.error || !authRes.data || !authRes.data.user) throw new Error('Sign-in required.');
-    var check = await sb.rpc('rehzu_is_admin');
+    var check = await sb.rpc('rehzo99_is_admin');
     if (check.error || check.data !== true) throw new Error('Admin access required.');
-    var result = await sb.rpc('rehzu_admin_moderate_user',{p_uid:uid,p_action:action,p_message:message});
+    var result = await sb.rpc('rehzo99_admin_moderate_user',{p_uid:uid,p_action:action,p_message:message});
     if (result.error || result.data !== true) throw (result.error || new Error('Action was not saved.'));
     alert(action === 'warn' ? 'Warning saved.' : action === 'block' ? 'Account blocked from future login.' : 'Account unblocked.');
     await renderAdminModerationUsers(document.getElementById('adminSearchInput')?.value || '');
@@ -4916,9 +4916,9 @@ async function renderAdminReportedListings(query) {
   try {
     var authRes = await sb.auth.getUser();
     if (authRes.error || !authRes.data || !authRes.data.user) throw new Error('Sign-in required.');
-    var adminCheck = await sb.rpc('rehzu_is_admin');
+    var adminCheck = await sb.rpc('rehzo99_is_admin');
     if (adminCheck.error || adminCheck.data !== true) throw new Error('Admin access required.');
-    var result = await sb.rpc('rehzu_admin_list_listing_reports');
+    var result = await sb.rpc('rehzo99_admin_list_listing_reports');
     if (result.error) throw result.error;
     var q = String(query || '').toLowerCase().trim();
     var reports = (Array.isArray(result.data) ? result.data : []).filter(function(rep) {
@@ -4950,9 +4950,9 @@ async function adminReviewListingReport(reportId, status) {
   try {
     var authRes = await sb.auth.getUser();
     if (authRes.error || !authRes.data || !authRes.data.user) throw new Error('Sign-in required.');
-    var adminCheck = await sb.rpc('rehzu_is_admin');
+    var adminCheck = await sb.rpc('rehzo99_is_admin');
     if (adminCheck.error || adminCheck.data !== true) throw new Error('Admin access required.');
-    var result = await sb.rpc('rehzu_admin_review_listing_report', {p_report_id: reportId, p_status: status});
+    var result = await sb.rpc('rehzo99_admin_review_listing_report', {p_report_id: reportId, p_status: status});
     if (result.error || result.data !== true) throw (result.error || new Error('Report was not updated.'));
     await renderAdminReportedListings();
   } catch (err) {
@@ -5004,9 +5004,9 @@ async function adminSetListingStatus(id, status) {
   try {
     var auth = await sb.auth.getUser();
     if (auth.error || !auth.data || !auth.data.user) throw new Error('Sign in again.');
-    var check = await sb.rpc('rehzu_is_admin');
+    var check = await sb.rpc('rehzo99_is_admin');
     if (check.error || check.data !== true) throw new Error('Administrator access required.');
-    var result = await sb.rpc('rehzu_owner_set_listing_status', {p_listing_id:id,p_status:status});
+    var result = await sb.rpc('rehzo99_owner_set_listing_status', {p_listing_id:id,p_status:status});
     if (result.error || result.data !== true) throw (result.error || new Error('Listing status was not changed.'));
     await syncFromSupabase();
     alert(status === 'booked' ? 'Listing marked unavailable.' : 'Listing reopened.');
@@ -5020,9 +5020,9 @@ async function adminDeleteListing(id) {
   try {
     var auth = await sb.auth.getUser();
     if (auth.error || !auth.data || !auth.data.user) throw new Error('Sign in again.');
-    var check = await sb.rpc('rehzu_is_admin');
+    var check = await sb.rpc('rehzo99_is_admin');
     if (check.error || check.data !== true) throw new Error('Administrator access required.');
-    var deleteRes = await sb.rpc('rehzu_delete_listing', { p_listing_id: id });
+    var deleteRes = await sb.rpc('rehzo99_delete_listing', { p_listing_id: id });
     if (deleteRes.error) throw deleteRes.error;
     if (deleteRes.data !== true) throw new Error('Listing was not found or could not be deleted.');
     var flaggedIds = JSON.parse(sessionStorage.getItem('rehzo99_flagged_listings') || '[]');
@@ -5044,9 +5044,9 @@ function openSupportView() {
 }
 function rehzo99TicketCode(id){return 'REHZO 99-'+String(id||'').replace(/-/g,'').slice(0,8).toUpperCase();}
 function rehzo99ComplaintStatusLabel(status){return({submitted:'Pending',in_review:'In Progress',resolved:'Resolved',rejected:'Rejected'})[status]||'Pending';}
-async function submitrehzo99Complaint(event){if(event)event.preventDefault();var form=document.getElementById('rehzo99ComplaintForm');if(!form)return;var msg=document.getElementById('rehzo99ComplaintMessage'),btn=document.getElementById('rehzo99ComplaintSubmit');var subject=document.getElementById('rehzo99ComplaintSubject').value.trim(),details=document.getElementById('rehzo99ComplaintDetails').value.trim();if(subject.length<5||details.length<20){if(msg)msg.textContent='Enter a subject (5+ characters) and details (20+ characters).';return;}if(btn){btn.disabled=true;btn.textContent='Submitting…';}if(msg)msg.textContent='';try{var auth=await sb.auth.getUser();if(auth.error||!auth.data||!auth.data.user)throw new Error('Sign in required.');var result=await sb.rpc('rehzu_submit_complaint',{p_category:document.getElementById('rehzo99ComplaintCategory').value,p_subject:subject,p_details:details,p_related_reference:document.getElementById('rehzo99ComplaintReference').value.trim()||null,p_contact_phone:document.getElementById('rehzo99ComplaintPhone').value.trim()||null,p_contact_email:document.getElementById('rehzo99ComplaintEmail').value.trim()||null});if(result.error)throw result.error;if(msg)msg.textContent='Complaint submitted successfully. Your Ticket ID is '+rehzo99TicketCode(result.data)+'. You can track its status below.';form.reset();await loadMyrehzo99Complaints();}catch(err){console.warn('REHZO 99 complaint submit failed:',err);if(msg)msg.textContent=(err&&/limit/i.test(err.message||''))?'Daily complaint limit reached. Please try again later.':'Complaint could not be submitted. Check your sign-in and try again.';}finally{if(btn){btn.disabled=false;btn.textContent='Submit Complaint Securely';}}}
-async function loadMyrehzo99Complaints(){var box=document.getElementById('rehzo99MyComplaints');if(!box)return;box.textContent='Loading your complaints…';try{var auth=await sb.auth.getUser();if(auth.error||!auth.data||!auth.data.user)throw new Error('Sign in required.');var result=await sb.rpc('rehzu_list_my_complaints');if(result.error)throw result.error;var rows=Array.isArray(result.data)?result.data:[];if(!rows.length){box.textContent='You have not submitted any complaints yet.';return;}box.innerHTML='';rows.forEach(function(row){var card=document.createElement('article');card.style.cssText='border:1px solid #e2e8f0;border-radius:12px;padding:12px;margin:9px 0;';var title=document.createElement('b');title.textContent=row.subject||'Complaint';var meta=document.createElement('p');meta.style.cssText='font-size:11px;color:#64748B;margin:6px 0;';meta.textContent='Ticket: '+rehzo99TicketCode(row.complaint_id)+' · '+row.category+' · '+new Date(row.created_at).toLocaleString();var state=document.createElement('p');state.style.cssText='font-size:12px;font-weight:800;color:#075743;margin:4px 0;';state.textContent='Status: '+rehzo99ComplaintStatusLabel(row.status);card.append(title,meta,state);if(row.admin_response){var reply=document.createElement('p');reply.style.cssText='font-size:12px;background:#f0faf5;padding:9px;border-radius:8px;white-space:pre-wrap;';reply.textContent='REHZO 99 response: '+row.admin_response;card.appendChild(reply);}box.appendChild(card);});}catch(err){console.warn('REHZO 99 complaint history failed:',err);box.textContent='Complaint history could not be loaded. Please sign in again and retry.';}}
-async function renderAdminComplaints(){var box=document.getElementById('adminComplaintsList');if(!box)return;box.textContent='Loading complaints…';try{var auth=await sb.auth.getUser();if(auth.error||!auth.data||!auth.data.user)throw new Error('Sign in required.');var check=await sb.rpc('rehzu_is_admin');if(check.error||check.data!==true)throw new Error('Admin access required.');var result=await sb.rpc('rehzu_admin_list_complaints');if(result.error)throw result.error;var rows=Array.isArray(result.data)?result.data:[];if(!rows.length){box.textContent='No user complaints have been submitted.';return;}box.innerHTML='';rows.forEach(function(row){var card=document.createElement('article');card.style.cssText='border:1px solid #dbe5e0;border-radius:13px;padding:12px;margin:10px 0;background:#fff;';var h=document.createElement('h4');h.style.cssText='margin:0 0 5px;color:#075743;';h.textContent=row.subject+' · '+rehzo99ComplaintStatusLabel(row.status);var meta=document.createElement('p');meta.style.cssText='font-size:11px;color:#64748B;margin:4px 0;';meta.textContent='Ticket '+rehzo99TicketCode(row.complaint_id)+' · '+row.category+' · '+new Date(row.created_at).toLocaleString()+' · User '+row.reporter_auth_id;var details=document.createElement('p');details.style.cssText='font-size:12px;white-space:pre-wrap;margin:8px 0;';details.textContent=row.details;var contact=document.createElement('p');contact.style.cssText='font-size:11px;color:#475569;margin:4px 0;';contact.textContent='Reference: '+(row.related_reference||'—')+' · Phone: '+(row.contact_phone||'—')+' · Email: '+(row.contact_email||'—');var actions=document.createElement('div');actions.style.cssText='display:flex;gap:7px;flex-wrap:wrap;margin-top:9px;';[['in_review','Mark In Review'],['resolved','Resolve'],['rejected','Close']].forEach(function(pair){var b=document.createElement('button');b.type='button';b.textContent=pair[1];b.style.cssText='border:0;border-radius:8px;padding:8px 10px;background:#075743;color:#fff;font-size:11px;font-weight:800;';b.addEventListener('click',function(){adminUpdaterehzo99Complaint(row.complaint_id,pair[0]);});actions.appendChild(b);});card.append(h,meta,details,contact);if(row.admin_response){var response=document.createElement('p');response.style.cssText='font-size:12px;background:#f0faf5;padding:8px;border-radius:8px;white-space:pre-wrap;';response.textContent='Previous response: '+row.admin_response;card.appendChild(response);}card.appendChild(actions);box.appendChild(card);});}catch(err){console.warn('Admin complaint queue failed:',err);box.textContent='Complaints could not be loaded. Verify administrator access.';}}
-async function adminUpdaterehzo99Complaint(id,status){if(!['in_review','resolved','rejected'].includes(status))return;var response=prompt('Optional response to the user (max 2000 characters):');if(response===null)return;if(response.length>2000){alert('Response is too long.');return;}try{var auth=await sb.auth.getUser();if(auth.error||!auth.data||!auth.data.user)throw new Error();var check=await sb.rpc('rehzu_is_admin');if(check.error||check.data!==true)throw new Error();var result=await sb.rpc('rehzu_admin_update_complaint',{p_complaint_id:id,p_status:status,p_admin_response:response.trim()||null});if(result.error||result.data!==true)throw(result.error||new Error('Update failed'));await renderAdminComplaints();}catch(err){console.warn('Admin complaint update failed:',err);alert('Complaint status could not be updated.');}}
+async function submitrehzo99Complaint(event){if(event)event.preventDefault();var form=document.getElementById('rehzo99ComplaintForm');if(!form)return;var msg=document.getElementById('rehzo99ComplaintMessage'),btn=document.getElementById('rehzo99ComplaintSubmit');var subject=document.getElementById('rehzo99ComplaintSubject').value.trim(),details=document.getElementById('rehzo99ComplaintDetails').value.trim();if(subject.length<5||details.length<20){if(msg)msg.textContent='Enter a subject (5+ characters) and details (20+ characters).';return;}if(btn){btn.disabled=true;btn.textContent='Submitting…';}if(msg)msg.textContent='';try{var auth=await sb.auth.getUser();if(auth.error||!auth.data||!auth.data.user)throw new Error('Sign in required.');var result=await sb.rpc('rehzo99_submit_complaint',{p_category:document.getElementById('rehzo99ComplaintCategory').value,p_subject:subject,p_details:details,p_related_reference:document.getElementById('rehzo99ComplaintReference').value.trim()||null,p_contact_phone:document.getElementById('rehzo99ComplaintPhone').value.trim()||null,p_contact_email:document.getElementById('rehzo99ComplaintEmail').value.trim()||null});if(result.error)throw result.error;if(msg)msg.textContent='Complaint submitted successfully. Your Ticket ID is '+rehzo99TicketCode(result.data)+'. You can track its status below.';form.reset();await loadMyrehzo99Complaints();}catch(err){console.warn('REHZO 99 complaint submit failed:',err);if(msg)msg.textContent=(err&&/limit/i.test(err.message||''))?'Daily complaint limit reached. Please try again later.':'Complaint could not be submitted. Check your sign-in and try again.';}finally{if(btn){btn.disabled=false;btn.textContent='Submit Complaint Securely';}}}
+async function loadMyrehzo99Complaints(){var box=document.getElementById('rehzo99MyComplaints');if(!box)return;box.textContent='Loading your complaints…';try{var auth=await sb.auth.getUser();if(auth.error||!auth.data||!auth.data.user)throw new Error('Sign in required.');var result=await sb.rpc('rehzo99_list_my_complaints');if(result.error)throw result.error;var rows=Array.isArray(result.data)?result.data:[];if(!rows.length){box.textContent='You have not submitted any complaints yet.';return;}box.innerHTML='';rows.forEach(function(row){var card=document.createElement('article');card.style.cssText='border:1px solid #e2e8f0;border-radius:12px;padding:12px;margin:9px 0;';var title=document.createElement('b');title.textContent=row.subject||'Complaint';var meta=document.createElement('p');meta.style.cssText='font-size:11px;color:#64748B;margin:6px 0;';meta.textContent='Ticket: '+rehzo99TicketCode(row.complaint_id)+' · '+row.category+' · '+new Date(row.created_at).toLocaleString();var state=document.createElement('p');state.style.cssText='font-size:12px;font-weight:800;color:#075743;margin:4px 0;';state.textContent='Status: '+rehzo99ComplaintStatusLabel(row.status);card.append(title,meta,state);if(row.admin_response){var reply=document.createElement('p');reply.style.cssText='font-size:12px;background:#f0faf5;padding:9px;border-radius:8px;white-space:pre-wrap;';reply.textContent='REHZO 99 response: '+row.admin_response;card.appendChild(reply);}box.appendChild(card);});}catch(err){console.warn('REHZO 99 complaint history failed:',err);box.textContent='Complaint history could not be loaded. Please sign in again and retry.';}}
+async function renderAdminComplaints(){var box=document.getElementById('adminComplaintsList');if(!box)return;box.textContent='Loading complaints…';try{var auth=await sb.auth.getUser();if(auth.error||!auth.data||!auth.data.user)throw new Error('Sign in required.');var check=await sb.rpc('rehzo99_is_admin');if(check.error||check.data!==true)throw new Error('Admin access required.');var result=await sb.rpc('rehzo99_admin_list_complaints');if(result.error)throw result.error;var rows=Array.isArray(result.data)?result.data:[];if(!rows.length){box.textContent='No user complaints have been submitted.';return;}box.innerHTML='';rows.forEach(function(row){var card=document.createElement('article');card.style.cssText='border:1px solid #dbe5e0;border-radius:13px;padding:12px;margin:10px 0;background:#fff;';var h=document.createElement('h4');h.style.cssText='margin:0 0 5px;color:#075743;';h.textContent=row.subject+' · '+rehzo99ComplaintStatusLabel(row.status);var meta=document.createElement('p');meta.style.cssText='font-size:11px;color:#64748B;margin:4px 0;';meta.textContent='Ticket '+rehzo99TicketCode(row.complaint_id)+' · '+row.category+' · '+new Date(row.created_at).toLocaleString()+' · User '+row.reporter_auth_id;var details=document.createElement('p');details.style.cssText='font-size:12px;white-space:pre-wrap;margin:8px 0;';details.textContent=row.details;var contact=document.createElement('p');contact.style.cssText='font-size:11px;color:#475569;margin:4px 0;';contact.textContent='Reference: '+(row.related_reference||'—')+' · Phone: '+(row.contact_phone||'—')+' · Email: '+(row.contact_email||'—');var actions=document.createElement('div');actions.style.cssText='display:flex;gap:7px;flex-wrap:wrap;margin-top:9px;';[['in_review','Mark In Review'],['resolved','Resolve'],['rejected','Close']].forEach(function(pair){var b=document.createElement('button');b.type='button';b.textContent=pair[1];b.style.cssText='border:0;border-radius:8px;padding:8px 10px;background:#075743;color:#fff;font-size:11px;font-weight:800;';b.addEventListener('click',function(){adminUpdaterehzo99Complaint(row.complaint_id,pair[0]);});actions.appendChild(b);});card.append(h,meta,details,contact);if(row.admin_response){var response=document.createElement('p');response.style.cssText='font-size:12px;background:#f0faf5;padding:8px;border-radius:8px;white-space:pre-wrap;';response.textContent='Previous response: '+row.admin_response;card.appendChild(response);}card.appendChild(actions);box.appendChild(card);});}catch(err){console.warn('Admin complaint queue failed:',err);box.textContent='Complaints could not be loaded. Verify administrator access.';}}
+async function adminUpdaterehzo99Complaint(id,status){if(!['in_review','resolved','rejected'].includes(status))return;var response=prompt('Optional response to the user (max 2000 characters):');if(response===null)return;if(response.length>2000){alert('Response is too long.');return;}try{var auth=await sb.auth.getUser();if(auth.error||!auth.data||!auth.data.user)throw new Error();var check=await sb.rpc('rehzo99_is_admin');if(check.error||check.data!==true)throw new Error();var result=await sb.rpc('rehzo99_admin_update_complaint',{p_complaint_id:id,p_status:status,p_admin_response:response.trim()||null});if(result.error||result.data!==true)throw(result.error||new Error('Update failed'));await renderAdminComplaints();}catch(err){console.warn('Admin complaint update failed:',err);alert('Complaint status could not be updated.');}}
 
 
