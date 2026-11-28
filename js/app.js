@@ -2751,7 +2751,7 @@ async function openOwnerDiscountSettings(listingId) {
   // Allow the owner to switch an existing offer off without a separate menu.
   if (value === 0 && String(valueText).trim() === '0') {
     var off = await sb.from('listings').update({ discount_enabled: false, discount_expires_at: null, discount_started_at: null, discount_duration_days: null })
-      .eq('id', listingId).eq('owner_uid', DB.currentUser.uid).select('id');
+      .eq('id', listingId).eq('owner_id', DB.currentUser.id).select('id');
     if (off.error || !off.data || !off.data.length) {
       alert('Discount could not be turned off. Please try again.');
       return;
@@ -2784,7 +2784,7 @@ async function openOwnerDiscountSettings(listingId) {
     discount_enabled: true, discount_type: type, discount_value: value,
     discount_started_at: discountStartedAt.toISOString(), discount_duration_days: days,
     discount_expires_at: discountExpiresAt
-  }).eq('id', listingId).eq('owner_uid', DB.currentUser.uid).select('id');
+  }).eq('id', listingId).eq('owner_id', DB.currentUser.id).select('id');
   if (upd.error || !upd.data || !upd.data.length) {
     alert('Discount save nahi hua. Please try again.');
     return;
