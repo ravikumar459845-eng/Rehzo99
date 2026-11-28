@@ -1447,7 +1447,7 @@ async function submitUnifiedRegistration(e, callbackAction) {
     var policyConsent = document.getElementById('regPolicyConsent');
 
     if (!policyConsent || !policyConsent.checked) {
-      alert("Please read and accept the Terms & Conditions, Privacy Policy and Fraud & Data Security Policy.");
+      alert("Please read and accept the Terms, Conditions, Policies & Support page.");
       btn.disabled = false;
       btn.innerText = 'Complete & Enter REHZO 99 ';
       return;
@@ -3571,7 +3571,7 @@ async function submitBookingRequest() {
   var peopleCount = Math.max(1, Math.min(20, parseInt(document.getElementById('bpPeopleCount')?.value, 10) || 1));
   var bookingConsent = document.getElementById('bpPolicyConsent');
   if (!bookingConsent || !bookingConsent.checked) {
-    alert("Please read and accept the Booking & Cancellation Policy, Terms and Privacy Policy.");
+    alert("Please read and accept the Terms, Conditions, Policies & Support page.");
     return;
   }
 
