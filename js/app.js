@@ -11,7 +11,7 @@ if ('serviceWorker' in navigator) {
 if ('caches' in window) {
   window.addEventListener('load', function() {
     caches.keys().then(function(keys) {
-      keys.filter(function(key) { return key.indexOf('rehzo99') !== -1 || key.indexOf('rehzu') !== -1; })
+      keys.filter(function(key) { return key.indexOf('rehzo99') !== -1 || key.indexOf('rehzo99') !== -1; })
         .forEach(function(key) { caches.delete(key).catch(function() {}); });
     }).catch(function() {});
   });
@@ -24,8 +24,8 @@ var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // Realtime app presence uses an anonymous per-tab key; no user ID, phone or email
 // is sent to the shared presence channel.
-var rehzuPresenceChannel = null;
-var rehzuPresenceKey = 'session-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2);
+var rehzo99PresenceChannel = null;
+var rehzo99PresenceKey = 'session-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2);
 var adminRealtimeChannel = null;
 var adminPresenceChannel = null;
 var adminRealtimeRefreshTimer = null;
@@ -48,14 +48,14 @@ function updateAdminLivePresenceCount() {
   adminDashboardSet('adminTrafficLiveStatus', count + ' online');
 }
 
-async function startRehzuPresence() {
-  if (rehzuPresenceChannel) return;
+async function startrehzo99Presence() {
+  if (rehzo99PresenceChannel) return;
   var sessionResult = await sb.auth.getSession();
   if (!sessionResult.data || !sessionResult.data.session) return;
-  var channel = sb.channel('rehzu:app-presence', {
-    config: { private: true, presence: { key: rehzuPresenceKey } }
+  var channel = sb.channel('rehzo99:app-presence', {
+    config: { private: true, presence: { key: rehzo99PresenceKey } }
   });
-  rehzuPresenceChannel = channel;
+  rehzo99PresenceChannel = channel;
   channel.subscribe(async function(status) {
     if (status === 'SUBSCRIBED') {
       try { await channel.track({ online: true }); } catch (err) {
@@ -65,10 +65,10 @@ async function startRehzuPresence() {
   });
 }
 
-function stopRehzuPresence() {
-  if (!rehzuPresenceChannel) return;
-  var channel = rehzuPresenceChannel;
-  rehzuPresenceChannel = null;
+function stoprehzo99Presence() {
+  if (!rehzo99PresenceChannel) return;
+  var channel = rehzo99PresenceChannel;
+  rehzo99PresenceChannel = null;
   sb.removeChannel(channel);
 }
 
@@ -102,7 +102,7 @@ function queueAdminRealtimeRefresh() {
 
 function startAdminRealtimeSubscriptions() {
   if (!adminRealtimeChannel) {
-    var channel = sb.channel('rehzu:admin-dashboard', { config: { private: true } });
+    var channel = sb.channel('rehzo99:admin-dashboard', { config: { private: true } });
     adminRealtimeChannel = channel;
     channel
       .on('broadcast', { event: 'platform_changed' }, function() {
@@ -133,7 +133,7 @@ function startAdminRealtimeSubscriptions() {
       });
   }
   if (!adminPresenceChannel) {
-    adminPresenceChannel = sb.channel('rehzu:app-presence', { config: { private: true } })
+    adminPresenceChannel = sb.channel('rehzo99:app-presence', { config: { private: true } })
       .on('presence', { event: 'sync' }, updateAdminLivePresenceCount)
       .on('presence', { event: 'join' }, updateAdminLivePresenceCount)
       .on('presence', { event: 'leave' }, updateAdminLivePresenceCount)
@@ -166,15 +166,15 @@ function stopAdminRealtimeSubscriptions() {
 
 sb.auth.onAuthStateChange(function(event, session) {
   if (session) {
-    if (sessionStorage.getItem('rehzu_open_support_after_login') === '1') {
-      sessionStorage.removeItem('rehzu_open_support_after_login');
+    if (sessionStorage.getItem('rehzo99_open_support_after_login') === '1') {
+      sessionStorage.removeItem('rehzo99_open_support_after_login');
       setTimeout(function() { openSupportView(); }, 700);
     }
-    setTimeout(function() { startRehzuPresence().catch(function(err) {
+    setTimeout(function() { startrehzo99Presence().catch(function(err) {
       console.warn('Presence startup unavailable:', err);
     }); }, 0);
   } else {
-    stopRehzuPresence();
+    stoprehzo99Presence();
     stopAdminRealtimeSubscriptions();
   }
 });
@@ -182,8 +182,8 @@ sb.auth.onAuthStateChange(function(event, session) {
 // ================= AUTOMATIC CLIENT-SIDE IMAGE COMPRESSOR =================
 // Room-photo allowlist: raster JPEG, PNG and WebP only. SVG/GIF/HTML and
 // executable or unknown formats are rejected. Never trust file.name or file.type alone.
-const REHZU_IMAGE_MAX_BYTES = 5 * 1024 * 1024;
-function rehzuDetectImageType(bytes) {
+const rehzo99_IMAGE_MAX_BYTES = 5 * 1024 * 1024;
+function rehzo99DetectImageType(bytes) {
   if (bytes.length >= 3 && bytes[0] === 0xFF && bytes[1] === 0xD8 && bytes[2] === 0xFF) return 'image/jpeg';
   if (bytes.length >= 8 && bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4E && bytes[3] === 0x47 &&
       bytes[4] === 0x0D && bytes[5] === 0x0A && bytes[6] === 0x1A && bytes[7] === 0x0A) return 'image/png';
@@ -192,11 +192,11 @@ function rehzuDetectImageType(bytes) {
   return '';
 }
 async function compressImageFile(file, maxWidth = 1600, quality = 0.88) {
-  if (!file || !Number.isFinite(file.size) || file.size <= 0 || file.size > REHZU_IMAGE_MAX_BYTES) {
+  if (!file || !Number.isFinite(file.size) || file.size <= 0 || file.size > rehzo99_IMAGE_MAX_BYTES) {
     throw new Error('Photo must be between 1 byte and 5 MB.');
   }
   const bytes = new Uint8Array(await file.slice(0, 16).arrayBuffer());
-  const detectedType = rehzuDetectImageType(bytes);
+  const detectedType = rehzo99DetectImageType(bytes);
   if (!detectedType || (file.type && file.type !== detectedType)) {
     throw new Error('Only genuine JPEG, PNG or WebP photos are allowed.');
   }
@@ -232,7 +232,7 @@ async function compressImageFile(file, maxWidth = 1600, quality = 0.88) {
       if (blob.size <= 450 * 1024) break;
       if (attempt >= 2) scale *= 0.88;
     }
-    if (!blob || blob.size > REHZU_IMAGE_MAX_BYTES) {
+    if (!blob || blob.size > rehzo99_IMAGE_MAX_BYTES) {
       throw new Error('Photo could not be compressed to a safe size. Please choose another photo.');
     }
     return new File([blob], 'room-photo.webp', { type: 'image/webp', lastModified: Date.now() });
@@ -316,26 +316,26 @@ function populateCountryDropdowns() {
   }
 }
 
-function readRehzuCurrentUserSession() {
+function readrehzo99CurrentUserSession() {
   try {
-    var raw = sessionStorage.getItem('rehzu_current_user');
+    var raw = sessionStorage.getItem('rehzo99_current_user');
     if (!raw) return null;
     var parsed = JSON.parse(raw);
     if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
-      sessionStorage.removeItem('rehzu_current_user');
+      sessionStorage.removeItem('rehzo99_current_user');
       return null;
     }
     return parsed;
   } catch (error) {
     // A malformed or blocked session cache must not prevent the public app from starting.
-    try { sessionStorage.removeItem('rehzu_current_user'); } catch (_) {}
+    try { sessionStorage.removeItem('rehzo99_current_user'); } catch (_) {}
     console.warn('REHZO 99 session cache was reset because it could not be read.');
     return null;
   }
 }
 
 var DB = {
-  currentUser: readRehzuCurrentUserSession(),
+  currentUser: readrehzo99CurrentUserSession(),
   listings: [],
   bookings: [],
   profiles: [],
@@ -538,10 +538,10 @@ async function ensureCurrentCountryProof() {
   return detectedCountryProof;
 }
 
-var rehzuCountryRefreshInFlight = false;
+var rehzo99CountryRefreshInFlight = false;
 async function refreshCountryWhenAppReturns() {
-  if (rehzuCountryRefreshInFlight || document.visibilityState === 'hidden') return;
-  rehzuCountryRefreshInFlight = true;
+  if (rehzo99CountryRefreshInFlight || document.visibilityState === 'hidden') return;
+  rehzo99CountryRefreshInFlight = true;
   var previousCountry = detectedCountryCode;
   var wasVerified = countryVerified;
   try {
@@ -565,7 +565,7 @@ async function refreshCountryWhenAppReturns() {
   } catch (error) {
     console.warn('REHZO 99 could not refresh current country:', error && error.message ? error.message : 'unavailable');
   } finally {
-    rehzuCountryRefreshInFlight = false;
+    rehzo99CountryRefreshInFlight = false;
   }
 }
 
@@ -595,12 +595,12 @@ function formatBookingLocalTime(timestamp, booking) {
   }
 }
 
-var rehzuSyncInProgress = false;
+var rehzo99SyncInProgress = false;
 async function syncFromSupabase() {
   // Focus, visibility and realtime can fire together on mobile browsers.
   // Collapse overlapping refreshes into one country-proof and database pass.
-  if (rehzuSyncInProgress) return;
-  rehzuSyncInProgress = true;
+  if (rehzo99SyncInProgress) return;
+  rehzo99SyncInProgress = true;
   try {
     // Public discovery reads only the privacy-safe view. Private owner fields are
     // fetched separately and must be authorized by Supabase RLS.
@@ -790,7 +790,7 @@ async function syncFromSupabase() {
           if (myUpdated) {
             myUpdated.role = isAdminView ? 'admin' : 'user';
             DB.currentUser = myUpdated;
-            sessionStorage.setItem('rehzu_current_user', JSON.stringify(DB.currentUser));
+            sessionStorage.setItem('rehzo99_current_user', JSON.stringify(DB.currentUser));
           }
         }
       } else if (resProfiles.error) {
@@ -800,7 +800,7 @@ async function syncFromSupabase() {
   } catch(e) {
     console.warn("Supabase fetch notice:", e);
   } finally {
-    rehzuSyncInProgress = false;
+    rehzo99SyncInProgress = false;
   }
 
   updateUserHeaderChip();
@@ -823,7 +823,7 @@ function dismissSplash() {
   }
 }
 
-function initRehzuApp() {
+function initrehzo99App() {
   populateCountryDropdowns();
   // Country is displayed only after GPS and server verification succeed.
   updateUserHeaderChip();
@@ -836,7 +836,7 @@ function initRehzuApp() {
     try { await handleOAuthRedirect(); } catch(e) {
       console.warn('Sign-in redirect could not be completed:', e);
     }
-    try { await startRehzuPresence(); } catch(e) {
+    try { await startrehzo99Presence(); } catch(e) {
       console.warn('Presence tracking could not be started:', e);
     }
     try { await syncFromSupabase(); } catch(e) {
@@ -844,7 +844,7 @@ function initRehzuApp() {
     }
     try { renderHomeGrid(); } catch(e) {}
     if (new URLSearchParams(window.location.search).get('openSupport') === '1') {
-      sessionStorage.setItem('rehzu_open_support_after_login','1');
+      sessionStorage.setItem('rehzo99_open_support_after_login','1');
       window.history.replaceState({}, document.title, window.location.pathname);
       openSupportView();
     }
@@ -876,9 +876,9 @@ function initRehzuApp() {
 }
 
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initRehzuApp, { once: true });
+  document.addEventListener('DOMContentLoaded', initrehzo99App, { once: true });
 } else {
-  initRehzuApp();
+  initrehzo99App();
 }
 
 function getRelevantNotifications() {
@@ -948,7 +948,7 @@ function updateNotificationsBadge() {
   var badge = document.getElementById('headerNotifBadge');
   if (!badge) return;
   var notifs = getRelevantNotifications();
-  var readList = JSON.parse(sessionStorage.getItem('rehzu_read_notifs') || '[]');
+  var readList = JSON.parse(sessionStorage.getItem('rehzo99_read_notifs') || '[]');
   var unreadCount = notifs.filter(function(n){ return readList.indexOf(n.id) === -1; }).length;
 
   if (unreadCount > 0) {
@@ -969,7 +969,7 @@ function renderNotifications() {
   }
 
   var notifs = getRelevantNotifications();
-  var readList = JSON.parse(sessionStorage.getItem('rehzu_read_notifs') || '[]');
+  var readList = JSON.parse(sessionStorage.getItem('rehzo99_read_notifs') || '[]');
 
   if (!notifs.length) {
     container.innerHTML = '<div style="background:#fff; border:1px solid #E2E8F0; border-radius:16px; padding:24px; text-align:center; font-size:11px; color:#64748B;">No notifications at this moment.</div>';
@@ -986,10 +986,10 @@ function renderNotifications() {
 }
 
 function handleNotifClick(notifId, actionView) {
-  var readList = JSON.parse(sessionStorage.getItem('rehzu_read_notifs') || '[]');
+  var readList = JSON.parse(sessionStorage.getItem('rehzo99_read_notifs') || '[]');
   if (readList.indexOf(notifId) === -1) {
     readList.push(notifId);
-    sessionStorage.setItem('rehzu_read_notifs', JSON.stringify(readList));
+    sessionStorage.setItem('rehzo99_read_notifs', JSON.stringify(readList));
   }
   updateNotificationsBadge();
   if (actionView) goView(actionView);
@@ -998,7 +998,7 @@ function handleNotifClick(notifId, actionView) {
 function markAllNotifsRead() {
   var notifs = getRelevantNotifications();
   var readList = notifs.map(function(n){ return n.id; });
-  sessionStorage.setItem('rehzu_read_notifs', JSON.stringify(readList));
+  sessionStorage.setItem('rehzo99_read_notifs', JSON.stringify(readList));
   updateNotificationsBadge();
   renderNotifications();
 }
@@ -1018,14 +1018,14 @@ async function handleOAuthRedirect() {
   try {
     var sessionRes = await sb.auth.getSession();
     var session = sessionRes.data ? sessionRes.data.session : null;
-    var pendingOAuthReg = sessionStorage.getItem('rehzu_pending_reg_oauth');
-    var pendingOAuthRecov = sessionStorage.getItem('rehzu_pending_recov_oauth');
+    var pendingOAuthReg = sessionStorage.getItem('rehzo99_pending_reg_oauth');
+    var pendingOAuthRecov = sessionStorage.getItem('rehzo99_pending_recov_oauth');
 
     if (session && session.user && session.user.email) {
       var googleEmail = session.user.email;
       
       if (pendingOAuthReg === 'true') {
-        sessionStorage.removeItem('rehzu_pending_reg_oauth');
+        sessionStorage.removeItem('rehzo99_pending_reg_oauth');
 
         // Re-validate the OAuth identity with Supabase Auth before treating the email as verified.
         var verifiedUserRes = await sb.auth.getUser();
@@ -1068,8 +1068,8 @@ async function handleOAuthRedirect() {
       }
 
       if (pendingOAuthRecov === 'true') {
-        sessionStorage.removeItem('rehzu_pending_recov_oauth');
-        var savedRecovPhone = sessionStorage.getItem('rehzu_pending_recov_phone') || '';
+        sessionStorage.removeItem('rehzo99_pending_recov_oauth');
+        var savedRecovPhone = sessionStorage.getItem('rehzo99_pending_recov_phone') || '';
         var recovAuthRes = await sb.auth.getUser();
         var recovAuthUser = recovAuthRes && recovAuthRes.data ? recovAuthRes.data.user : null;
         var recovProviders = recovAuthUser && recovAuthUser.app_metadata
@@ -1084,7 +1084,7 @@ async function handleOAuthRedirect() {
           !recovAuthUser.email_confirmed_at ||
           (recovAuthUser.app_metadata && recovAuthUser.app_metadata.provider !== 'google' && recovProviders.indexOf('google') === -1)
         ) {
-          sessionStorage.removeItem('rehzu_pending_recov_phone');
+          sessionStorage.removeItem('rehzo99_pending_recov_phone');
           alert("Google account verification could not be confirmed. Please try again.");
           await sb.auth.signOut();
           openForgotCredentialsModal();
@@ -1099,17 +1099,17 @@ async function handleOAuthRedirect() {
         var recovProfile = recovProfileRes && recovProfileRes.data ? recovProfileRes.data : null;
         var registeredPhoneDigits = recovProfile ? String(recovProfile.phone || '').replace(/\D/g, '') : '';
         if (recovProfileRes.error || !recovProfile || !savedRecovPhone || registeredPhoneDigits !== savedRecovPhone) {
-          sessionStorage.removeItem('rehzu_pending_recov_phone');
-          sessionStorage.removeItem('rehzu_temp_recov_user');
+          sessionStorage.removeItem('rehzo99_pending_recov_phone');
+          sessionStorage.removeItem('rehzo99_temp_recov_user');
           alert("The verified Google account and Contact No. do not match a REHZO 99 account.");
           await sb.auth.signOut();
           openForgotCredentialsModal();
           return;
         }
 
-        sessionStorage.removeItem('rehzu_pending_recov_phone');
+        sessionStorage.removeItem('rehzo99_pending_recov_phone');
         recoveryFoundUser = recovProfile;
-        sessionStorage.setItem('rehzu_temp_recov_user', JSON.stringify(recovProfile));
+        sessionStorage.setItem('rehzo99_temp_recov_user', JSON.stringify(recovProfile));
         setTimeout(function() {
           openResetPasswordDirectModal(recovProfile, recovEmail);
         }, 300);
@@ -1355,7 +1355,7 @@ function openRegistrationModal(prefillData, callbackAction) {
 
 async function triggerRegisterGoogleAuth() {
   try {
-    sessionStorage.setItem('rehzu_pending_reg_oauth', 'true');
+    sessionStorage.setItem('rehzo99_pending_reg_oauth', 'true');
     var redirectToUrl = window.location.origin + window.location.pathname;
     var res = await sb.auth.signInWithOAuth({
       provider: 'google',
@@ -1366,18 +1366,18 @@ async function triggerRegisterGoogleAuth() {
     });
 
     if (res.error) {
-      sessionStorage.removeItem('rehzu_pending_reg_oauth');
+      sessionStorage.removeItem('rehzo99_pending_reg_oauth');
       registrationGoogleVerifiedEmail = null;
       alert("Google verification could not start. Please try again. Your email has not been verified.");
     }
   } catch(e) {
-    sessionStorage.removeItem('rehzu_pending_reg_oauth');
+    sessionStorage.removeItem('rehzo99_pending_reg_oauth');
     registrationGoogleVerifiedEmail = null;
     alert("Google verification failed. Please try again. Your email has not been verified.");
   }
 }
 
-function isValidRehzuPassword(value) {
+function isValidrehzo99Password(value) {
   // New passwords: 6–12 printable characters, including a letter, digit and symbol.
   var password = String(value || '');
   if (password.length < 6 || password.length > 12) return false;
@@ -1483,7 +1483,7 @@ async function submitUnifiedRegistration(e, callbackAction) {
       return;
     }
 
-    if (!isValidRehzuPassword(password)) {
+    if (!isValidrehzo99Password(password)) {
       alert("Password 6–12 characters ka hona chahiye aur letter, number aur special character teeno zaroori hain.");
       btn.disabled = false;
       btn.innerText = 'Complete & Enter REHZO 99 ';
@@ -1560,7 +1560,7 @@ async function submitUnifiedRegistration(e, callbackAction) {
     if (insertRes.error) throw insertRes.error;
 
     DB.currentUser = insertRes.data;
-    sessionStorage.setItem('rehzu_current_user', JSON.stringify(DB.currentUser));
+    sessionStorage.setItem('rehzo99_current_user', JSON.stringify(DB.currentUser));
     updateUserHeaderChip();
     closeModal();
     alert("Welcome to REHZO 99, " + cleanText(DB.currentUser.name) + "!");
@@ -1634,7 +1634,7 @@ async function submitCredentialsLogin(callbackAction) {
     var adminRoleCheck = await sb.rpc('rehzu_is_admin');
     profile.role = (!adminRoleCheck.error && adminRoleCheck.data === true) ? 'admin' : 'user';
     DB.currentUser = profile;
-    sessionStorage.setItem('rehzu_current_user', JSON.stringify(DB.currentUser));
+    sessionStorage.setItem('rehzo99_current_user', JSON.stringify(DB.currentUser));
     updateUserHeaderChip();
     closeModal();
     alert("Logged in successfully as " + cleanText(DB.currentUser.name) + "!");
@@ -1693,7 +1693,7 @@ async function executeFindMyIdOnly() {
   }
 
   // Never search profiles anonymously by phone; verify the linked Google identity first.
-  sessionStorage.setItem('rehzu_pending_recov_phone', fullPhoneDigits);
+  sessionStorage.setItem('rehzo99_pending_recov_phone', fullPhoneDigits);
   var btn = document.getElementById('btnFindMyIdOnly');
   btn.disabled = true;
   btn.innerText = 'Verifying linked Google Gmail...';
@@ -1701,7 +1701,7 @@ async function executeFindMyIdOnly() {
 }
 async function triggerRecoveryGoogleAuth() {
   try {
-    sessionStorage.setItem('rehzu_pending_recov_oauth', 'true');
+    sessionStorage.setItem('rehzo99_pending_recov_oauth', 'true');
     var redirectToUrl = window.location.origin + window.location.pathname;
     var oauthOptions = {
       redirectTo: redirectToUrl,
@@ -1710,8 +1710,8 @@ async function triggerRecoveryGoogleAuth() {
     var res = await sb.auth.signInWithOAuth({ provider: 'google', options: oauthOptions });
     if (res.error) throw res.error;
   } catch(e) {
-    sessionStorage.removeItem('rehzu_pending_recov_oauth');
-    sessionStorage.removeItem('rehzu_pending_recov_phone');
+    sessionStorage.removeItem('rehzo99_pending_recov_oauth');
+    sessionStorage.removeItem('rehzo99_pending_recov_phone');
     var btn = document.getElementById('btnFindMyIdOnly');
     if (btn) { btn.disabled = false; btn.innerText = 'Find My ID '; }
     alert("Google verification failed. Please try again.");
@@ -1722,12 +1722,12 @@ async function saveNewResetPassword() {
   var newPwdInput = document.getElementById('newResetPwd');
   var newPwd = newPwdInput ? String(newPwdInput.value || '') : '';
 
-  if (!isValidRehzuPassword(newPwd)) {
+  if (!isValidrehzo99Password(newPwd)) {
     alert("Password 6–12 characters ka hona chahiye aur letter, number aur special character teeno zaroori hain.");
     return;
   }
 
-  var targetUser = recoveryFoundUser || JSON.parse(sessionStorage.getItem('rehzu_temp_recov_user') || 'null');
+  var targetUser = recoveryFoundUser || JSON.parse(sessionStorage.getItem('rehzo99_temp_recov_user') || 'null');
   if (!targetUser || !targetUser.uid) {
     alert("Recovery session expired. Please find your ID again.");
     openForgotCredentialsModal();
@@ -1770,8 +1770,8 @@ async function saveNewResetPassword() {
     if (checkRes.data && checkRes.data.length > 0) {
       var updatedProfile = checkRes.data[0];
       DB.currentUser = updatedProfile;
-      sessionStorage.setItem('rehzu_current_user', JSON.stringify(DB.currentUser));
-      sessionStorage.removeItem('rehzu_temp_recov_user');
+      sessionStorage.setItem('rehzo99_current_user', JSON.stringify(DB.currentUser));
+      sessionStorage.removeItem('rehzo99_temp_recov_user');
       recoveryFoundUser = null;
       
       updateUserHeaderChip();
@@ -1800,7 +1800,7 @@ async function logoutUser() {
     DB.profiles = [];
     DB.bookings = [];
     DB.totalProfilesCount = 0;
-    sessionStorage.removeItem('rehzu_current_user');
+    sessionStorage.removeItem('rehzo99_current_user');
     var adminView = document.getElementById('view-admin');
     if (adminView) adminView.classList.remove('active');
     ['adminOwnersListContainer','adminUsersListContainer','adminReportedListingsControl'].forEach(function(id) {
@@ -2394,12 +2394,12 @@ function renderNearGrid() {
   }).join('');
 }
 
-var rehzuNearGpsRequestId = 0;
+var rehzo99NearGpsRequestId = 0;
 async function detectGPS(isManual) {
   var statusText = document.getElementById('nearStatusText');
   var btn = document.getElementById('gpsRefreshBtn');
   if (!statusText) return;
-  var requestId = ++rehzuNearGpsRequestId;
+  var requestId = ++rehzo99NearGpsRequestId;
   userGeo = { lat: null, lng: null };
   renderNearGrid();
   statusText.innerText = 'Detecting real live GPS…';
@@ -2409,11 +2409,11 @@ async function detectGPS(isManual) {
     // Use one fresh, high-accuracy GPS fix for both nearby distance and
     // server-verified country. Never accept a stale cached location.
     var coords = await getFreshDeviceCoordinates(100);
-    if (requestId !== rehzuNearGpsRequestId) return;
+    if (requestId !== rehzo99NearGpsRequestId) return;
     var previousCountry = detectedCountryCode;
     var verified = await autoDetectUserCountry(coords);
     if (!verified) throw new Error('Your current country could not be securely verified. Check your connection and try again.');
-    if (requestId !== rehzuNearGpsRequestId) return;
+    if (requestId !== rehzo99NearGpsRequestId) return;
 
     userGeo = { lat: coords.latitude, lng: coords.longitude };
     if (previousCountry !== detectedCountryCode) {
@@ -2423,12 +2423,12 @@ async function detectGPS(isManual) {
     statusText.innerText = '✓ Live GPS detected · accuracy ' + Math.round(coords.accuracy) + ' m · nearby rooms updated';
     renderNearGrid();
   } catch (error) {
-    if (requestId !== rehzuNearGpsRequestId) return;
+    if (requestId !== rehzo99NearGpsRequestId) return;
     userGeo = { lat: null, lng: null };
     statusText.innerText = error && error.message ? error.message : 'GPS could not be detected. Turn on precise location and try again.';
     renderNearGrid();
   } finally {
-    if (requestId === rehzuNearGpsRequestId && btn) {
+    if (requestId === rehzo99NearGpsRequestId && btn) {
       btn.innerText = 'Find Room';
       btn.disabled = false;
     }
@@ -2448,8 +2448,8 @@ function switchBookingsTab(tab) {
 }
 
 
-var rehzuReviewBookingId = '';
-var rehzuSelectedReviewRating = 0;
+var rehzo99ReviewBookingId = '';
+var rehzo99SelectedReviewRating = 0;
 function isBookingReviewWindowOpen(b) {
   if (!b || b.status !== 'confirmed') return false;
   var months = Math.max(1, Math.min(36, parseInt(b.duration, 10) || 1));
@@ -2459,10 +2459,10 @@ function isBookingReviewWindowOpen(b) {
   var last = new Date(Date.UTC(target.getUTCFullYear(), target.getUTCMonth() + 1, 0)).getUTCDate();
   return Date.now() >= Date.UTC(target.getUTCFullYear(), target.getUTCMonth(), Math.min(Number(m[3]), last));
 }
-function selectRehzuReviewRating(value) {
-  rehzuSelectedReviewRating = Math.max(1, Math.min(5, Number(value) || 0));
-  document.querySelectorAll('.rehzu-review-star').forEach(function(btn) {
-    var on = Number(btn.getAttribute('data-rating')) <= rehzuSelectedReviewRating;
+function selectrehzo99ReviewRating(value) {
+  rehzo99SelectedReviewRating = Math.max(1, Math.min(5, Number(value) || 0));
+  document.querySelectorAll('.rehzo99-review-star').forEach(function(btn) {
+    var on = Number(btn.getAttribute('data-rating')) <= rehzo99SelectedReviewRating;
     btn.textContent = on ? '★' : '☆'; btn.style.color = on ? '#D97706' : '#94A3B8';
     btn.setAttribute('aria-pressed', on ? 'true' : 'false');
   });
@@ -2470,43 +2470,43 @@ function selectRehzuReviewRating(value) {
 async function openBookingReviewModal(bookingId) {
   var booking = DB.bookings.find(function(x) { return x.id === bookingId; });
   if (!booking || !isBookingReviewWindowOpen(booking)) {
-    showRehzuSystemAlert('You can rate this room after your booked stay is completed.', 'Rating not available yet'); return;
+    showrehzo99SystemAlert('You can rate this room after your booked stay is completed.', 'Rating not available yet'); return;
   }
   var loaded = await sb.rpc('rehzu_get_my_booking_review', { p_booking_id: bookingId });
-  if (loaded.error) { showRehzuSystemAlert('Could not load your rating. Please try again.', 'Rating unavailable'); return; }
+  if (loaded.error) { showrehzo99SystemAlert('Could not load your rating. Please try again.', 'Rating unavailable'); return; }
   var existing = loaded.data || null;
-  rehzuReviewBookingId = bookingId; rehzuSelectedReviewRating = existing ? Number(existing.rating) : 0;
+  rehzo99ReviewBookingId = bookingId; rehzo99SelectedReviewRating = existing ? Number(existing.rating) : 0;
   document.getElementById('modalSlot').innerHTML =
     '<div class="modal-overlay"><div class="modal-box-narrow booking-modal-box" style="max-width:440px;">' +
     '<div class="modal-header"><h3 style="font-size:15px;font-weight:900;">Rate Your Stay</h3><span onclick="closeModal()" style="cursor:pointer;font-size:18px;">✕</span></div>' +
     '<div style="padding:16px;"><div style="font-size:14px;font-weight:900;margin-bottom:4px;">' + cleanText(booking.houseName) + '</div>' +
     '<div style="font-size:11px;color:#64748B;margin-bottom:12px;">Share an honest rating about your completed stay.</div>' +
     '<div style="display:flex;gap:8px;justify-content:center;margin:14px 0;">' +
-    [1,2,3,4,5].map(function(n) { return '<button type="button" class="rehzu-review-star" data-rating="' + n + '" aria-label="' + n + ' stars" aria-pressed="false" onclick="selectRehzuReviewRating(' + n + ')" style="border:0;background:transparent;font-size:34px;color:#94A3B8;padding:2px;cursor:pointer;">☆</button>'; }).join('') +
-    '</div><label for="rehzuReviewText" style="display:block;font-size:11px;font-weight:800;margin:10px 0 5px;">Your review (optional, up to 500 characters)</label>' +
-    '<textarea id="rehzuReviewText" maxlength="500" rows="4" placeholder="How was the room and your stay?" style="width:100%;box-sizing:border-box;border:1px solid #CBD5E1;border-radius:12px;padding:10px;font:inherit;font-size:12px;resize:vertical;"></textarea>' +
-    '<div id="rehzuReviewStatus" style="font-size:11px;color:#64748B;margin:8px 0;"></div><button id="rehzuReviewSubmit" class="big-action-btn" onclick="submitRehzuBookingReview()">Submit Rating</button></div></div></div>';
+    [1,2,3,4,5].map(function(n) { return '<button type="button" class="rehzo99-review-star" data-rating="' + n + '" aria-label="' + n + ' stars" aria-pressed="false" onclick="selectrehzo99ReviewRating(' + n + ')" style="border:0;background:transparent;font-size:34px;color:#94A3B8;padding:2px;cursor:pointer;">☆</button>'; }).join('') +
+    '</div><label for="rehzo99ReviewText" style="display:block;font-size:11px;font-weight:800;margin:10px 0 5px;">Your review (optional, up to 500 characters)</label>' +
+    '<textarea id="rehzo99ReviewText" maxlength="500" rows="4" placeholder="How was the room and your stay?" style="width:100%;box-sizing:border-box;border:1px solid #CBD5E1;border-radius:12px;padding:10px;font:inherit;font-size:12px;resize:vertical;"></textarea>' +
+    '<div id="rehzo99ReviewStatus" style="font-size:11px;color:#64748B;margin:8px 0;"></div><button id="rehzo99ReviewSubmit" class="big-action-btn" onclick="submitrehzo99BookingReview()">Submit Rating</button></div></div></div>';
   if (existing) {
-    selectRehzuReviewRating(existing.rating);
-    document.getElementById('rehzuReviewText').value = existing.review || '';
-    document.getElementById('rehzuReviewText').readOnly = true;
-    document.getElementById('rehzuReviewStatus').textContent = 'You have already rated this booking. Ratings cannot be changed.';
-    document.getElementById('rehzuReviewSubmit').style.display = 'none';
-    document.querySelectorAll('.rehzu-review-star').forEach(function(btn) { btn.disabled = true; btn.style.cursor = 'default'; });
+    selectrehzo99ReviewRating(existing.rating);
+    document.getElementById('rehzo99ReviewText').value = existing.review || '';
+    document.getElementById('rehzo99ReviewText').readOnly = true;
+    document.getElementById('rehzo99ReviewStatus').textContent = 'You have already rated this booking. Ratings cannot be changed.';
+    document.getElementById('rehzo99ReviewSubmit').style.display = 'none';
+    document.querySelectorAll('.rehzo99-review-star').forEach(function(btn) { btn.disabled = true; btn.style.cursor = 'default'; });
   }
 }
-async function submitRehzuBookingReview() {
-  var rating = rehzuSelectedReviewRating;
-  var review = document.getElementById('rehzuReviewText') ? document.getElementById('rehzuReviewText').value.trim() : '';
-  if (!rehzuReviewBookingId || rating < 1 || rating > 5) { showRehzuSystemAlert('Please select a star rating from 1 to 5.', 'Choose a rating'); return; }
-  var submit = document.getElementById('rehzuReviewSubmit');
+async function submitrehzo99BookingReview() {
+  var rating = rehzo99SelectedReviewRating;
+  var review = document.getElementById('rehzo99ReviewText') ? document.getElementById('rehzo99ReviewText').value.trim() : '';
+  if (!rehzo99ReviewBookingId || rating < 1 || rating > 5) { showrehzo99SystemAlert('Please select a star rating from 1 to 5.', 'Choose a rating'); return; }
+  var submit = document.getElementById('rehzo99ReviewSubmit');
   if (submit) { submit.disabled = true; submit.textContent = 'Submitting...'; }
-  var result = await sb.rpc('rehzu_submit_listing_review', { p_booking_id: rehzuReviewBookingId, p_rating: rating, p_review: review });
+  var result = await sb.rpc('rehzu_submit_listing_review', { p_booking_id: rehzo99ReviewBookingId, p_rating: rating, p_review: review });
   if (result.error) {
     if (submit) { submit.disabled = false; submit.textContent = 'Submit Rating'; }
-    showRehzuSystemAlert('Your rating could not be saved. Please check that your stay is complete and try again.', 'Rating not saved'); return;
+    showrehzo99SystemAlert('Your rating could not be saved. Please check that your stay is complete and try again.', 'Rating not saved'); return;
   }
-  closeModal(); showRehzuSystemAlert('Thank you! Your verified rating has been saved.', 'Rating submitted');
+  closeModal(); showrehzo99SystemAlert('Thank you! Your verified rating has been saved.', 'Rating submitted');
   await syncFromSupabase();
 }
 async function loadListingReviewSummary(listingId) {
@@ -2826,8 +2826,8 @@ function updateOwnerDiscountCountdowns() {
 }
 
 function renderOwnerView() {
-  if (!window.__rehzuOwnerDiscountTicker) {
-    window.__rehzuOwnerDiscountTicker = setInterval(updateOwnerDiscountCountdowns, 60000);
+  if (!window.__rehzo99OwnerDiscountTicker) {
+    window.__rehzo99OwnerDiscountTicker = setInterval(updateOwnerDiscountCountdowns, 60000);
   }
   var container = document.getElementById('ownerContentContainer');
 
@@ -3784,7 +3784,7 @@ function adminExportSummaryCsv() {
       var rows=[['Metric','Count'],['Total users',(DB.profiles||[]).length],['Total listings',(DB.listings||[]).length],['Booking requests',(DB.bookings||[]).length]];
       var csv=rows.map(function(r){return r.map(function(v){return '"'+String(v).replace(/"/g,'""')+'"';}).join(',');}).join('\r\n');
       var blob=new Blob([csv],{type:'text/csv;charset=utf-8'}); var url=URL.createObjectURL(blob);
-      var a=document.createElement('a');a.href=url;a.download='rehzu-admin-summary.csv';a.click();URL.revokeObjectURL(url);
+      var a=document.createElement('a');a.href=url;a.download='rehzo99-admin-summary.csv';a.click();URL.revokeObjectURL(url);
     } catch(e){alert('Admin authorization required for export.');}
   })();
 }
@@ -3798,7 +3798,7 @@ function adminControlTab(section) {
   var allowed = ['dashboard','owners','users','reports','bookings','security','complaints','countries','settings','notifications','activity','health'];
   if (allowed.indexOf(section) === -1) section = 'dashboard';
 
-  document.querySelectorAll('.rehzu-admin-compact-nav > button').forEach(function(node) {
+  document.querySelectorAll('.rehzo99-admin-compact-nav > button').forEach(function(node) {
     var action = String(node.getAttribute('onclick') || '');
     node.classList.toggle('active', action.indexOf("adminControlTab('" + section + "')") !== -1);
   });
@@ -3931,7 +3931,7 @@ function switchAdminSubTab(tab) {
 }
 
 // ================= REHZO 99 ADVANCED ADMIN COMMAND SEARCH =================
-var rehzuAdminSearchItems = [
+var rehzo99AdminSearchItems = [
   {label:'Dashboard',detail:'Open live platform overview',type:'Command',section:'dashboard'},
   {label:'Owners & Listings',detail:'Find owners and room listings',type:'Command',section:'owners'},
   {label:'Users & Bookings',detail:'Find registered users and booking activity',type:'Command',section:'users'},
@@ -3945,12 +3945,12 @@ var rehzuAdminSearchItems = [
   {label:'Admin Activity',detail:'Open administrator activity',type:'Command',section:'activity'},
   {label:'System Logs',detail:'Open system health and logs',type:'Command',section:'health'}
 ];
-function rehzuAdminSearchText(values) {
+function rehzo99AdminSearchText(values) {
   return values.map(function(v){return String(v==null?'':v);}).join(' ').toLowerCase();
 }
-function rehzuAdminSearchGo(section, query) {
+function rehzo99AdminSearchGo(section, query) {
   var input=document.getElementById('adminSearchInput');
-  var panel=document.getElementById('rehzuAdminSearchResults');
+  var panel=document.getElementById('rehzo99AdminSearchResults');
   if(input) input.value=query||'';
   if(panel) panel.hidden=true;
   if(section==='dashboard') { if(input) input.value=''; adminControlTab('dashboard'); return; }
@@ -3959,7 +3959,7 @@ function rehzuAdminSearchGo(section, query) {
   if(section==='users') renderCurrentAdminSubTab();
   if(section==='bookings') renderAdminBookingsSection(query||'');
 }
-function rehzuAdminSearchDateMode(raw) {
+function rehzo99AdminSearchDateMode(raw) {
   var q=String(raw||'').toLowerCase();
   var now=new Date(), today=adminDashboardDayKey(now), mode='';
   if (/\b(today|aaj)\b/.test(q)) mode='today';
@@ -3982,7 +3982,7 @@ function rehzuAdminSearchDateMode(raw) {
   var cutoff=new Date(now); cutoff.setDate(cutoff.getDate()-30);
   return {mode:mode,key:key,today:today,monthStart:monthStart,prevStart:prevStart,prevEnd:prevEnd,cutoff:cutoff};
 }
-function rehzuAdminDateMatches(value, range) {
+function rehzo99AdminDateMatches(value, range) {
   if(!range.mode)return true;
   if(!value)return false;
   var d=new Date(value); if(!Number.isFinite(d.getTime()))return false;
@@ -3993,28 +3993,28 @@ function rehzuAdminDateMatches(value, range) {
   if(range.mode==='lastMonth')return d>=range.prevStart && d<range.prevEnd;
   return true;
 }
-function rehzuAdminCompactLine(label,value) {
-  return '<div class="rehzu-admin-result-line"><b>'+cleanText(label)+':</b> '+cleanText(value==null||value===''?'—':String(value))+'</div>';
+function rehzo99AdminCompactLine(label,value) {
+  return '<div class="rehzo99-admin-result-line"><b>'+cleanText(label)+':</b> '+cleanText(value==null||value===''?'—':String(value))+'</div>';
 }
-function rehzuAdminStartVoiceSearch() {
-  var input=document.getElementById('adminSearchInput'), panel=document.getElementById('rehzuAdminSearchResults');
+function rehzo99AdminStartVoiceSearch() {
+  var input=document.getElementById('adminSearchInput'), panel=document.getElementById('rehzo99AdminSearchResults');
   var SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
   if(!input)return;
-  if(!SpeechRecognition){if(panel){panel.innerHTML='<div class="rehzu-admin-search-empty">Voice search is not supported here. Please use Chrome or type your search.</div>';panel.hidden=false;}return;}
-  if(window.__rehzuAdminSpeechRecognition){try{window.__rehzuAdminSpeechRecognition.stop();}catch(e){}window.__rehzuAdminSpeechRecognition=null;}
-  var recognition=new SpeechRecognition();window.__rehzuAdminSpeechRecognition=recognition;
+  if(!SpeechRecognition){if(panel){panel.innerHTML='<div class="rehzo99-admin-search-empty">Voice search is not supported here. Please use Chrome or type your search.</div>';panel.hidden=false;}return;}
+  if(window.__rehzo99AdminSpeechRecognition){try{window.__rehzo99AdminSpeechRecognition.stop();}catch(e){}window.__rehzo99AdminSpeechRecognition=null;}
+  var recognition=new SpeechRecognition();window.__rehzo99AdminSpeechRecognition=recognition;
   recognition.lang='hi-IN';recognition.interimResults=false;recognition.maxAlternatives=1;
-  recognition.onstart=function(){var b=document.getElementById('adminVoiceSearchBtn');if(b){b.textContent='■';b.classList.add('is-listening');}if(panel){panel.innerHTML='<div class="rehzu-admin-search-empty">Listening… नाम, User ID, Contact No. या Gmail बोलिए</div>';panel.hidden=false;}};
-  recognition.onresult=function(e){var t=e.results&&e.results[0]&&e.results[0][0]?e.results[0][0].transcript:'';if(t){input.value=t.trim();rehzuAdminGlobalSearch(input.value);}};
-  recognition.onerror=function(e){if(panel){panel.innerHTML='<div class="rehzu-admin-search-empty">'+cleanText(e&&e.error==='not-allowed'?'Microphone permission allow करें.':'आवाज साफ नहीं मिली. फिर से कोशिश करें.')+'</div>';panel.hidden=false;}};
-  recognition.onend=function(){var b=document.getElementById('adminVoiceSearchBtn');if(b){b.textContent='🎙';b.classList.remove('is-listening');}if(window.__rehzuAdminSpeechRecognition===recognition)window.__rehzuAdminSpeechRecognition=null;};
-  try{recognition.start();}catch(e){if(panel){panel.innerHTML='<div class="rehzu-admin-search-empty">Voice search could not start. Please try again.</div>';panel.hidden=false;}}
+  recognition.onstart=function(){var b=document.getElementById('adminVoiceSearchBtn');if(b){b.textContent='■';b.classList.add('is-listening');}if(panel){panel.innerHTML='<div class="rehzo99-admin-search-empty">Listening… नाम, User ID, Contact No. या Gmail बोलिए</div>';panel.hidden=false;}};
+  recognition.onresult=function(e){var t=e.results&&e.results[0]&&e.results[0][0]?e.results[0][0].transcript:'';if(t){input.value=t.trim();rehzo99AdminGlobalSearch(input.value);}};
+  recognition.onerror=function(e){if(panel){panel.innerHTML='<div class="rehzo99-admin-search-empty">'+cleanText(e&&e.error==='not-allowed'?'Microphone permission allow करें.':'आवाज साफ नहीं मिली. फिर से कोशिश करें.')+'</div>';panel.hidden=false;}};
+  recognition.onend=function(){var b=document.getElementById('adminVoiceSearchBtn');if(b){b.textContent='🎙';b.classList.remove('is-listening');}if(window.__rehzo99AdminSpeechRecognition===recognition)window.__rehzo99AdminSpeechRecognition=null;};
+  try{recognition.start();}catch(e){if(panel){panel.innerHTML='<div class="rehzo99-admin-search-empty">Voice search could not start. Please try again.</div>';panel.hidden=false;}}
 }
-function rehzuAdminGlobalSearch(raw) {
-  var panel=document.getElementById('rehzuAdminSearchResults');
+function rehzo99AdminGlobalSearch(raw) {
+  var panel=document.getElementById('rehzo99AdminSearchResults');
   if(!panel)return;
   var original=String(raw||'').trim(), q=original.toLowerCase();
-  var range=rehzuAdminSearchDateMode(q);
+  var range=rehzo99AdminSearchDateMode(q);
   var bookings=Array.isArray(DB.bookings)?DB.bookings:[];
   var listings=Array.isArray(DB.listings)?DB.listings:[];
   var profiles=Array.isArray(DB.profiles)?DB.profiles:[];
@@ -4028,7 +4028,7 @@ function rehzuAdminGlobalSearch(raw) {
   var isDateOnly=!!range.mode;
   var needle=q.replace(/\b(last login|logged in|sign in|signin|login|last|today|aaj|yesterday|kal|beete kal|pichhle kal|day before yesterday|parso|parson|pichhle parso|tomorrow|aane wala kal|next day|day after tomorrow|aane wala parso|last 30 days|past 30 days|within 1 month|within one month|1 month|one month|ek mahina|pichhle 30 din|30 days|this month|current month|iss mahine|is mahine|last month|previous month|pichhle mahine|all|every|sabhi|sare|saare|no|number|numbers|trl|trn|booking|bookings|reservation|listing|listings|rooms|room|account|accounts|users|user|register|registration)\b/g,' ').replace(/\s+/g,' ').trim();
   function includes(values){
-    var source=rehzuAdminSearchText(values);
+    var source=rehzo99AdminSearchText(values);
     if(source.includes(needle))return true;
     var compactNeedle=needle.replace(/[^a-z0-9@._+-]/g,'');
     var compactSource=source.replace(/[^a-z0-9@._+-]/g,'');
@@ -4037,95 +4037,95 @@ function rehzuAdminGlobalSearch(raw) {
     return (compactNeedle.length>=2&&compactSource.includes(compactNeedle))||(digitNeedle.length>=4&&digitSource.includes(digitNeedle));
   }
   var matchedBookings=bookings.filter(function(b){
-    var dateOk=!range.mode||rehzuAdminDateMatches(b.createdAt||b.trlIssuedAt,range);
+    var dateOk=!range.mode||rehzo99AdminDateMatches(b.createdAt||b.trlIssuedAt,range);
     if(!dateOk)return false;
     if(allBookings||(isDateOnly&&!needle&&(!listingIntent&&!profileIntent||bookingIntent)))return true;
     if(bookingIntent&&!needle)return true;
     return !!needle&&includes([b.id,b.trl,b.listingId,b.houseName,b.roomType,b.roomCity,b.roomState,b.roomPin,b.userName,b.userUid,b.userPhone,b.userGmail,b.ownerName,b.ownerPhone,b.ownerGmail,b.status]);
   }).sort(function(a,b){return String(b.createdAt||'').localeCompare(String(a.createdAt||''));});
   var matchedListings=listings.filter(function(x){
-    if(range.mode&&!rehzuAdminDateMatches(x.createdAt,range))return false;
+    if(range.mode&&!rehzo99AdminDateMatches(x.createdAt,range))return false;
     if(allListings||(isDateOnly&&!needle&&(!bookingIntent&&!profileIntent||listingIntent)))return true;
     if(listingIntent&&!needle)return true;
     return !!needle&&includes([x.id,x.houseName,x.city,x.state,x.country,x.ownerName,x.ownerUid,x.phone,x.gmail,x.status,x.roomType,x.pin]);
   }).sort(function(a,b){return String(b.createdAt||'').localeCompare(String(a.createdAt||''));});
   var matchedProfiles=profiles.filter(function(x){
-    if(range.mode&&!rehzuAdminDateMatches(loginIntent?x.last_login_at:x.created_at,range))return false;
+    if(range.mode&&!rehzo99AdminDateMatches(loginIntent?x.last_login_at:x.created_at,range))return false;
     if(allProfiles||(isDateOnly&&!needle&&(!bookingIntent&&!listingIntent||profileIntent)))return true;
     if(profileIntent&&!needle)return true;
     return !!needle&&includes([x.id,x.uid,x.name,x.phone,x.gmail,x.role,x.country_code,x.last_login_at]);
   }).sort(function(a,b){return String((loginIntent?b.last_login_at:b.created_at)||'').localeCompare(String((loginIntent?a.last_login_at:a.created_at)||''));});
   if(!q){
-    var commands=rehzuAdminSearchItems.slice(0,8);
-    var recent=[];try{recent=JSON.parse(sessionStorage.getItem('rehzu_admin_recent_searches')||'[]');}catch(e){}
-    panel.innerHTML='<div class="rehzu-admin-search-heading">QUICK SEARCH</div>'+commands.map(function(x){return '<button type="button" class="rehzu-admin-search-item" data-section="'+cleanText(x.section)+'"><span>⌕</span><span><b>'+cleanText(x.label)+'</b><small>'+cleanText(x.detail)+'</small></span></button>';}).join('')+(recent.length?'<div class="rehzu-admin-search-heading">RECENT · '+cleanText(recent.slice(0,3).join(' · '))+'</div>':'');
+    var commands=rehzo99AdminSearchItems.slice(0,8);
+    var recent=[];try{recent=JSON.parse(sessionStorage.getItem('rehzo99_admin_recent_searches')||'[]');}catch(e){}
+    panel.innerHTML='<div class="rehzo99-admin-search-heading">QUICK SEARCH</div>'+commands.map(function(x){return '<button type="button" class="rehzo99-admin-search-item" data-section="'+cleanText(x.section)+'"><span>⌕</span><span><b>'+cleanText(x.label)+'</b><small>'+cleanText(x.detail)+'</small></span></button>';}).join('')+(recent.length?'<div class="rehzo99-admin-search-heading">RECENT · '+cleanText(recent.slice(0,3).join(' · '))+'</div>':'');
     panel.hidden=false;
-    panel.querySelectorAll('button[data-section]').forEach(function(btn){btn.addEventListener('click',function(){var sec=btn.getAttribute('data-section');if(sec)rehzuAdminSearchGo(sec,'');});});
+    panel.querySelectorAll('button[data-section]').forEach(function(btn){btn.addEventListener('click',function(){var sec=btn.getAttribute('data-section');if(sec)rehzo99AdminSearchGo(sec,'');});});
     return;
   }
   var modeLabels={today:'Today / Aaj',yesterday:'Yesterday / Kal',dayBefore:'Day before yesterday / Parso',tomorrow:'Tomorrow',dayAfter:'Day after tomorrow',last30:'Last 30 days / 1 month',thisMonth:'This month',lastMonth:'Last month'};
-  var html='<div class="rehzu-admin-search-heading">SEARCH RESULTS · '+cleanText(modeLabels[range.mode]||'All matching records')+'</div>';
+  var html='<div class="rehzo99-admin-search-heading">SEARCH RESULTS · '+cleanText(modeLabels[range.mode]||'All matching records')+'</div>';
   var total=matchedBookings.length+matchedListings.length+matchedProfiles.length;
-  html+='<div class="rehzu-admin-search-summary">Bookings: <b>'+matchedBookings.length+'</b> · Listings: <b>'+matchedListings.length+'</b> · Accounts: <b>'+matchedProfiles.length+'</b> · Total: <b>'+total+'</b></div>';
+  html+='<div class="rehzo99-admin-search-summary">Bookings: <b>'+matchedBookings.length+'</b> · Listings: <b>'+matchedListings.length+'</b> · Accounts: <b>'+matchedProfiles.length+'</b> · Total: <b>'+total+'</b></div>';
   matchedBookings.slice(0,30).forEach(function(b){
     var room=listings.find(function(x){return String(x.id)===String(b.listingId);})||{};
     var created=b.createdAt?adminDashboardFormatDate(b.createdAt):'Not recorded';
     var confirmed=b.trlIssuedAt?adminDashboardFormatDate(b.trlIssuedAt):'Not final-confirmed';
-    var lines=rehzuAdminCompactLine('TRL',b.trl||'Not generated')+
-      rehzuAdminCompactLine('Room / Listing',b.houseName||room.houseName||b.roomType)+
-      rehzuAdminCompactLine('Area', [b.roomCity||room.city,b.roomState||room.state,b.roomPin||room.pin].filter(Boolean).join(', '))+
-      rehzuAdminCompactLine('Owner',b.ownerName||room.ownerName)+
-      rehzuAdminCompactLine('Owner ID',room.ownerUid||'Not recorded')+
-      rehzuAdminCompactLine('Owner contact',b.ownerPhone||room.phone)+
-      rehzuAdminCompactLine('Owner Gmail',b.ownerGmail||room.gmail)+
-      rehzuAdminCompactLine('Booked by',b.userName)+
-      rehzuAdminCompactLine('User ID',b.userUid)+
-      rehzuAdminCompactLine('User contact',b.userPhone)+
-      rehzuAdminCompactLine('User Gmail',b.userGmail)+
-      rehzuAdminCompactLine('Request created',created)+
-      rehzuAdminCompactLine('Final booking time',confirmed)+
-      rehzuAdminCompactLine('Check-in',b.date||'—')+
-      rehzuAdminCompactLine('Status',String(b.status||'pending').replace(/_/g,' '));
-    html+='<article class="rehzu-admin-search-record"><b>BOOKING · '+cleanText(b.trl||b.id||'Record')+'</b>'+lines+'</article>';
+    var lines=rehzo99AdminCompactLine('TRL',b.trl||'Not generated')+
+      rehzo99AdminCompactLine('Room / Listing',b.houseName||room.houseName||b.roomType)+
+      rehzo99AdminCompactLine('Area', [b.roomCity||room.city,b.roomState||room.state,b.roomPin||room.pin].filter(Boolean).join(', '))+
+      rehzo99AdminCompactLine('Owner',b.ownerName||room.ownerName)+
+      rehzo99AdminCompactLine('Owner ID',room.ownerUid||'Not recorded')+
+      rehzo99AdminCompactLine('Owner contact',b.ownerPhone||room.phone)+
+      rehzo99AdminCompactLine('Owner Gmail',b.ownerGmail||room.gmail)+
+      rehzo99AdminCompactLine('Booked by',b.userName)+
+      rehzo99AdminCompactLine('User ID',b.userUid)+
+      rehzo99AdminCompactLine('User contact',b.userPhone)+
+      rehzo99AdminCompactLine('User Gmail',b.userGmail)+
+      rehzo99AdminCompactLine('Request created',created)+
+      rehzo99AdminCompactLine('Final booking time',confirmed)+
+      rehzo99AdminCompactLine('Check-in',b.date||'—')+
+      rehzo99AdminCompactLine('Status',String(b.status||'pending').replace(/_/g,' '));
+    html+='<article class="rehzo99-admin-search-record"><b>BOOKING · '+cleanText(b.trl||b.id||'Record')+'</b>'+lines+'</article>';
   });
   matchedListings.slice(0,30).forEach(function(x){
-    html+='<article class="rehzu-admin-search-record"><b>ROOM LISTING · '+cleanText(x.houseName||'Room')+'</b>'+
-      rehzuAdminCompactLine('Listing ID',x.id)+rehzuAdminCompactLine('Owner',x.ownerName)+
-      rehzuAdminCompactLine('Owner ID',x.ownerUid)+rehzuAdminCompactLine('Phone',x.phone)+
-      rehzuAdminCompactLine('Gmail',x.gmail)+rehzuAdminCompactLine('Location',[x.city,x.state,x.pin].filter(Boolean).join(', '))+
-      rehzuAdminCompactLine('Listed on',x.createdAt?adminDashboardFormatDate(x.createdAt):'Not recorded')+
-      rehzuAdminCompactLine('Status',x.status)+'</article>';
+    html+='<article class="rehzo99-admin-search-record"><b>ROOM LISTING · '+cleanText(x.houseName||'Room')+'</b>'+
+      rehzo99AdminCompactLine('Listing ID',x.id)+rehzo99AdminCompactLine('Owner',x.ownerName)+
+      rehzo99AdminCompactLine('Owner ID',x.ownerUid)+rehzo99AdminCompactLine('Phone',x.phone)+
+      rehzo99AdminCompactLine('Gmail',x.gmail)+rehzo99AdminCompactLine('Location',[x.city,x.state,x.pin].filter(Boolean).join(', '))+
+      rehzo99AdminCompactLine('Listed on',x.createdAt?adminDashboardFormatDate(x.createdAt):'Not recorded')+
+      rehzo99AdminCompactLine('Status',x.status)+'</article>';
   });
   matchedProfiles.slice(0,30).forEach(function(x){
-    html+='<article class="rehzu-admin-search-record"><b>APP ACCOUNT · '+cleanText(x.name||'User')+'</b>'+
-      rehzuAdminCompactLine('User ID',x.uid)+rehzuAdminCompactLine('Phone',x.phone)+
-      rehzuAdminCompactLine('Gmail',x.gmail)+rehzuAdminCompactLine('Country',x.country_code)+
-      rehzuAdminCompactLine('Account created',x.created_at?adminDashboardFormatDate(x.created_at):'Not recorded')+
-      rehzuAdminCompactLine('Last login',x.last_login_at?adminDashboardFormatDate(x.last_login_at):'No login recorded')+
-      rehzuAdminCompactLine('Role',x.role||'User')+'</article>';
+    html+='<article class="rehzo99-admin-search-record"><b>APP ACCOUNT · '+cleanText(x.name||'User')+'</b>'+
+      rehzo99AdminCompactLine('User ID',x.uid)+rehzo99AdminCompactLine('Phone',x.phone)+
+      rehzo99AdminCompactLine('Gmail',x.gmail)+rehzo99AdminCompactLine('Country',x.country_code)+
+      rehzo99AdminCompactLine('Account created',x.created_at?adminDashboardFormatDate(x.created_at):'Not recorded')+
+      rehzo99AdminCompactLine('Last login',x.last_login_at?adminDashboardFormatDate(x.last_login_at):'No login recorded')+
+      rehzo99AdminCompactLine('Role',x.role||'User')+'</article>';
   });
-  if(!total)html+='<div class="rehzu-admin-search-empty">No matching records found in the currently loaded admin data. Refresh and try a TRL, User ID, phone, Gmail, room name or city.</div>';
-  if(total>90)html+='<div class="rehzu-admin-search-empty">Showing up to 30 records per category. Open the related section or narrow the search to see fewer results.</div>';
-  html+='<div class="rehzu-admin-search-heading">Admin-only information · Latest loaded records · Refresh for current data</div>';
+  if(!total)html+='<div class="rehzo99-admin-search-empty">No matching records found in the currently loaded admin data. Refresh and try a TRL, User ID, phone, Gmail, room name or city.</div>';
+  if(total>90)html+='<div class="rehzo99-admin-search-empty">Showing up to 30 records per category. Open the related section or narrow the search to see fewer results.</div>';
+  html+='<div class="rehzo99-admin-search-heading">Admin-only information · Latest loaded records · Refresh for current data</div>';
   panel.innerHTML=html;
   panel.hidden=false;
-  try{var recent=JSON.parse(sessionStorage.getItem('rehzu_admin_recent_searches')||'[]');recent=[original].concat(recent.filter(function(v){return v!==original;})).slice(0,5);sessionStorage.setItem('rehzu_admin_recent_searches',JSON.stringify(recent));}catch(e){}
+  try{var recent=JSON.parse(sessionStorage.getItem('rehzo99_admin_recent_searches')||'[]');recent=[original].concat(recent.filter(function(v){return v!==original;})).slice(0,5);sessionStorage.setItem('rehzo99_admin_recent_searches',JSON.stringify(recent));}catch(e){}
 }
-(function bindRehzuAdminSearchShortcuts(){
-  if(window.__rehzuAdminSearchBound)return;
-  window.__rehzuAdminSearchBound=true;
+(function bindrehzo99AdminSearchShortcuts(){
+  if(window.__rehzo99AdminSearchBound)return;
+  window.__rehzo99AdminSearchBound=true;
   document.addEventListener('keydown',function(event){
     if((event.ctrlKey||event.metaKey)&&String(event.key).toLowerCase()==='k'){
       var input=document.getElementById('adminSearchInput');
-      if(input){event.preventDefault();input.focus();input.select();rehzuAdminGlobalSearch(input.value);}
+      if(input){event.preventDefault();input.focus();input.select();rehzo99AdminGlobalSearch(input.value);}
     }
     if(event.key==='Escape'){
-      var panel=document.getElementById('rehzuAdminSearchResults');
+      var panel=document.getElementById('rehzo99AdminSearchResults');
       if(panel)panel.hidden=true;
     }
   });
   document.addEventListener('click',function(event){
-    var panel=document.getElementById('rehzuAdminSearchResults');
+    var panel=document.getElementById('rehzo99AdminSearchResults');
     var wrap=document.querySelector('.radmin-command-search');
     if(panel&&wrap&&!wrap.contains(event.target))panel.hidden=true;
   });
@@ -4332,7 +4332,7 @@ async function renderAdminDashboardMetrics() {
   }
 
 
-function renderRehzuVisualAdminDashboard() {
+function renderrehzo99VisualAdminDashboard() {
   var profiles = Array.isArray(DB.profiles) ? DB.profiles : [];
   var listings = Array.isArray(DB.listings) ? DB.listings : [];
   var bookings = Array.isArray(DB.bookings) ? DB.bookings : [];
@@ -4387,7 +4387,7 @@ function renderRehzuVisualAdminDashboard() {
 }
 
   adminDashboardSet('adminAnalyticsUpdated', '● Updated ' + new Date().toLocaleTimeString('en-IN',{timeZone:'Asia/Kolkata'}));
-  renderRehzuVisualAdminDashboard();
+  renderrehzo99VisualAdminDashboard();
   return true;
 }
 
@@ -4435,7 +4435,7 @@ async function renderAdminActivityFeed(targetName) {
     target.innerHTML = rows.map(function(row) {
       var op = String(row.operation || 'UPDATE').toUpperCase();
       var label = op === 'INSERT' ? 'Created' : op === 'DELETE' ? 'Deleted' : 'Updated';
-      var table = String(row.source_table || '').replace('public.', '').replace(/^rehzu_/, '');
+      var table = String(row.source_table || '').replace('public.', '').replace(/^rehzo99_/, '');
       var record = row.record_id ? 'Record: ' + row.record_id : 'Record ID not available';
       return '<article class="ra-admin-record" style="margin-bottom:8px;">' +
         '<div class="ra-admin-record-head"><b>' + cleanText(label + ' · ' + table.replace(/_/g, ' ')) + '</b><span>' + cleanText(adminDashboardFormatDate(row.created_at)) + '</span></div>' +
@@ -4783,7 +4783,7 @@ function exportAdminBookingsCsv(){
   var data=[['Request ID','Customer','Customer ID','Room','Owner','Date','Rent','Status','TRL']].concat(rows.map(function(b){return [b.id||b.bookingId||'',b.userName||'',b.userUid||'',b.houseName||b.roomType||'',b.ownerName||'',b.createdAt||'',b.rent||b.monthlyRent||b.amount||'',b.status||'',b.trl||''];}));
   var csv=data.map(function(row){return row.map(function(v){return '"'+String(v==null?'':v).replace(/"/g,'""')+'"';}).join(',');}).join('\r\n');
   var url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'})),link=document.createElement('a');
-  link.href=url;link.download='rehzu-booking-requests.csv';document.body.appendChild(link);link.click();link.remove();URL.revokeObjectURL(url);
+  link.href=url;link.download='rehzo99-booking-requests.csv';document.body.appendChild(link);link.click();link.remove();URL.revokeObjectURL(url);
 }
 
 function renderAdminUsersSection(query) {
@@ -5025,9 +5025,9 @@ async function adminDeleteListing(id) {
     var deleteRes = await sb.rpc('rehzu_delete_listing', { p_listing_id: id });
     if (deleteRes.error) throw deleteRes.error;
     if (deleteRes.data !== true) throw new Error('Listing was not found or could not be deleted.');
-    var flaggedIds = JSON.parse(sessionStorage.getItem('rehzu_flagged_listings') || '[]');
+    var flaggedIds = JSON.parse(sessionStorage.getItem('rehzo99_flagged_listings') || '[]');
     flaggedIds = flaggedIds.filter(function(x){ return x !== id; });
-    sessionStorage.setItem('rehzu_flagged_listings', JSON.stringify(flaggedIds));
+    sessionStorage.setItem('rehzo99_flagged_listings', JSON.stringify(flaggedIds));
     alert("Listing deleted. Any listing with booking history is protected.");
     await syncFromSupabase();
     renderAdminModeration();
@@ -5040,13 +5040,13 @@ async function adminDeleteListing(id) {
 
 // ================= REHZO 99 COMPLAINT & GRIEVANCE DESK =================
 function openSupportView() {
-  (async function(){try{var auth=await sb.auth.getUser();if(auth.error||!auth.data||!auth.data.user){sessionStorage.setItem('rehzu_open_support_after_login','1');alert('Please sign in to submit and track a complaint.');openProfileModal();return;}sessionStorage.removeItem('rehzu_open_support_after_login');goView('support');await loadMyRehzuComplaints();}catch(e){alert('Support desk could not be opened. Please try again.');}})();
+  (async function(){try{var auth=await sb.auth.getUser();if(auth.error||!auth.data||!auth.data.user){sessionStorage.setItem('rehzo99_open_support_after_login','1');alert('Please sign in to submit and track a complaint.');openProfileModal();return;}sessionStorage.removeItem('rehzo99_open_support_after_login');goView('support');await loadMyrehzo99Complaints();}catch(e){alert('Support desk could not be opened. Please try again.');}})();
 }
-function rehzuTicketCode(id){return 'REHZO 99-'+String(id||'').replace(/-/g,'').slice(0,8).toUpperCase();}
-function rehzuComplaintStatusLabel(status){return({submitted:'Pending',in_review:'In Progress',resolved:'Resolved',rejected:'Rejected'})[status]||'Pending';}
-async function submitRehzuComplaint(event){if(event)event.preventDefault();var form=document.getElementById('rehzuComplaintForm');if(!form)return;var msg=document.getElementById('rehzuComplaintMessage'),btn=document.getElementById('rehzuComplaintSubmit');var subject=document.getElementById('rehzuComplaintSubject').value.trim(),details=document.getElementById('rehzuComplaintDetails').value.trim();if(subject.length<5||details.length<20){if(msg)msg.textContent='Enter a subject (5+ characters) and details (20+ characters).';return;}if(btn){btn.disabled=true;btn.textContent='Submitting…';}if(msg)msg.textContent='';try{var auth=await sb.auth.getUser();if(auth.error||!auth.data||!auth.data.user)throw new Error('Sign in required.');var result=await sb.rpc('rehzu_submit_complaint',{p_category:document.getElementById('rehzuComplaintCategory').value,p_subject:subject,p_details:details,p_related_reference:document.getElementById('rehzuComplaintReference').value.trim()||null,p_contact_phone:document.getElementById('rehzuComplaintPhone').value.trim()||null,p_contact_email:document.getElementById('rehzuComplaintEmail').value.trim()||null});if(result.error)throw result.error;if(msg)msg.textContent='Complaint submitted successfully. Your Ticket ID is '+rehzuTicketCode(result.data)+'. You can track its status below.';form.reset();await loadMyRehzuComplaints();}catch(err){console.warn('REHZO 99 complaint submit failed:',err);if(msg)msg.textContent=(err&&/limit/i.test(err.message||''))?'Daily complaint limit reached. Please try again later.':'Complaint could not be submitted. Check your sign-in and try again.';}finally{if(btn){btn.disabled=false;btn.textContent='Submit Complaint Securely';}}}
-async function loadMyRehzuComplaints(){var box=document.getElementById('rehzuMyComplaints');if(!box)return;box.textContent='Loading your complaints…';try{var auth=await sb.auth.getUser();if(auth.error||!auth.data||!auth.data.user)throw new Error('Sign in required.');var result=await sb.rpc('rehzu_list_my_complaints');if(result.error)throw result.error;var rows=Array.isArray(result.data)?result.data:[];if(!rows.length){box.textContent='You have not submitted any complaints yet.';return;}box.innerHTML='';rows.forEach(function(row){var card=document.createElement('article');card.style.cssText='border:1px solid #e2e8f0;border-radius:12px;padding:12px;margin:9px 0;';var title=document.createElement('b');title.textContent=row.subject||'Complaint';var meta=document.createElement('p');meta.style.cssText='font-size:11px;color:#64748B;margin:6px 0;';meta.textContent='Ticket: '+rehzuTicketCode(row.complaint_id)+' · '+row.category+' · '+new Date(row.created_at).toLocaleString();var state=document.createElement('p');state.style.cssText='font-size:12px;font-weight:800;color:#075743;margin:4px 0;';state.textContent='Status: '+rehzuComplaintStatusLabel(row.status);card.append(title,meta,state);if(row.admin_response){var reply=document.createElement('p');reply.style.cssText='font-size:12px;background:#f0faf5;padding:9px;border-radius:8px;white-space:pre-wrap;';reply.textContent='REHZO 99 response: '+row.admin_response;card.appendChild(reply);}box.appendChild(card);});}catch(err){console.warn('REHZO 99 complaint history failed:',err);box.textContent='Complaint history could not be loaded. Please sign in again and retry.';}}
-async function renderAdminComplaints(){var box=document.getElementById('adminComplaintsList');if(!box)return;box.textContent='Loading complaints…';try{var auth=await sb.auth.getUser();if(auth.error||!auth.data||!auth.data.user)throw new Error('Sign in required.');var check=await sb.rpc('rehzu_is_admin');if(check.error||check.data!==true)throw new Error('Admin access required.');var result=await sb.rpc('rehzu_admin_list_complaints');if(result.error)throw result.error;var rows=Array.isArray(result.data)?result.data:[];if(!rows.length){box.textContent='No user complaints have been submitted.';return;}box.innerHTML='';rows.forEach(function(row){var card=document.createElement('article');card.style.cssText='border:1px solid #dbe5e0;border-radius:13px;padding:12px;margin:10px 0;background:#fff;';var h=document.createElement('h4');h.style.cssText='margin:0 0 5px;color:#075743;';h.textContent=row.subject+' · '+rehzuComplaintStatusLabel(row.status);var meta=document.createElement('p');meta.style.cssText='font-size:11px;color:#64748B;margin:4px 0;';meta.textContent='Ticket '+rehzuTicketCode(row.complaint_id)+' · '+row.category+' · '+new Date(row.created_at).toLocaleString()+' · User '+row.reporter_auth_id;var details=document.createElement('p');details.style.cssText='font-size:12px;white-space:pre-wrap;margin:8px 0;';details.textContent=row.details;var contact=document.createElement('p');contact.style.cssText='font-size:11px;color:#475569;margin:4px 0;';contact.textContent='Reference: '+(row.related_reference||'—')+' · Phone: '+(row.contact_phone||'—')+' · Email: '+(row.contact_email||'—');var actions=document.createElement('div');actions.style.cssText='display:flex;gap:7px;flex-wrap:wrap;margin-top:9px;';[['in_review','Mark In Review'],['resolved','Resolve'],['rejected','Close']].forEach(function(pair){var b=document.createElement('button');b.type='button';b.textContent=pair[1];b.style.cssText='border:0;border-radius:8px;padding:8px 10px;background:#075743;color:#fff;font-size:11px;font-weight:800;';b.addEventListener('click',function(){adminUpdateRehzuComplaint(row.complaint_id,pair[0]);});actions.appendChild(b);});card.append(h,meta,details,contact);if(row.admin_response){var response=document.createElement('p');response.style.cssText='font-size:12px;background:#f0faf5;padding:8px;border-radius:8px;white-space:pre-wrap;';response.textContent='Previous response: '+row.admin_response;card.appendChild(response);}card.appendChild(actions);box.appendChild(card);});}catch(err){console.warn('Admin complaint queue failed:',err);box.textContent='Complaints could not be loaded. Verify administrator access.';}}
-async function adminUpdateRehzuComplaint(id,status){if(!['in_review','resolved','rejected'].includes(status))return;var response=prompt('Optional response to the user (max 2000 characters):');if(response===null)return;if(response.length>2000){alert('Response is too long.');return;}try{var auth=await sb.auth.getUser();if(auth.error||!auth.data||!auth.data.user)throw new Error();var check=await sb.rpc('rehzu_is_admin');if(check.error||check.data!==true)throw new Error();var result=await sb.rpc('rehzu_admin_update_complaint',{p_complaint_id:id,p_status:status,p_admin_response:response.trim()||null});if(result.error||result.data!==true)throw(result.error||new Error('Update failed'));await renderAdminComplaints();}catch(err){console.warn('Admin complaint update failed:',err);alert('Complaint status could not be updated.');}}
+function rehzo99TicketCode(id){return 'REHZO 99-'+String(id||'').replace(/-/g,'').slice(0,8).toUpperCase();}
+function rehzo99ComplaintStatusLabel(status){return({submitted:'Pending',in_review:'In Progress',resolved:'Resolved',rejected:'Rejected'})[status]||'Pending';}
+async function submitrehzo99Complaint(event){if(event)event.preventDefault();var form=document.getElementById('rehzo99ComplaintForm');if(!form)return;var msg=document.getElementById('rehzo99ComplaintMessage'),btn=document.getElementById('rehzo99ComplaintSubmit');var subject=document.getElementById('rehzo99ComplaintSubject').value.trim(),details=document.getElementById('rehzo99ComplaintDetails').value.trim();if(subject.length<5||details.length<20){if(msg)msg.textContent='Enter a subject (5+ characters) and details (20+ characters).';return;}if(btn){btn.disabled=true;btn.textContent='Submitting…';}if(msg)msg.textContent='';try{var auth=await sb.auth.getUser();if(auth.error||!auth.data||!auth.data.user)throw new Error('Sign in required.');var result=await sb.rpc('rehzu_submit_complaint',{p_category:document.getElementById('rehzo99ComplaintCategory').value,p_subject:subject,p_details:details,p_related_reference:document.getElementById('rehzo99ComplaintReference').value.trim()||null,p_contact_phone:document.getElementById('rehzo99ComplaintPhone').value.trim()||null,p_contact_email:document.getElementById('rehzo99ComplaintEmail').value.trim()||null});if(result.error)throw result.error;if(msg)msg.textContent='Complaint submitted successfully. Your Ticket ID is '+rehzo99TicketCode(result.data)+'. You can track its status below.';form.reset();await loadMyrehzo99Complaints();}catch(err){console.warn('REHZO 99 complaint submit failed:',err);if(msg)msg.textContent=(err&&/limit/i.test(err.message||''))?'Daily complaint limit reached. Please try again later.':'Complaint could not be submitted. Check your sign-in and try again.';}finally{if(btn){btn.disabled=false;btn.textContent='Submit Complaint Securely';}}}
+async function loadMyrehzo99Complaints(){var box=document.getElementById('rehzo99MyComplaints');if(!box)return;box.textContent='Loading your complaints…';try{var auth=await sb.auth.getUser();if(auth.error||!auth.data||!auth.data.user)throw new Error('Sign in required.');var result=await sb.rpc('rehzu_list_my_complaints');if(result.error)throw result.error;var rows=Array.isArray(result.data)?result.data:[];if(!rows.length){box.textContent='You have not submitted any complaints yet.';return;}box.innerHTML='';rows.forEach(function(row){var card=document.createElement('article');card.style.cssText='border:1px solid #e2e8f0;border-radius:12px;padding:12px;margin:9px 0;';var title=document.createElement('b');title.textContent=row.subject||'Complaint';var meta=document.createElement('p');meta.style.cssText='font-size:11px;color:#64748B;margin:6px 0;';meta.textContent='Ticket: '+rehzo99TicketCode(row.complaint_id)+' · '+row.category+' · '+new Date(row.created_at).toLocaleString();var state=document.createElement('p');state.style.cssText='font-size:12px;font-weight:800;color:#075743;margin:4px 0;';state.textContent='Status: '+rehzo99ComplaintStatusLabel(row.status);card.append(title,meta,state);if(row.admin_response){var reply=document.createElement('p');reply.style.cssText='font-size:12px;background:#f0faf5;padding:9px;border-radius:8px;white-space:pre-wrap;';reply.textContent='REHZO 99 response: '+row.admin_response;card.appendChild(reply);}box.appendChild(card);});}catch(err){console.warn('REHZO 99 complaint history failed:',err);box.textContent='Complaint history could not be loaded. Please sign in again and retry.';}}
+async function renderAdminComplaints(){var box=document.getElementById('adminComplaintsList');if(!box)return;box.textContent='Loading complaints…';try{var auth=await sb.auth.getUser();if(auth.error||!auth.data||!auth.data.user)throw new Error('Sign in required.');var check=await sb.rpc('rehzu_is_admin');if(check.error||check.data!==true)throw new Error('Admin access required.');var result=await sb.rpc('rehzu_admin_list_complaints');if(result.error)throw result.error;var rows=Array.isArray(result.data)?result.data:[];if(!rows.length){box.textContent='No user complaints have been submitted.';return;}box.innerHTML='';rows.forEach(function(row){var card=document.createElement('article');card.style.cssText='border:1px solid #dbe5e0;border-radius:13px;padding:12px;margin:10px 0;background:#fff;';var h=document.createElement('h4');h.style.cssText='margin:0 0 5px;color:#075743;';h.textContent=row.subject+' · '+rehzo99ComplaintStatusLabel(row.status);var meta=document.createElement('p');meta.style.cssText='font-size:11px;color:#64748B;margin:4px 0;';meta.textContent='Ticket '+rehzo99TicketCode(row.complaint_id)+' · '+row.category+' · '+new Date(row.created_at).toLocaleString()+' · User '+row.reporter_auth_id;var details=document.createElement('p');details.style.cssText='font-size:12px;white-space:pre-wrap;margin:8px 0;';details.textContent=row.details;var contact=document.createElement('p');contact.style.cssText='font-size:11px;color:#475569;margin:4px 0;';contact.textContent='Reference: '+(row.related_reference||'—')+' · Phone: '+(row.contact_phone||'—')+' · Email: '+(row.contact_email||'—');var actions=document.createElement('div');actions.style.cssText='display:flex;gap:7px;flex-wrap:wrap;margin-top:9px;';[['in_review','Mark In Review'],['resolved','Resolve'],['rejected','Close']].forEach(function(pair){var b=document.createElement('button');b.type='button';b.textContent=pair[1];b.style.cssText='border:0;border-radius:8px;padding:8px 10px;background:#075743;color:#fff;font-size:11px;font-weight:800;';b.addEventListener('click',function(){adminUpdaterehzo99Complaint(row.complaint_id,pair[0]);});actions.appendChild(b);});card.append(h,meta,details,contact);if(row.admin_response){var response=document.createElement('p');response.style.cssText='font-size:12px;background:#f0faf5;padding:8px;border-radius:8px;white-space:pre-wrap;';response.textContent='Previous response: '+row.admin_response;card.appendChild(response);}card.appendChild(actions);box.appendChild(card);});}catch(err){console.warn('Admin complaint queue failed:',err);box.textContent='Complaints could not be loaded. Verify administrator access.';}}
+async function adminUpdaterehzo99Complaint(id,status){if(!['in_review','resolved','rejected'].includes(status))return;var response=prompt('Optional response to the user (max 2000 characters):');if(response===null)return;if(response.length>2000){alert('Response is too long.');return;}try{var auth=await sb.auth.getUser();if(auth.error||!auth.data||!auth.data.user)throw new Error();var check=await sb.rpc('rehzu_is_admin');if(check.error||check.data!==true)throw new Error();var result=await sb.rpc('rehzu_admin_update_complaint',{p_complaint_id:id,p_status:status,p_admin_response:response.trim()||null});if(result.error||result.data!==true)throw(result.error||new Error('Update failed'));await renderAdminComplaints();}catch(err){console.warn('Admin complaint update failed:',err);alert('Complaint status could not be updated.');}}
 
 
