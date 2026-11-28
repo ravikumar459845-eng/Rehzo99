@@ -1526,11 +1526,14 @@ async function submitUnifiedRegistration(e, callbackAction) {
 
     // Record affirmative, versioned consent in a dedicated RLS-protected audit table.
     // The database supplies accepted_at; no client timestamp is trusted.
-    var consentRes = await sb.from('policy_acceptances').insert([{
+    var consentRes = await sb.from('policy_acceptances').upsert([{
       auth_user_id: submitAuthUser.id,
       consent_type: 'account_registration',
       policy_version: '2026-10-30-v3'
-    }]);
+    }], {
+      onConflict: 'auth_user_id,consent_type,policy_version',
+      ignoreDuplicates: true
+    });
     if (consentRes.error) throw new Error('Could not securely record policy acceptance. Please retry.');
 
     // Store the password only in Supabase Auth; never write it or a client hash to public.profiles.
