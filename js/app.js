@@ -1503,24 +1503,28 @@ async function submitUnifiedRegistration(e, callbackAction) {
 
     var fullPhone = dial + ' ' + cleanDigits;
 
-    var phoneCheck = await sb.from('profiles').select('uid').ilike('phone', '%' + cleanDigits + '%');
-    if (phoneCheck.data && phoneCheck.data.length > 0) {
-      alert("Account already exists with this Contact No. (" + fullPhone + ")!\nPlease login with your existing account.");
+    // Check Gmail, phone and User ID together on the server. Client-side
+    // profile reads are restricted by RLS and cannot safely detect other users.
+    var fieldsCheck = await sb.rpc('rehzo_registration_fields_available', {
+      p_phone: fullContactWithDial,
+      p_uid: fullUid
+    });
+    if (fieldsCheck.error || !fieldsCheck.data) {
+      throw new Error('Could not securely verify your registration details. Please retry.');
+    }
+    if (fieldsCheck.data.email_available !== true) {
+      alert("Account already exists with this Gmail (" + registrationGoogleVerifiedEmail + ")!\\nPlease login with your existing account.");
       btn.disabled = false;
       btn.innerText = 'Complete & Enter Rehzu ';
       return;
     }
-
-    var gmailCheck = await sb.from('profiles').select('uid').ilike('gmail', registrationGoogleVerifiedEmail);
-    if (gmailCheck.data && gmailCheck.data.length > 0) {
-      alert("Account already exists with this Gmail (" + registrationGoogleVerifiedEmail + ")!\nPlease login with your existing account.");
+    if (fieldsCheck.data.phone_available !== true) {
+      alert("Account already exists with this Contact No. (" + fullPhone + ")!\\nPlease login with your existing account.");
       btn.disabled = false;
       btn.innerText = 'Complete & Enter Rehzu ';
       return;
     }
-
-    var uidCheck = await sb.from('profiles').select('uid').ilike('uid', fullUid);
-    if (uidCheck.data && uidCheck.data.length > 0) {
+    if (fieldsCheck.data.uid_available !== true) {
       alert("User ID " + fullUid + " is already taken. Please choose another suffix.");
       btn.disabled = false;
       btn.innerText = 'Complete & Enter Rehzu ';
