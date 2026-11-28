@@ -15,5 +15,6 @@
       "destination": "/legal#support",
       "permanent": true
     }
-  ]
+  ],
+  "cleanUrls": true
 }
