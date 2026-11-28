@@ -454,7 +454,7 @@ async function autoDetectUserCountry(coordsOverride) {
     if (!/^[A-Z]{2}$/.test(gpsCountryCode) || gpsCountryCode === 'XX') {
       throw new Error('GPS could not identify your country. Turn on precise location and retry.');
     }
-    var countryProofUrl = SUPABASE_URL.replace(/\/$/, '') + '/functions/v1/rehzu-country-proof';
+    var countryProofUrl = SUPABASE_URL.replace(/\/$/, '') + '/functions/v1/rehzo99-country-proof';
     var res = await fetch(countryProofUrl, {
       method: 'POST',
       cache: 'no-store',
@@ -1132,7 +1132,7 @@ function openResetPasswordDirectModal(userObj, verifiedGoogleEmail) {
     '<div class="modal-box-narrow">' +
       '<div class="modal-header">' +
         '<div style="display:flex; align-items:center; gap:8px;">' +
-          '<img src="logo.svg" alt="Rehzu" style="height:26px; width:auto; object-fit:contain;" onerror="this.style.display=\'none\'">' +
+          '<img src="logo.svg" alt="REHZO 99" style="height:26px; width:auto; object-fit:contain;" onerror="this.style.display=\'none\'">' +
           '<h3 style="font-size:15px; font-weight:800; color:#0F172A;">Reset Password</h3>' +
         '</div>' +
         '<span onclick="closeModal()" style="cursor:pointer; font-size:16px; font-weight:bold;">✕</span>' +
@@ -1167,8 +1167,8 @@ function openProfileModal(callbackAction) {
       '<div class="modal-box-narrow">' +
         '<div class="modal-header">' +
           '<div style="display:flex; align-items:center; gap:8px;">' +
-            '<img src="logo.svg" alt="Rehzu" style="height:26px; width:auto; object-fit:contain;" onerror="this.style.display=\'none\'">' +
-            '<h3 style="font-size:15px; font-weight:800; color:#0F172A;">Your Rehzu Account</h3>' +
+            '<img src="logo.svg" alt="REHZO 99" style="height:26px; width:auto; object-fit:contain;" onerror="this.style.display=\'none\'">' +
+            '<h3 style="font-size:15px; font-weight:800; color:#0F172A;">Your REHZO 99 Account</h3>' +
           '</div>' +
           '<span onclick="closeModal()" style="cursor:pointer; font-size:16px; font-weight:bold;">✕</span>' +
         '</div>' +
@@ -1194,8 +1194,8 @@ function openProfileModal(callbackAction) {
       '<div class="modal-box-narrow">' +
         '<div class="modal-header">' +
           '<div style="display:flex; align-items:center; gap:8px;">' +
-            '<img src="logo.svg" alt="Rehzu" style="height:26px; width:auto; object-fit:contain;" onerror="this.style.display=\'none\'">' +
-            '<h3 style="font-size:15px; font-weight:800; color:#0F172A;">Welcome to Rehzu</h3>' +
+            '<img src="logo.svg" alt="REHZO 99" style="height:26px; width:auto; object-fit:contain;" onerror="this.style.display=\'none\'">' +
+            '<h3 style="font-size:15px; font-weight:800; color:#0F172A;">Welcome to REHZO 99</h3>' +
           '</div>' +
           '<span onclick="closeModal()" style="cursor:pointer; font-size:16px; font-weight:bold;">✕</span>' +
         '</div>' +
@@ -1241,7 +1241,7 @@ function openProfileModal(callbackAction) {
         '<button class="big-action-btn" id="btnLoginSubmit" onclick="submitCredentialsLogin(' + (callbackAction ? '\'' + callbackAction + '\'' : 'null') + ')">Login with Rehzu ID </button>' +
         
         '<div style="text-align:center; margin-top:14px;">' +
-          '<span style="font-size:11px; color:#044E3B; font-weight:800; cursor:pointer;" onclick="openRegistrationModal(null, ' + (callbackAction ? '\'' + callbackAction + '\'' : 'null') + ')">New here? Create Rehzu Account</span>' +
+          '<span style="font-size:11px; color:#044E3B; font-weight:800; cursor:pointer;" onclick="openRegistrationModal(null, ' + (callbackAction ? '\'' + callbackAction + '\'' : 'null') + ')">New here? Create REHZO 99 Account</span>' +
         '</div>' +
       '</div>' +
     '</div>';
@@ -1284,9 +1284,9 @@ function openRegistrationModal(prefillData, callbackAction) {
     '<div class="modal-box-narrow">' +
       '<div class="modal-header">' +
         '<div style="display:flex; align-items:center; gap:8px;">' +
-          '<img src="logo.svg" alt="Rehzu" style="height:26px; width:auto; object-fit:contain;" onerror="this.style.display=\'none\'">' +
+          '<img src="logo.svg" alt="REHZO 99" style="height:26px; width:auto; object-fit:contain;" onerror="this.style.display=\'none\'">' +
           '<div>' +
-            '<h3 style="font-size:15px; font-weight:800; color:#0F172A;">Create Rehzu Account</h3>' +
+            '<h3 style="font-size:15px; font-weight:800; color:#0F172A;">Create REHZO 99 Account</h3>' +
             '<p style="font-size:9.5px; color:#044E3B; font-weight:700;">Unified Profile for Tenants & Landlords</p>' +
           '</div>' +
         '</div>' +
@@ -1347,7 +1347,7 @@ function openRegistrationModal(prefillData, callbackAction) {
           '<input id="regPolicyConsent" type="checkbox" required style="margin-top:2px;flex:0 0 auto;">' +
           '<span>I have read and agree to the <a href="/legal#policy-terms" target="_blank" rel="noopener noreferrer">Terms &amp; Conditions</a>, <a href="/legal#policy-privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a> and <a href="/legal#policy-fraud-security" target="_blank" rel="noopener noreferrer">Fraud &amp; Data Security Policy</a>.</span>' +
         '</label>' +
-        '<button type="submit" id="btnRegisterSubmit" class="big-action-btn">Complete & Enter Rehzu </button>' +
+        '<button type="submit" id="btnRegisterSubmit" class="big-action-btn">Complete & Enter REHZO 99 </button>' +
       '</form>' +
     '</div>' +
   '</div>';
@@ -1449,14 +1449,14 @@ async function submitUnifiedRegistration(e, callbackAction) {
     if (!policyConsent || !policyConsent.checked) {
       alert("Please read and accept the Terms & Conditions, Privacy Policy and Fraud & Data Security Policy.");
       btn.disabled = false;
-      btn.innerText = 'Complete & Enter Rehzu ';
+      btn.innerText = 'Complete & Enter REHZO 99 ';
       return;
     }
 
     if (!registrationGoogleVerifiedEmail) {
       alert("Please verify your Google Gmail before completing registration!");
       btn.disabled = false;
-      btn.innerText = 'Complete & Enter Rehzu ';
+      btn.innerText = 'Complete & Enter REHZO 99 ';
       return;
     }
 
@@ -1479,14 +1479,14 @@ async function submitUnifiedRegistration(e, callbackAction) {
       registrationGoogleVerifiedEmail = null;
       alert("Google verification expired or could not be confirmed. Please verify with Google again.");
       btn.disabled = false;
-      btn.innerText = 'Complete & Enter Rehzu ';
+      btn.innerText = 'Complete & Enter REHZO 99 ';
       return;
     }
 
     if (!isValidRehzuPassword(password)) {
       alert("Password 6–12 characters ka hona chahiye aur letter, number aur special character teeno zaroori hain.");
       btn.disabled = false;
-      btn.innerText = 'Complete & Enter Rehzu ';
+      btn.innerText = 'Complete & Enter REHZO 99 ';
       return;
     }
 
@@ -1497,7 +1497,7 @@ async function submitUnifiedRegistration(e, callbackAction) {
     if (fullContactWithDial.length < 1 || fullContactWithDial.length > 17 || cleanDigits.length < 1) {
       alert("Contact number must be valid.");
       btn.disabled = false;
-      btn.innerText = 'Complete & Enter Rehzu ';
+      btn.innerText = 'Complete & Enter REHZO 99 ';
       return;
     }
 
@@ -1515,19 +1515,19 @@ async function submitUnifiedRegistration(e, callbackAction) {
     if (fieldsCheck.data.email_available !== true) {
       alert("Account already exists with this Gmail (" + registrationGoogleVerifiedEmail + ")!\\nPlease login with your existing account.");
       btn.disabled = false;
-      btn.innerText = 'Complete & Enter Rehzu ';
+      btn.innerText = 'Complete & Enter REHZO 99 ';
       return;
     }
     if (fieldsCheck.data.phone_available !== true) {
       alert("Account already exists with this Contact No. (" + fullPhone + ")!\\nPlease login with your existing account.");
       btn.disabled = false;
-      btn.innerText = 'Complete & Enter Rehzu ';
+      btn.innerText = 'Complete & Enter REHZO 99 ';
       return;
     }
     if (fieldsCheck.data.uid_available !== true) {
       alert("User ID " + fullUid + " is already taken. Please choose another suffix.");
       btn.disabled = false;
-      btn.innerText = 'Complete & Enter Rehzu ';
+      btn.innerText = 'Complete & Enter REHZO 99 ';
       return;
     }
 
@@ -1563,7 +1563,7 @@ async function submitUnifiedRegistration(e, callbackAction) {
     sessionStorage.setItem('rehzu_current_user', JSON.stringify(DB.currentUser));
     updateUserHeaderChip();
     closeModal();
-    alert("Welcome to Rehzu, " + cleanText(DB.currentUser.name) + "!");
+    alert("Welcome to REHZO 99, " + cleanText(DB.currentUser.name) + "!");
     await syncFromSupabase();
     resumePendingAction(callbackAction);
 
@@ -1571,7 +1571,7 @@ async function submitUnifiedRegistration(e, callbackAction) {
     alert(safeUserError(err, "Registration failed. Please check your details and try again."));
   } finally {
     btn.disabled = false;
-    btn.innerText = 'Complete & Enter Rehzu ';
+    btn.innerText = 'Complete & Enter REHZO 99 ';
   }
 }
 
@@ -1659,7 +1659,7 @@ function openForgotCredentialsModal() {
     '<div class="modal-box-narrow">' +
       '<div class="modal-header">' +
         '<div style="display:flex; align-items:center; gap:8px;">' +
-          '<img src="logo.svg" alt="Rehzu" style="height:26px; width:auto; object-fit:contain;" onerror="this.style.display=\'none\'">' +
+          '<img src="logo.svg" alt="REHZO 99" style="height:26px; width:auto; object-fit:contain;" onerror="this.style.display=\'none\'">' +
           '<h3 style="font-size:15px; font-weight:800; color:#0F172A;">Account Recovery</h3>' +
         '</div>' +
         '<span onclick="closeModal()" style="cursor:pointer; font-size:16px; font-weight:bold;">✕</span>' +
@@ -1758,7 +1758,7 @@ async function saveNewResetPassword() {
       resetEmail !== targetUser.gmail.toLowerCase().trim() ||
       (resetAuthUser.app_metadata && resetAuthUser.app_metadata.provider !== 'google' && resetProviders.indexOf('google') === -1)
     ) {
-      throw new Error("Verified Google account does not match this Rehzu account.");
+      throw new Error("Verified Google account does not match this REHZO 99 account.");
     }
 
     // Reset the password inside Supabase Auth after verifying the matching Google identity.
@@ -1792,7 +1792,7 @@ async function saveNewResetPassword() {
 }
 
 async function logoutUser() {
-  if (confirm("Log out from Rehzu?")) {
+  if (confirm("Log out from REHZO 99?")) {
     try { await sb.auth.signOut(); } catch(e){}
     DB.currentUser = null;
     adminNavigationVerifiedUntil = 0;
@@ -2145,7 +2145,7 @@ function openRoomDetailsModal(roomId) {
     '<div class="modal-box-narrow booking-modal-box" style="max-width:560px;">' +
       '<div class="modal-header">' +
         '<div style="display:flex; align-items:center; gap:8px;">' +
-          '<img src="logo.svg" alt="Rehzu" style="height:24px; width:auto; object-fit:contain;" onerror="this.style.display=\'none\'">' +
+          '<img src="logo.svg" alt="REHZO 99" style="height:24px; width:auto; object-fit:contain;" onerror="this.style.display=\'none\'">' +
           '<h3 style="font-size:15px; font-weight:800; color:#0F172A;">Property Overview</h3>' +
         '</div>' +
         '<span onclick="closeModal()" style="cursor:pointer; font-size:16px; font-weight:bold;">✕</span>' +
@@ -2983,7 +2983,7 @@ function openFullEditRoomModal(roomId) {
     '<div class="modal-box-narrow room-booking-form-box" style="max-width:420px;">' +
       '<div class="modal-header">' +
         '<div style="display:flex; align-items:center; gap:8px;">' +
-          '<img src="logo.svg" alt="Rehzu" style="height:24px; width:auto; object-fit:contain;" onerror="this.style.display=\'none\'">' +
+          '<img src="logo.svg" alt="REHZO 99" style="height:24px; width:auto; object-fit:contain;" onerror="this.style.display=\'none\'">' +
           '<h3 style="font-size:15px; font-weight:800; color:#0F172A;">Edit Room Details</h3>' +
         '</div>' +
         '<span onclick="closeModal()" style="cursor:pointer; font-size:16px; font-weight:bold;">✕</span>' +
@@ -3298,7 +3298,7 @@ function saveExactMapLocation() {
     return;
   }
   if (!window.isSecureContext) {
-    if (status) status.innerText = 'GPS ke liye secure HTTPS connection zaroori hai. Rehzu ko HTTPS par kholein.';
+    if (status) status.innerText = 'GPS ke liye secure HTTPS connection zaroori hai. REHZO 99 ko HTTPS par kholein.';
     return;
   }
 
@@ -3484,7 +3484,7 @@ function openBookingPillModal(id) {
     '<div class="modal-box-narrow" style="max-width:420px;">' +
       '<div class="modal-header">' +
         '<div style="display:flex; align-items:center; gap:8px;">' +
-          '<img src="logo.svg" alt="Rehzu" style="height:24px; width:auto; object-fit:contain;" onerror="this.style.display=\'none\'">' +
+          '<img src="logo.svg" alt="REHZO 99" style="height:24px; width:auto; object-fit:contain;" onerror="this.style.display=\'none\'">' +
           '<h3 style="font-size:15px; font-weight:800; color:#0F172A;">Request Room Booking</h3>' +
         '</div>' +
         '<span onclick="closeModal()" style="cursor:pointer; font-size:16px; font-weight:bold;">✕</span>' +
@@ -3722,8 +3722,8 @@ function openSlipModal(bkId) {
     '<div class="modal-box-pdf" id="printableSlip">' +
       '<div class="modal-header">' +
         '<div style="display:flex; align-items:center; gap:6px;">' +
-          '<img src="logo.svg" alt="Rehzu" style="width:24px; height:auto; object-fit:contain;" onerror="this.style.display=\'none\'">' +
-          '<b style="font-size:13px; color:#0F172A;">Rehzu Official Slip</b>' +
+          '<img src="logo.svg" alt="REHZO 99" style="width:24px; height:auto; object-fit:contain;" onerror="this.style.display=\'none\'">' +
+          '<b style="font-size:13px; color:#0F172A;">REHZO 99 Official Slip</b>' +
         '</div>' +
         '<div style="display:flex; gap:6px; align-items:center;">' +
           '<button onclick="window.print()" style="padding:4px 9px; background:#044E3B; color:#fff; border:none; border-radius:12px; font-size:9.5px; font-weight:800; cursor:pointer;">🖨 Print</button>' +
