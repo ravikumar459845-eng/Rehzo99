@@ -2,15 +2,15 @@
   var alertTimer = null;
   var lastAlertKey = '';
   var lastAlertAt = 0;
-  window.dismissREHZUSystemAlert = function () {
-    var box = document.getElementById('rehzuSystemAlert');
+  window.dismissrehzo99SystemAlert = function () {
+    var box = document.getElementById('rehzo99SystemAlert');
     if (box) box.hidden = true;
     if (alertTimer) { clearTimeout(alertTimer); alertTimer = null; }
   };
-  window.showREHZUSystemAlert = function (message, title) {
-    var box = document.getElementById('rehzuSystemAlert');
-    var body = document.getElementById('rehzuSystemAlertMessage');
-    var heading = document.getElementById('rehzuSystemAlertTitle');
+  window.showrehzo99SystemAlert = function (message, title) {
+    var box = document.getElementById('rehzo99SystemAlert');
+    var body = document.getElementById('rehzo99SystemAlertMessage');
+    var heading = document.getElementById('rehzo99SystemAlertTitle');
     if (!box || !body || !heading) return;
     var safeMessage = String(message || 'Please try again.').replace(/[\u0000-\u001F\u007F]/g, ' ').trim().slice(0, 240);
     if (!safeMessage) safeMessage = 'Please try again.';
@@ -32,7 +32,7 @@
     // Keep diagnostics in the browser console, but never expose internal details to users.
     if (event && event.target && event.target !== window) {
       console.error('REHZO 99 resource load failure:', event.target.src || event.target.href || event.target.tagName || 'unknown resource');
-      window.showREHZUSystemAlert('A page resource could not load. Check your connection and refresh if needed.', 'Loading problem');
+      window.showrehzo99SystemAlert('A page resource could not load. Check your connection and refresh if needed.', 'Loading problem');
       return;
     }
     if (event) {
@@ -44,23 +44,23 @@
         error: event.error || null
       });
     }
-    window.showREHZUSystemAlert(safeUnexpectedError(), 'App error');
+    window.showrehzo99SystemAlert(safeUnexpectedError(), 'App error');
   }, true);
   window.addEventListener('unhandledrejection', function (event) {
     // Log technical details for diagnosis without blocking the user's screen with a
     // generic popup for recoverable background requests (auth refresh/realtime).
     console.warn('Background request failed:', event && event.reason ? event.reason : 'Unknown rejection');
     if (!navigator.onLine) {
-      window.showREHZUSystemAlert('You appear to be offline. Check your connection and retry.', 'Connection lost');
+      window.showrehzo99SystemAlert('You appear to be offline. Check your connection and retry.', 'Connection lost');
     }
     // Prevent browser-level unhandled rejection noise; explicit user actions still
     // display their own safe, actionable error messages.
     if (event && typeof event.preventDefault === 'function') event.preventDefault();
   });
   window.addEventListener('offline', function () {
-    window.showREHZUSystemAlert('You are offline. Check your internet connection; changes may not be saved.', 'Connection lost');
+    window.showrehzo99SystemAlert('You are offline. Check your internet connection; changes may not be saved.', 'Connection lost');
   });
   window.addEventListener('online', function () {
-    window.showREHZUSystemAlert('Connection restored. Please retry any action that did not finish.', 'Back online');
+    window.showrehzo99SystemAlert('Connection restored. Please retry any action that did not finish.', 'Back online');
   });
 })();
